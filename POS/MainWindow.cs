@@ -171,6 +171,48 @@ namespace POS
             View.ViewCustomersForm customersListForm = new ViewCustomersForm();
             customersListForm.Show();
         }
+
+        private void viewHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            View.ViewTransactionsForm transactionsListForm = new ViewTransactionsForm();
+            transactionsListForm.Show();
+        }
+
+        private void button_addCustomer_Click(object sender, EventArgs e)
+        {
+            View.NewCustomerForm newCustomerForm = new View.NewCustomerForm();
+            newCustomerForm.Show();
+        }
+
+        private void addNewCustomerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            View.NewCustomerForm newCustomerForm = new View.NewCustomerForm();
+            newCustomerForm.Show();
+        }
+
+        private void addNewStaffToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            View.NewStaffForm newStaffForm = new View.NewStaffForm();
+            newStaffForm.Show();
+        }
+
+        private void button_staffList_Click(object sender, EventArgs e)
+        {
+            View.ViewStaffForm viewStaffForm = new View.ViewStaffForm();
+            viewStaffForm.Show();
+        }
+
+        private void button_findItem_Click(object sender, EventArgs e)
+        {
+            View.ViewProductsForm viewProductsForm = new ViewProductsForm();
+            viewProductsForm.Show();
+        }
+
+        private void button_newItem_Click(object sender, EventArgs e)
+        {
+            View.NewProductForm newProductForm = new View.NewProductForm();
+            newProductForm.Show();
+        }
         #endregion
     }
 }

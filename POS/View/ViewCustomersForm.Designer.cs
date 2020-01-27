@@ -54,6 +54,7 @@
             this.button_deleteSelectedCustomer.TabIndex = 1;
             this.button_deleteSelectedCustomer.Text = "Delete selected";
             this.button_deleteSelectedCustomer.UseVisualStyleBackColor = true;
+            this.button_deleteSelectedCustomer.Click += new System.EventHandler(this.button_deleteSelectedCustomer_Click);
             // 
             // button_addNewCustomer
             // 
@@ -64,6 +65,7 @@
             this.button_addNewCustomer.TabIndex = 2;
             this.button_addNewCustomer.Text = "Add new";
             this.button_addNewCustomer.UseVisualStyleBackColor = true;
+            this.button_addNewCustomer.Click += new System.EventHandler(this.button_addNewCustomer_Click);
             // 
             // button_close
             // 
@@ -87,6 +89,7 @@
             this.Controls.Add(this.listView_customers);
             this.Name = "ViewCustomersForm";
             this.Text = "Customers";
+            this.Load += new System.EventHandler(this.ViewCustomersForm_Load);
             this.ResumeLayout(false);
 
         }

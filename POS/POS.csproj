@@ -78,11 +78,47 @@
     <Compile Include="View\IProductsView.cs" />
     <Compile Include="View\IStaffView.cs" />
     <Compile Include="View\ITransactionsView.cs" />
+    <Compile Include="View\NewCustomerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\NewCustomerForm.Designer.cs">
+      <DependentUpon>NewCustomerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewProductForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\NewProductForm.Designer.cs">
+      <DependentUpon>NewProductForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewStaffForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\NewStaffForm.Designer.cs">
+      <DependentUpon>NewStaffForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\ViewCustomersForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="View\ViewCustomersForm.Designer.cs">
       <DependentUpon>ViewCustomersForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewProductsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\ViewProductsForm.Designer.cs">
+      <DependentUpon>ViewProductsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewStaffForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\ViewStaffForm.Designer.cs">
+      <DependentUpon>ViewStaffForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewTransactionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\ViewTransactionsForm.Designer.cs">
+      <DependentUpon>ViewTransactionsForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
@@ -99,8 +135,26 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="View\NewCustomerForm.resx">
+      <DependentUpon>NewCustomerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\NewProductForm.resx">
+      <DependentUpon>NewProductForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\NewStaffForm.resx">
+      <DependentUpon>NewStaffForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="View\ViewCustomersForm.resx">
       <DependentUpon>ViewCustomersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\ViewProductsForm.resx">
+      <DependentUpon>ViewProductsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\ViewStaffForm.resx">
+      <DependentUpon>ViewStaffForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\ViewTransactionsForm.resx">
+      <DependentUpon>ViewTransactionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

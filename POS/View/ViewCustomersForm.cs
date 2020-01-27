@@ -24,11 +24,30 @@ namespace POS.View
             listView_customers.Columns.Add("City");
             listView_customers.Columns.Add("State");
             listView_customers.Columns.Add("Postcode");
+
+            listView_customers.View = System.Windows.Forms.View.Details;
         }
 
+        #region UI event handlers
         private void button_close_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void button_deleteSelectedCustomer_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_addNewCustomer_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
+
+        private void ViewCustomersForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

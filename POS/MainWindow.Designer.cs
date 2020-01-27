@@ -35,7 +35,6 @@
             this.addNewCustomerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.databaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.transactionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -85,6 +84,7 @@
             this.button_checkout = new System.Windows.Forms.Button();
             this.button_newSaleMember = new System.Windows.Forms.Button();
             this.button_newSaleNonMember = new System.Windows.Forms.Button();
+            this.button_staffList = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -118,41 +118,36 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // addNewStaffToolStripMenuItem
             // 
             this.addNewStaffToolStripMenuItem.Name = "addNewStaffToolStripMenuItem";
-            this.addNewStaffToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.addNewStaffToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addNewStaffToolStripMenuItem.Text = "Add new staff";
+            this.addNewStaffToolStripMenuItem.Click += new System.EventHandler(this.addNewStaffToolStripMenuItem_Click);
             // 
             // addNewCustomerToolStripMenuItem
             // 
             this.addNewCustomerToolStripMenuItem.Name = "addNewCustomerToolStripMenuItem";
-            this.addNewCustomerToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.addNewCustomerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addNewCustomerToolStripMenuItem.Text = "Add new customer";
+            this.addNewCustomerToolStripMenuItem.Click += new System.EventHandler(this.addNewCustomerToolStripMenuItem_Click);
             // 
             // logoutToolStripMenuItem
             // 
             this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.logoutToolStripMenuItem.Text = "Logout";
             // 
             // databaseToolStripMenuItem
             // 
             this.databaseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.viewTablesToolStripMenuItem,
             this.scriptingToolStripMenuItem});
             this.databaseToolStripMenuItem.Name = "databaseToolStripMenuItem";
             this.databaseToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
             this.databaseToolStripMenuItem.Text = "Database";
-            // 
-            // viewTablesToolStripMenuItem
-            // 
-            this.viewTablesToolStripMenuItem.Name = "viewTablesToolStripMenuItem";
-            this.viewTablesToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.viewTablesToolStripMenuItem.Text = "View tables";
             // 
             // scriptingToolStripMenuItem
             // 
@@ -171,8 +166,9 @@
             // viewHistoryToolStripMenuItem
             // 
             this.viewHistoryToolStripMenuItem.Name = "viewHistoryToolStripMenuItem";
-            this.viewHistoryToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.viewHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.viewHistoryToolStripMenuItem.Text = "View history";
+            this.viewHistoryToolStripMenuItem.Click += new System.EventHandler(this.viewHistoryToolStripMenuItem_Click);
             // 
             // reportsToolStripMenuItem
             // 
@@ -357,6 +353,7 @@
             this.button_addCustomer.TabIndex = 3;
             this.button_addCustomer.Text = "Add";
             this.button_addCustomer.UseVisualStyleBackColor = true;
+            this.button_addCustomer.Click += new System.EventHandler(this.button_addCustomer_Click);
             // 
             // button_findCustomer
             // 
@@ -528,6 +525,7 @@
             this.button_findItem.TabIndex = 8;
             this.button_findItem.Text = "Find item";
             this.button_findItem.UseVisualStyleBackColor = true;
+            this.button_findItem.Click += new System.EventHandler(this.button_findItem_Click);
             // 
             // button_newItem
             // 
@@ -539,6 +537,7 @@
             this.button_newItem.TabIndex = 9;
             this.button_newItem.Text = "New item";
             this.button_newItem.UseVisualStyleBackColor = true;
+            this.button_newItem.Click += new System.EventHandler(this.button_newItem_Click);
             // 
             // button_customerList
             // 
@@ -556,7 +555,7 @@
             // 
             this.button_Discount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Discount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_Discount.Location = new System.Drawing.Point(255, 389);
+            this.button_Discount.Location = new System.Drawing.Point(336, 389);
             this.button_Discount.Name = "button_Discount";
             this.button_Discount.Size = new System.Drawing.Size(75, 49);
             this.button_Discount.TabIndex = 11;
@@ -567,7 +566,7 @@
             // 
             this.button_clearSale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_clearSale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_clearSale.Location = new System.Drawing.Point(336, 389);
+            this.button_clearSale.Location = new System.Drawing.Point(417, 389);
             this.button_clearSale.Name = "button_clearSale";
             this.button_clearSale.Size = new System.Drawing.Size(75, 49);
             this.button_clearSale.TabIndex = 12;
@@ -579,7 +578,7 @@
             // 
             this.button_logOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_logOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_logOut.Location = new System.Drawing.Point(417, 389);
+            this.button_logOut.Location = new System.Drawing.Point(498, 389);
             this.button_logOut.Name = "button_logOut";
             this.button_logOut.Size = new System.Drawing.Size(75, 49);
             this.button_logOut.TabIndex = 13;
@@ -619,11 +618,24 @@
             this.button_newSaleNonMember.UseVisualStyleBackColor = true;
             this.button_newSaleNonMember.Click += new System.EventHandler(this.button_newSaleNonMember_Click);
             // 
+            // button_staffList
+            // 
+            this.button_staffList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_staffList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.button_staffList.Location = new System.Drawing.Point(255, 389);
+            this.button_staffList.Name = "button_staffList";
+            this.button_staffList.Size = new System.Drawing.Size(75, 49);
+            this.button_staffList.TabIndex = 17;
+            this.button_staffList.Text = "Staff List";
+            this.button_staffList.UseVisualStyleBackColor = true;
+            this.button_staffList.Click += new System.EventHandler(this.button_staffList_Click);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1099, 450);
+            this.Controls.Add(this.button_staffList);
             this.Controls.Add(this.button_newSaleNonMember);
             this.Controls.Add(this.button_newSaleMember);
             this.Controls.Add(this.button_checkout);
@@ -704,7 +716,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader_total;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewHistoryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewTablesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addNewStaffToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addNewCustomerToolStripMenuItem;
@@ -712,6 +723,7 @@
         private System.Windows.Forms.ToolStripMenuItem scriptingToolStripMenuItem;
         private System.Windows.Forms.Button button_newSaleMember;
         private System.Windows.Forms.Button button_newSaleNonMember;
+        private System.Windows.Forms.Button button_staffList;
     }
 }
 
