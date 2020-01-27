@@ -1,0 +1,12 @@
+C:\Users\Alex\Desktop\programming projects\POS\POS\bin\Release\POS.exe.config
+C:\Users\Alex\Desktop\programming projects\POS\POS\bin\Release\POS.exe
+C:\Users\Alex\Desktop\programming projects\POS\POS\bin\Release\POS.pdb
+C:\Users\Alex\Desktop\programming projects\POS\POS\obj\Release\POS.MainWindow.resources
+C:\Users\Alex\Desktop\programming projects\POS\POS\obj\Release\POS.Properties.Resources.resources
+C:\Users\Alex\Desktop\programming projects\POS\POS\obj\Release\POS.csproj.GenerateResource.cache
+C:\Users\Alex\Desktop\programming projects\POS\POS\obj\Release\POS.csproj.CoreCompileInputs.cache
+C:\Users\Alex\Desktop\programming projects\POS\POS\obj\Release\POS.exe
+C:\Users\Alex\Desktop\programming projects\POS\POS\obj\Release\POS.pdb
+C:\Users\Alex\Desktop\programming projects\POS\POS\obj\Release\POS.csprojAssemblyReference.cache
+C:\Users\Alex\Desktop\programming projects\POS\POS\obj\Release\POS.LoginForm.resources
+C:\Users\Alex\Desktop\programming projects\POS\POS\obj\Release\POS.View.ViewCustomersForm.resources

@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskName": "task-Class1",
+      "appliesTo": "POS/Model/Class1.cs",
+      "type": "launch"
+    }
+  ]
+}
