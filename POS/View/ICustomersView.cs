@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Model.ObjectModel;
 
-namespace POS.View
+namespace View
 {
     public interface ICustomersView
     {

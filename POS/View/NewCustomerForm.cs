@@ -7,15 +7,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Controller;
 
 namespace POS.View
 {
     public partial class NewCustomerForm : Form
     {
+        // controller dependency injection
+        private CustomerController controller; 
+
         public NewCustomerForm()
         {
             InitializeComponent();
 
+            // prepare the comboBox
             comboBox_state.Items.Add("NSW");
             comboBox_state.Items.Add("SA");
             comboBox_state.Items.Add("Qld");
@@ -25,6 +30,20 @@ namespace POS.View
             comboBox_state.Items.Add("WA");
             comboBox_state.Items.Add("NT");
             comboBox_state.Items.Add("Other");
+
+            // cannot add anything yet
+            button_add.Enabled = false;
+
+            // controller dependency injection
+            controller = CustomerController.getInstance();
+
+            // event handlers
+            textBox_city.TextChanged += checkEntries;
+            textBox_email.TextChanged += checkEntries;
+            textBox_fullName.TextChanged += checkEntries;
+            textBox_phoneNumber.TextChanged += checkEntries;
+            textBox_postcode.TextChanged += checkEntries;
+            textBox_streetAddress.TextChanged += checkEntries;
         }
 
         #region UI event handlers
@@ -35,7 +54,33 @@ namespace POS.View
 
         private void button_add_Click(object sender, EventArgs e)
         {
+            if (controller!=null)
+            {
+                try
+                {
+                    int postCode;
+                    Int32.TryParse(textBox_postcode.Text, out postCode);
+                    controller.addCustomer(textBox_fullName.Text, textBox_streetAddress.Text, textBox_phoneNumber.Text, textBox_email.Text, textBox_city.Text, comboBox_state.SelectedText,
+                        postCode);
+                }
+                catch (Exception ex)
+                {
 
+                }
+            }
+        }
+
+        private void checkEntries(object sender, EventArgs e)
+        {
+            if ((textBox_city.Text!=string.Empty) && (textBox_email.Text!=string.Empty) && (textBox_fullName.Text!=string.Empty) && (textBox_phoneNumber.Text!=string.Empty) && 
+                (textBox_postcode.Text!=string.Empty) && (textBox_streetAddress.Text!=string.Empty))
+            {
+                button_add.Enabled = true;
+            }
+            else
+            {
+                button_add.Enabled = false;
+            }
         }
         #endregion
     }

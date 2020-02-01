@@ -15,6 +15,15 @@ namespace POS.View
         public ViewTransactionsForm()
         {
             InitializeComponent();
+
+            // prepare the listView
+            listView_transactions.Columns.Add("Transaction ID");
+            listView_transactions.Columns.Add("Timestamp");
+            listView_transactions.Columns.Add("Customer ID");
+            listView_transactions.Columns.Add("Staff ID");
+            listView_transactions.Columns.Add("Product ID");
+
+            listView_transactions.View = System.Windows.Forms.View.Details;
         }
 
         #region UI event handlers
@@ -23,5 +32,8 @@ namespace POS.View
             this.Close();
         }
         #endregion
+
+        private void populateView()
+        { }
     }
 }

@@ -44,6 +44,7 @@
             this.listView_staff.Size = new System.Drawing.Size(681, 426);
             this.listView_staff.TabIndex = 0;
             this.listView_staff.UseCompatibleStateImageBehavior = false;
+            this.listView_staff.SelectedIndexChanged += new System.EventHandler(this.listView_staff_SelectedIndexChanged);
             // 
             // button_deleteSelectedStaff
             // 

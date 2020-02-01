@@ -44,6 +44,7 @@
             this.listView_customers.Size = new System.Drawing.Size(679, 426);
             this.listView_customers.TabIndex = 0;
             this.listView_customers.UseCompatibleStateImageBehavior = false;
+            this.listView_customers.SelectedIndexChanged += new System.EventHandler(this.listView_customers_SelectedIndexChanged);
             // 
             // button_deleteSelectedCustomer
             // 

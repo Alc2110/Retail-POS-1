@@ -45,6 +45,7 @@
             this.listView_products.Size = new System.Drawing.Size(681, 426);
             this.listView_products.TabIndex = 0;
             this.listView_products.UseCompatibleStateImageBehavior = false;
+            this.listView_products.SelectedIndexChanged += new System.EventHandler(this.listView_products_SelectedIndexChanged);
             // 
             // button_deleteSelectedProduct
             // 

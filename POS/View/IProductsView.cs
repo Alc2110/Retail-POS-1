@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace POS.View
+namespace View
 {
     public interface IProductsView
     {
