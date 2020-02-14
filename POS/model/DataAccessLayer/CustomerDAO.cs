@@ -70,8 +70,8 @@ namespace Model.DataAccessLayer
                                 customer.setState(Customer.States.Other);
                                 break;
                             default:
+                                // this shouldn't happen
                                 throw new Exception("Invalid data in database");
-                                break;
                         }
 
                         customers.Add(customer);
@@ -80,13 +80,14 @@ namespace Model.DataAccessLayer
             }
             catch (Exception ex)
             {
-                throw new Exception("Database error: " + ex.Message);
+                throw; 
             }
 
             return customers;
         }
 
         // this works
+        // TODO: change this to require an ID only
         public int deleteCustomer(Customer customer)
         {
             // CustomerID in the database is the PK
@@ -109,7 +110,7 @@ namespace Model.DataAccessLayer
             }
             catch (Exception ex)
             {
-                throw new Exception("Database error: " + ex.Message);
+                throw;
             }
 
             return result;
@@ -175,7 +176,7 @@ namespace Model.DataAccessLayer
             }
             catch (Exception ex)
             {
-                throw new Exception("Database error: " + ex.Message);
+                throw;
             }
 
             return result;
@@ -247,7 +248,7 @@ namespace Model.DataAccessLayer
             }
             catch (Exception ex)
             {
-                throw new Exception("Database error: " + ex.Message);
+                throw;
             }
 
             return result;

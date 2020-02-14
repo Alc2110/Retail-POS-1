@@ -10,8 +10,8 @@ namespace Model.DataAccessLayer
     public interface IStaffDAO
     {
         IList<Staff> getAllStaff();
-        void deleteStaff(Staff staff);
-        void addStaff(Staff staff);
-        void updateStaff(Staff oldStaff, Staff newStaff);
+        int deleteStaff(Staff staff);
+        int addStaff(Staff staff);
+        int updateStaff(Staff oldStaff, Staff newStaff);
     }
 }

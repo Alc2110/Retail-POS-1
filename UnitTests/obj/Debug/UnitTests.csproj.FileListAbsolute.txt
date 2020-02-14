@@ -1,0 +1,17 @@
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\bin\Debug\UnitTests.dll
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\bin\Debug\UnitTests.pdb
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\bin\Debug\POS.exe
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\bin\Debug\POS.pdb
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\bin\Debug\POS.exe.config
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\obj\Debug\UnitTests.csprojAssemblyReference.cache
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\obj\Debug\UnitTests.csproj.CoreCompileInputs.cache
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\obj\Debug\UnitTests.csproj.CopyComplete
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\obj\Debug\UnitTests.dll
+C:\Users\Alex\Desktop\git_repos\POS\UnitTests\obj\Debug\UnitTests.pdb

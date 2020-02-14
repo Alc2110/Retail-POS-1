@@ -58,5 +58,15 @@ namespace Model.ObjectModel
         {
             this.privelege = privelege;
         }
+
+        public string getPasswordHash()
+        {
+            return PasswordHash;
+        }
+
+        public void setPasswordHash(string PasswordHash)
+        {
+            this.PasswordHash = PasswordHash;
+        }
     }
 }

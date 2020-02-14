@@ -118,27 +118,27 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // addNewStaffToolStripMenuItem
             // 
             this.addNewStaffToolStripMenuItem.Name = "addNewStaffToolStripMenuItem";
-            this.addNewStaffToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addNewStaffToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.addNewStaffToolStripMenuItem.Text = "Add new staff";
             this.addNewStaffToolStripMenuItem.Click += new System.EventHandler(this.addNewStaffToolStripMenuItem_Click);
             // 
             // addNewCustomerToolStripMenuItem
             // 
             this.addNewCustomerToolStripMenuItem.Name = "addNewCustomerToolStripMenuItem";
-            this.addNewCustomerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addNewCustomerToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.addNewCustomerToolStripMenuItem.Text = "Add new customer";
             this.addNewCustomerToolStripMenuItem.Click += new System.EventHandler(this.addNewCustomerToolStripMenuItem_Click);
             // 
             // logoutToolStripMenuItem
             // 
             this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.logoutToolStripMenuItem.Text = "Logout";
             // 
             // databaseToolStripMenuItem
@@ -152,7 +152,7 @@
             // scriptingToolStripMenuItem
             // 
             this.scriptingToolStripMenuItem.Name = "scriptingToolStripMenuItem";
-            this.scriptingToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.scriptingToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.scriptingToolStripMenuItem.Text = "Scripting";
             // 
             // transactionToolStripMenuItem
@@ -166,7 +166,7 @@
             // viewHistoryToolStripMenuItem
             // 
             this.viewHistoryToolStripMenuItem.Name = "viewHistoryToolStripMenuItem";
-            this.viewHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.viewHistoryToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.viewHistoryToolStripMenuItem.Text = "View history";
             this.viewHistoryToolStripMenuItem.Click += new System.EventHandler(this.viewHistoryToolStripMenuItem_Click);
             // 
@@ -241,7 +241,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_customerPostCode.Location = new System.Drawing.Point(206, 134);
             this.textBox_customerPostCode.Name = "textBox_customerPostCode";
-            this.textBox_customerPostCode.Size = new System.Drawing.Size(77, 20);
+            this.textBox_customerPostCode.Size = new System.Drawing.Size(112, 20);
             this.textBox_customerPostCode.TabIndex = 15;
             // 
             // comboBox_customerState
@@ -258,7 +258,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_customerCity.Location = new System.Drawing.Point(65, 108);
             this.textBox_customerCity.Name = "textBox_customerCity";
-            this.textBox_customerCity.Size = new System.Drawing.Size(218, 20);
+            this.textBox_customerCity.Size = new System.Drawing.Size(253, 20);
             this.textBox_customerCity.TabIndex = 13;
             // 
             // textBox_customerAddress
@@ -267,7 +267,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_customerAddress.Location = new System.Drawing.Point(65, 82);
             this.textBox_customerAddress.Name = "textBox_customerAddress";
-            this.textBox_customerAddress.Size = new System.Drawing.Size(218, 20);
+            this.textBox_customerAddress.Size = new System.Drawing.Size(253, 20);
             this.textBox_customerAddress.TabIndex = 12;
             // 
             // textBox_customerName
@@ -276,7 +276,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_customerName.Location = new System.Drawing.Point(65, 56);
             this.textBox_customerName.Name = "textBox_customerName";
-            this.textBox_customerName.Size = new System.Drawing.Size(218, 20);
+            this.textBox_customerName.Size = new System.Drawing.Size(253, 20);
             this.textBox_customerName.TabIndex = 11;
             // 
             // label8
@@ -364,6 +364,7 @@
             this.button_findCustomer.TabIndex = 2;
             this.button_findCustomer.Text = "Find";
             this.button_findCustomer.UseVisualStyleBackColor = true;
+            this.button_findCustomer.Click += new System.EventHandler(this.button_findCustomer_Click);
             // 
             // textBox_customerAccNo
             // 
@@ -371,7 +372,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_customerAccNo.Location = new System.Drawing.Point(118, 22);
             this.textBox_customerAccNo.Name = "textBox_customerAccNo";
-            this.textBox_customerAccNo.Size = new System.Drawing.Size(165, 20);
+            this.textBox_customerAccNo.Size = new System.Drawing.Size(200, 20);
             this.textBox_customerAccNo.TabIndex = 1;
             // 
             // label1

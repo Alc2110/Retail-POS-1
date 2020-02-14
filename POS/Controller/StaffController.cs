@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model.ServiceLayer;
 
 namespace Controller
 {
@@ -24,7 +25,9 @@ namespace Controller
         }
 
         public void addStaff(string FullName, string PasswordHash, string role)
-        { }
+        {
+            StaffOps.addStaff(FullName, PasswordHash, role);
+        }
 
         public void deleteStaff(int id)
         { }

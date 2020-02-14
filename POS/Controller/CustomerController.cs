@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model.ServiceLayer;
 
 namespace Controller
 {
@@ -26,11 +27,13 @@ namespace Controller
 
         public void addCustomer(string FullName, string streetAddress, string phoneNumber, string Email, string City, string state, int postcode)
         {
-
+            CustomerOps.addCustomer(FullName, streetAddress, phoneNumber, Email, City, state, postcode);
         }
 
         public void deleteCustomer(int id)
-        { }
+        {
+            CustomerOps.deleteCustomer(id);
+        }
 
         public void updateCustomer()
         { }

@@ -60,15 +60,27 @@ namespace POS.View
                 {
                     int postCode;
                     Int32.TryParse(textBox_postcode.Text, out postCode);
-                    controller.addCustomer(textBox_fullName.Text, textBox_streetAddress.Text, textBox_phoneNumber.Text, textBox_email.Text, textBox_city.Text, comboBox_state.SelectedText,
+                    controller.addCustomer(textBox_fullName.Text, textBox_streetAddress.Text, textBox_phoneNumber.Text, textBox_email.Text, textBox_city.Text, comboBox_state.SelectedItem.ToString(),
                         postCode);
                 }
                 catch (Exception ex)
                 {
-
+                    // error
+                    // inform the user
+                    MessageBox.Show("Error adding customer: " + ex.Message, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
+
+                // success
+                // inform the user
+                MessageBox.Show("Successfully added customer", "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // clean up the UI
+                textBox_fullName.Text = string.Empty;
+
             }
         }
+        #endregion
 
         private void checkEntries(object sender, EventArgs e)
         {
@@ -82,6 +94,5 @@ namespace POS.View
                 button_add.Enabled = false;
             }
         }
-        #endregion
     }
 }

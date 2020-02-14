@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Model.ServiceLayer;
 
 namespace Controller
 {
@@ -24,7 +25,9 @@ namespace Controller
         }
 
         public void addProduct(long id, string description, int quantity, float price)
-        { }
+        {
+            ProductOps.addProduct(id, description, quantity, price);
+        }
 
         public void deleteProduct(long id)
         { }

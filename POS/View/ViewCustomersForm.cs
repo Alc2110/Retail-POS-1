@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Controller;
+using Model.ServiceLayer;
+using Model.DataAccessLayer;
+using Model.ObjectModel;
 
 namespace POS.View
 {
@@ -37,6 +40,9 @@ namespace POS.View
 
             // controller dependency injection
             controller = CustomerController.getInstance();
+
+            // subscribe to the required Model events
+            CustomerOps.QueryAllCustomersEvent += populateView;
         }
 
         #region UI event handlers
@@ -97,7 +103,21 @@ namespace POS.View
         }
         #endregion
 
-        private void populateView()
-        { }
+        private void populateView(List<Customer> customers)
+        {
+            foreach (Customer customer in customers)
+            {
+                string[] itemArr = new string[8];
+                itemArr[0] = customer.getID().ToString();
+                itemArr[1] = customer.getName();
+                itemArr[2] = customer.getAddress();
+                itemArr[3] = customer.getPhoneNumber();
+                itemArr[4] = customer.getEmail();
+                itemArr[5] = customer.getCity();
+                itemArr[6] = customer.getState().ToString();
+                itemArr[7] = customer.getPostcode().ToString();
+                ListViewItem item = new ListViewItem(itemArr);
+            }
+        }
     }
 }

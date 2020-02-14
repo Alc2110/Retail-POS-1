@@ -99,10 +99,10 @@ namespace Model.DataAccessLayer
                     return cmd.ExecuteNonQuery();
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 // pass it to the top level.
-                throw new Exception("Database error: " + ex.Message);
+                throw;
             }
         }
     }

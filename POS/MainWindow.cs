@@ -213,6 +213,12 @@ namespace POS
             View.NewProductForm newProductForm = new View.NewProductForm();
             newProductForm.Show();
         }
+
+        private void button_findCustomer_Click(object sender, EventArgs e)
+        {
+
+        }
         #endregion
+
     }
 }
