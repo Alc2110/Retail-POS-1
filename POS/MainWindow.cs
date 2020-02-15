@@ -34,7 +34,7 @@ namespace POS
             currentState = State.READY;
 
             // user priveleges
-            switch (Configuration.userLevel)
+            switch (Configuration.USER_LEVEL)
             {
                 case Configuration.Role.ADMIN:
                     databaseToolStripMenuItem.Enabled = true;

@@ -19,7 +19,7 @@ namespace Model.DataAccessLayer
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.connectionString))
+                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
                 {
                     SqlCommand cmd = new SqlCommand(queryGetAllProducts, conn);
 
@@ -57,7 +57,7 @@ namespace Model.DataAccessLayer
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.connectionString))
+                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
                 {
                     SqlCommand cmd = new SqlCommand(queryGetProduct, conn);
 
@@ -101,7 +101,7 @@ namespace Model.DataAccessLayer
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.connectionString))
+                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
                 {
                     SqlCommand cmd = new SqlCommand(queryDeleteProduct, conn);
 
@@ -135,7 +135,7 @@ namespace Model.DataAccessLayer
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.connectionString))
+                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
                 {
                     SqlCommand cmd = new SqlCommand(queryAddProduct, conn);
 

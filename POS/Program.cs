@@ -17,6 +17,9 @@ namespace POS
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            // configure the logger
+            Configuration.Logger.ConfigureLogger();
+
             LoginForm loginForm = new LoginForm();
             Application.Run(loginForm);
         }

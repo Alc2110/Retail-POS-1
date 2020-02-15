@@ -1,0 +1,13 @@
+2020-02-15 11:26:17.9130|INFO|POS.LoginForm|Initialising login form
+2020-02-15 11:26:31.2242|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 11:26:32.3431|ERROR|POS.LoginForm|Error connecting to database: Login failed for user 'DESKTOP-H0D0DJ6\Administrator'.
+2020-02-15 11:26:33.8981|INFO|POS.LoginForm|Exiting application
+2020-02-15 13:34:26.3713|INFO|POS.LoginForm|Initialising login form
+2020-02-15 13:34:32.2209|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 13:35:07.0501|ERROR|POS.LoginForm|Error connecting to database: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+2020-02-15 13:35:08.0310|INFO|POS.LoginForm|Exiting application
+2020-02-15 14:18:10.4121|INFO|POS.LoginForm|Initialising login form
+2020-02-15 14:18:16.1759|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 14:28:18.7471|INFO|POS.LoginForm|Initialising login form
+2020-02-15 14:28:24.7037|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 14:30:16.0529|ERROR|POS.LoginForm|Error connecting to database: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)

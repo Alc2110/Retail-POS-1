@@ -19,7 +19,7 @@ namespace Model.DataAccessLayer
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.connectionString))
+                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
                 {
                     SqlCommand cmd = new SqlCommand(queryGetAllStaff, conn);
 
@@ -69,7 +69,7 @@ namespace Model.DataAccessLayer
             int result = 0;
             try
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.connectionString))
+                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
                 {
                     SqlCommand cmd = new SqlCommand(queryDeleteStaff, conn);
 
@@ -96,7 +96,7 @@ namespace Model.DataAccessLayer
             int result = 0;
             try
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.connectionString))
+                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
                 {
                     SqlCommand cmd = new SqlCommand(queryAddStaff, conn);
 

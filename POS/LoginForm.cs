@@ -16,9 +16,12 @@ namespace POS
     {
         string retrievedHash = null;
 
+        // create instance of logger for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public LoginForm()
         {
-
+            logger.Info("Initialising login form");
             InitializeComponent();
         }
 
@@ -30,22 +33,31 @@ namespace POS
         private void tryLogin()
         {
             // attempt connection
-            using (SqlConnection conn = new SqlConnection(Configuration.connectionString))
+            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
                 try
                 {
+                    logger.Info("Attempting connection with database");
                     conn.Open();
                 }
                 catch (SqlException ex)
                 {
                     conn.Close();
-                    MessageBox.Show("Error connecting to database: " + ex.Message, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    string errorMessage = "Error connecting to database: " + ex.Message;
+                    MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    logger.Error(ex, errorMessage);
 
                     return;
                 }
 
                 if (authenticated(conn))
                 {
+                    // authentication successful
+                    // feedback for user
+                    string authSuccessMessage = "Login successful";
+                    MessageBox.Show(authSuccessMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    logger.Info(authSuccessMessage);
+
                     // show main form and close this one
                     MainWindow mainForm = new MainWindow();
                     mainForm.Show();
@@ -53,7 +65,10 @@ namespace POS
                 }
                 else
                 {
-                    MessageBox.Show("Incorrect credentials", "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    // authentication failed
+                    // feedback for user
+                    string authFailMessage = "Incorrect credentials";
+                    MessageBox.Show(authFailMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
         }
@@ -74,6 +89,7 @@ namespace POS
             if (!userNameDataReader.HasRows)
             {
                 // empty, no such username exists
+                logger.Info("Username does not exist");
                 conn.Close();
 
                 return false;
@@ -89,11 +105,17 @@ namespace POS
                 switch (retrievedPrivelege)
                 {
                     case "Admin":
-                        Configuration.userLevel = Configuration.Role.ADMIN;
+                        Configuration.USER_LEVEL = Configuration.Role.ADMIN;
+                        logger.Info("Admin user");
+
                         break;
+
                     case "Normal":
-                        Configuration.userLevel = Configuration.Role.NORMAL;
+                        Configuration.USER_LEVEL = Configuration.Role.NORMAL;
+                        logger.Info("Normal user");
+
                         break;
+
                     default:
                         // this shouldn't happen
                         // TODO: handle it appropriately
@@ -112,6 +134,7 @@ namespace POS
 
         private void button_cancel_Click(object sender, EventArgs e)
         {
+            logger.Info("Exiting application");
             Application.Exit();
         }
     }

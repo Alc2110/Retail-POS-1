@@ -13,8 +13,9 @@ namespace POS
             ADMIN
         }
 
-        public static Role userLevel;
-        public static string connectionString = "Server=localhost;Database=Retail_POS;Trusted_Connection=Yes";
+        public static Role USER_LEVEL;
+        //public static string CONNECTION_STRING = "Server=localhost;Database=Retail_POS;Trusted_Connection=Yes";
+        public static string CONNECTION_STRING = "Server=192.168.56.1;Database=Retail_POS;Trusted_Connection=Yes";
 
         public static class Logger
         {
@@ -32,6 +33,7 @@ namespace POS
 
                 // apply config
                 NLog.LogManager.Configuration = config;
+            }
         }
     }
 }

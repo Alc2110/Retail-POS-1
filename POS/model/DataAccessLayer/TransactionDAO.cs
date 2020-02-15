@@ -64,7 +64,7 @@ namespace Model.DataAccessLayer
     
             try
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.connectionString))
+                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
                 {
                     // define the command object
                     SqlCommand cmd = new SqlCommand(createTransactionQuery, conn);
