@@ -120,6 +120,7 @@
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // addNewStaffToolStripMenuItem
             // 
@@ -609,6 +610,7 @@
             this.button_newSaleMember.TabIndex = 15;
             this.button_newSaleMember.Text = "New Sale (member)";
             this.button_newSaleMember.UseVisualStyleBackColor = true;
+            this.button_newSaleMember.Click += new System.EventHandler(this.button_newSaleMember_Click);
             // 
             // button_newSaleNonMember
             // 

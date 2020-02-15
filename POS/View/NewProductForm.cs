@@ -16,6 +16,9 @@ namespace POS.View
         // controller dependency injection
         private ProductController controller;
 
+        // get logger instance for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public NewProductForm()
         {
             InitializeComponent();
@@ -55,10 +58,27 @@ namespace POS.View
                 }
                 catch (Exception ex)
                 {
+                    // error adding new product
+                    string errorMessage = "Error adding new product: " + ex.Message;
+                    logger.Error(ex, errorMessage);
 
+                    // feedback for user
+                    MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+
+                // success
+                // inform the user
+                string successMessage = "Successfully added new product";
+                logger.Info(successMessage);
+
+                // clean up UI
+                textBox_ID.Text = string.Empty;
+                textBox_description.Text = string.Empty;
+                textBox_price.Text = string.Empty;
+                textBox_quantity.Text = string.Empty;
             }
         }
+        #endregion
 
         private void checkEntries(object sender, EventArgs e)
         {
@@ -71,6 +91,5 @@ namespace POS.View
                 button_add.Enabled = false;
             }
         }
-        #endregion
     }
 }

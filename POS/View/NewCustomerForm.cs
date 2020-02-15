@@ -14,7 +14,10 @@ namespace POS.View
     public partial class NewCustomerForm : Form
     {
         // controller dependency injection
-        private CustomerController controller; 
+        private CustomerController controller;
+
+        // get logger instance for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public NewCustomerForm()
         {
@@ -67,17 +70,27 @@ namespace POS.View
                 {
                     // error
                     // inform the user
-                    MessageBox.Show("Error adding customer: " + ex.Message, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    string errorMessage = "Error adding new customer: " + ex.Message;
+                    logger.Error(ex, errorMessage);
+
+                    MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                     return;
                 }
 
                 // success
                 // inform the user
-                MessageBox.Show("Successfully added customer", "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string successMessage = "Successfully added new customer";
+                logger.Info(successMessage);
+                MessageBox.Show(successMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // clean up the UI
                 textBox_fullName.Text = string.Empty;
-
+                textBox_phoneNumber.Text = string.Empty;
+                textBox_streetAddress.Text = string.Empty;
+                textBox_postcode.Text = string.Empty;
+                textBox_email.Text = string.Empty;
+                textBox_city.Text = string.Empty;
             }
         }
         #endregion

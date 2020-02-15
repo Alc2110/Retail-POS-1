@@ -229,5 +229,15 @@ namespace POS
                 this.Close();
             }
         }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button_newSaleMember_Click(object sender, EventArgs e)
+        {
+            currentState = State.SALE_MEMBER;
+        }
     }
 }

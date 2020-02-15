@@ -20,3 +20,78 @@ Starting Retail POS
 Starting Retail POS
 2020-02-15 14:57:56.9184|INFO|POS.LoginForm|Initialising login form
 2020-02-15 14:57:59.5418|INFO|POS.LoginForm|Exiting application
+2020-02-15 15:04:07.7650|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-15 15:04:07.9140|INFO|POS.LoginForm|Initialising login form
+2020-02-15 15:04:13.8096|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 15:04:14.1357|INFO|POS.LoginForm|Admin user
+2020-02-15 15:04:16.9993|INFO|POS.LoginForm|Login successful
+2020-02-15 15:04:28.9598|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-15 15:04:29.0858|INFO|POS.LoginForm|Initialising login form
+2020-02-15 15:04:34.6212|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 15:04:34.9233|INFO|POS.LoginForm|Admin user
+2020-02-15 15:04:36.3160|INFO|POS.LoginForm|Login successful
+2020-02-15 15:04:52.6762|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-15 15:04:52.8473|INFO|POS.LoginForm|Initialising login form
+2020-02-15 15:05:00.5509|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 15:05:00.9480|INFO|POS.LoginForm|Admin user
+2020-02-15 15:05:03.0281|INFO|POS.LoginForm|Login successful
+2020-02-15 15:06:18.9451|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-15 15:06:19.1032|INFO|POS.LoginForm|Initialising login form
+2020-02-15 15:06:25.1125|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 15:06:25.5526|INFO|POS.LoginForm|Admin user
+2020-02-15 15:06:26.5968|INFO|POS.LoginForm|Login successful
+2020-02-15 15:07:28.1410|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-15 15:07:28.3621|INFO|POS.LoginForm|Initialising login form
+2020-02-15 15:07:34.5001|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 15:07:34.8542|INFO|POS.LoginForm|Admin user
+2020-02-15 15:07:35.9545|INFO|POS.LoginForm|Login successful
+2020-02-15 15:07:47.8271|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-15 15:07:47.9722|INFO|POS.LoginForm|Initialising login form
+2020-02-15 15:07:54.3390|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 15:07:54.7051|INFO|POS.LoginForm|Admin user
+2020-02-15 15:07:55.8998|INFO|POS.LoginForm|Login successful
+2020-02-15 15:08:11.9459|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-15 15:08:12.1569|INFO|POS.LoginForm|Initialising login form
+2020-02-15 15:08:18.9281|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 15:08:19.2562|INFO|POS.LoginForm|Admin user
+2020-02-15 15:08:20.5825|INFO|POS.LoginForm|Login successful
+2020-02-15 15:16:09.2133|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-15 15:16:09.3563|INFO|POS.LoginForm|Initialising login form
+2020-02-15 15:16:18.4610|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 15:16:19.0252|INFO|POS.LoginForm|Admin user
+2020-02-15 15:16:20.2095|INFO|POS.LoginForm|Login successful
+2020-02-15 15:16:38.0081|INFO|POS.View.NewStaffForm|Successfully added new staff member record
+2020-02-15 15:18:14.4144|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-15 15:18:14.7645|INFO|POS.LoginForm|Initialising login form
+2020-02-15 15:18:22.7855|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 15:18:23.0166|INFO|POS.LoginForm|Admin user
+2020-02-15 15:18:24.1670|INFO|POS.LoginForm|Login successful
+2020-02-15 15:18:55.9584|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-15 15:18:56.1274|INFO|POS.LoginForm|Initialising login form
+2020-02-15 15:19:02.3111|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 15:19:02.6082|INFO|POS.LoginForm|Admin user
+2020-02-15 15:19:04.9147|INFO|POS.LoginForm|Login successful
+2020-02-15 15:19:36.1202|INFO|POS.View.NewStaffForm|Successfully added new staff member record
+2020-02-15 15:24:14.6007|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-15 15:24:14.7448|INFO|POS.LoginForm|Initialising login form
+2020-02-15 15:24:21.5814|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 15:24:22.1845|INFO|POS.LoginForm|Admin user
+2020-02-15 15:24:23.4017|INFO|POS.LoginForm|Login successful
+2020-02-15 15:25:34.3101|INFO|POS.View.NewStaffForm|Successfully added new staff member record
+2020-02-15 15:34:02.0880|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-15 15:34:02.2830|INFO|POS.LoginForm|Initialising login form
+2020-02-15 15:34:08.9565|INFO|POS.LoginForm|Attempting connection with database
+2020-02-15 15:34:09.4976|INFO|POS.LoginForm|Admin user
+2020-02-15 15:34:10.4559|INFO|POS.LoginForm|Login successful

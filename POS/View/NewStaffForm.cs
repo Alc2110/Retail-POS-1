@@ -17,6 +17,9 @@ namespace POS.View
         // controller dependency injection
         private StaffController controller;
 
+        // get logger instance for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public NewStaffForm()
         {
             InitializeComponent();
@@ -40,6 +43,8 @@ namespace POS.View
         #region UI event handlers
         private void button_close_Click(object sender, EventArgs e)
         {
+            logger.Info("Closing new staff form");
+
             this.Close();
         }
 
@@ -51,7 +56,8 @@ namespace POS.View
                 {
                     if (!(textBox_password.Text.Equals(textBox_repeatPassword.Text)))
                     {
-                        MessageBox.Show("Passwords not the same. Please try again", "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBox.Show("Passwords do not match. Please try again", "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        logger.Info("Passwords do not match");
 
                         textBox_password.Text = null;
                         textBox_repeatPassword.Text = null;
@@ -68,8 +74,26 @@ namespace POS.View
                 }
                 catch (Exception ex)
                 {
+                    // failed to add new staff
+                    string errorMessage = "Error adding new staff member: " + ex.Message;
+                    logger.Error(ex, errorMessage);
+                    
+                    // feedback for user
+                    MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                    return;
                 }
+
+                // at this point, it succeeded
+                // feedback for user
+                string successMessage = "Successfully added new staff member record";
+                logger.Info(successMessage);
+                MessageBox.Show(successMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // clean up UI
+                textBox_fullName.Text = string.Empty;
+                textBox_password.Text = string.Empty;
+                textBox_repeatPassword.Text = string.Empty;
             }
         }
 
