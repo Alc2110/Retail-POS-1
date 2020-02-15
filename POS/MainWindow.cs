@@ -84,26 +84,7 @@ namespace POS
         // logout button clicked
         private void button9_Click(object sender, EventArgs e)
         {
-            if ((currentState == State.SALE_NON_MEMBER) || (currentState == State.SALE_MEMBER))
-            {
-                DialogResult logoutConfirmation = MessageBox.Show("A sale is taking place. Do you really want to log out?", "Retail POS", MessageBoxButtons.YesNo,MessageBoxIcon.Exclamation);
-                if (logoutConfirmation==DialogResult.Yes)
-                {
-                    LoginForm loginForm = new LoginForm();
-                    loginForm.Show();
-                    this.Close();
-                }
-                else if (logoutConfirmation==DialogResult.No)
-                {
-                    return;
-                }
-            }
-            else
-            {
-                LoginForm loginForm = new LoginForm();
-                loginForm.Show();
-                this.Close();
-            }
+            logout();
         }
        
         private void button_addItem_Click(object sender, EventArgs e)
@@ -218,7 +199,35 @@ namespace POS
         {
 
         }
+
+        private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            logout();
+        }
         #endregion
 
+        public void logout()
+        {
+            if ((currentState == State.SALE_NON_MEMBER) || (currentState == State.SALE_MEMBER))
+            {
+                DialogResult logoutConfirmation = MessageBox.Show("A sale is taking place. Do you really want to log out?", "Retail POS", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                if (logoutConfirmation == DialogResult.Yes)
+                {
+                    LoginForm loginForm = new LoginForm();
+                    loginForm.Show();
+                    this.Close();
+                }
+                else if (logoutConfirmation == DialogResult.No)
+                {
+                    return;
+                }
+            }
+            else
+            {
+                LoginForm loginForm = new LoginForm();
+                loginForm.Show();
+                this.Close();
+            }
+        }
     }
 }

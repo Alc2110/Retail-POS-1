@@ -21,7 +21,10 @@ namespace POS
 
         public LoginForm()
         {
+            // start logging
+            logger.Info("\nStarting Retail POS");
             logger.Info("Initialising login form");
+
             InitializeComponent();
         }
 

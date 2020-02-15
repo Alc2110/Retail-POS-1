@@ -118,28 +118,29 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // addNewStaffToolStripMenuItem
             // 
             this.addNewStaffToolStripMenuItem.Name = "addNewStaffToolStripMenuItem";
-            this.addNewStaffToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.addNewStaffToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addNewStaffToolStripMenuItem.Text = "Add new staff";
             this.addNewStaffToolStripMenuItem.Click += new System.EventHandler(this.addNewStaffToolStripMenuItem_Click);
             // 
             // addNewCustomerToolStripMenuItem
             // 
             this.addNewCustomerToolStripMenuItem.Name = "addNewCustomerToolStripMenuItem";
-            this.addNewCustomerToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.addNewCustomerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.addNewCustomerToolStripMenuItem.Text = "Add new customer";
             this.addNewCustomerToolStripMenuItem.Click += new System.EventHandler(this.addNewCustomerToolStripMenuItem_Click);
             // 
             // logoutToolStripMenuItem
             // 
             this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.logoutToolStripMenuItem.Text = "Logout";
+            this.logoutToolStripMenuItem.Click += new System.EventHandler(this.logoutToolStripMenuItem_Click);
             // 
             // databaseToolStripMenuItem
             // 
@@ -160,7 +161,7 @@
             this.transactionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.viewHistoryToolStripMenuItem});
             this.transactionToolStripMenuItem.Name = "transactionToolStripMenuItem";
-            this.transactionToolStripMenuItem.Size = new System.Drawing.Size(80, 20);
+            this.transactionToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
             this.transactionToolStripMenuItem.Text = "Transaction";
             // 
             // viewHistoryToolStripMenuItem
@@ -485,6 +486,7 @@
             this.columnHeader_qty,
             this.columnHeader_price,
             this.columnHeader_total});
+            this.listView_sales.HideSelection = false;
             this.listView_sales.Location = new System.Drawing.Point(12, 202);
             this.listView_sales.Name = "listView_sales";
             this.listView_sales.Size = new System.Drawing.Size(1075, 166);
