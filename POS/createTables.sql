@@ -17,10 +17,10 @@ CREATE TABLE Staff (
 	PRIMARY KEY (StaffID))
 
 CREATE TABLE Products (
-	ProductID bigint IDENTITY(1,1),
+	ProductID int IDENTITY(1,1),
 	ProductIDNumber varchar(max),
 	Description_ varchar(max),
-	Quantity varchar(max),
+	Quantity int,
 	Price float,
 	PRIMARY KEY (ProductID))
 
@@ -29,7 +29,7 @@ CREATE TABLE Transactions (
 	Timestamp_ datetime2,
 	CustomerID int,
 	StaffID int,
-	ProductID bigint,
+	ProductID int,
 	PRIMARY KEY (TransactionID),
 	FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
 	FOREIGN KEY (StaffID) REFERENCES Staff(StaffID),

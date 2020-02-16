@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Controller;
+using Model.ObjectModel;
+using Model.ServiceLayer;
 
 namespace POS.View
 {
@@ -25,14 +27,21 @@ namespace POS.View
             listView_staff.Columns.Add("Full name");
             listView_staff.Columns.Add("Password");
             listView_staff.Columns.Add("Privelege");
-
             listView_staff.View = System.Windows.Forms.View.Details;
+            listView_staff.GridLines = true;
 
             // can't delete anything until something is selected
             button_deleteSelectedStaff.Enabled = false;
 
             // controller dependency injection
             controller = StaffController.getInstance();
+
+            // subscribe to model events
+            StaffOps.OnGetAllStaff += new EventHandler<GetAllStaffEventArgs>(staffEventHandler);
+
+            // populate the list view upon loading
+            populateView(StaffOps.getAllStaff());
+
         }
 
         #region UI event handlers
@@ -86,7 +95,31 @@ namespace POS.View
         }
         #endregion
 
-        private void populateView()
-        { }
+        private void staffEventHandler(object sender, GetAllStaffEventArgs e)
+        {
+            populateView(e.getList());
+        }
+
+        private void populateView(List<Staff> staffList)
+        {
+            // clear the listView
+            foreach (ListViewItem staffListViewItem in listView_staff.Items)
+            {
+                listView_staff.Items.Remove(staffListViewItem);
+            }
+
+            // populate it
+            foreach (Staff staff in staffList)
+            {
+                string[] itemArr = new string[4];
+                itemArr[0] = staff.getID().ToString();
+                itemArr[1] = staff.getName();
+                itemArr[2] = staff.getPasswordHash();
+                itemArr[3] = staff.getPrivelege().ToString();
+
+                ListViewItem staffListViewItem = new ListViewItem(itemArr);
+                listView_staff.Items.Add(staffListViewItem);
+            }
+        }
     }
 }

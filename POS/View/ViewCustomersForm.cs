@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Controller;
 using Model.ServiceLayer;
-using Model.DataAccessLayer;
 using Model.ObjectModel;
 
 namespace POS.View
@@ -32,8 +31,8 @@ namespace POS.View
             listView_customers.Columns.Add("City");
             listView_customers.Columns.Add("State");
             listView_customers.Columns.Add("Postcode");
-
             listView_customers.View = System.Windows.Forms.View.Details;
+            listView_customers.GridLines = true;
 
             // can't delete anything until something is selected
             button_deleteSelectedCustomer.Enabled = false;
@@ -42,7 +41,10 @@ namespace POS.View
             controller = CustomerController.getInstance();
 
             // subscribe to the required Model events
-            CustomerOps.QueryAllCustomersEvent += populateView;
+            CustomerOps.OnGetAllCustomers += new EventHandler<GetAllCustomersEventArgs>(customerEventHandler);
+
+            // populate the list upon loading
+            populateView(CustomerOps.getAllCustomers()); 
         }
 
         #region UI event handlers
@@ -103,8 +105,20 @@ namespace POS.View
         }
         #endregion
 
+        private void customerEventHandler(object sender, GetAllCustomersEventArgs e)
+        {
+            populateView(e.getList());
+        }
+
         private void populateView(List<Customer> customers)
         {
+            // clean the listView
+            foreach (ListViewItem customerListViewItem in listView_customers.Items)
+            {
+                listView_customers.Items.Remove(customerListViewItem);
+            }
+
+            // now fill it
             foreach (Customer customer in customers)
             {
                 string[] itemArr = new string[8];
@@ -117,6 +131,7 @@ namespace POS.View
                 itemArr[6] = customer.getState().ToString();
                 itemArr[7] = customer.getPostcode().ToString();
                 ListViewItem item = new ListViewItem(itemArr);
+                listView_customers.Items.Add(item);
             }
         }
     }

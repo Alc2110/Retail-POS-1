@@ -16,7 +16,7 @@ namespace Controller
 
         public static ProductController getInstance()
         {
-            if (instance!=null)
+            if (instance==null)
             {
                 instance = new ProductController();
             }
@@ -24,9 +24,10 @@ namespace Controller
             return instance;
         }
 
-        public void addProduct(long id, string description, int quantity, float price)
+        //public void addProduct(long id, string idNumber, string description, int quantity, float price)
+        public void addProduct(string idNumber, string description, int quantity, float price)
         {
-            ProductOps.addProduct(id, description, quantity, price);
+            ProductOps.addProduct(idNumber, description, quantity, price);
         }
 
         public void deleteProduct(long id)

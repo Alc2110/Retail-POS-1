@@ -43,6 +43,11 @@ namespace Model.ObjectModel
             return Timestamp;
         }
 
+        public void setTimestamp(string timestamp)
+        {
+            this.Timestamp = timestamp;
+        }
+
         public void setCustomer(Customer customer)
         {
             this.customer = customer;

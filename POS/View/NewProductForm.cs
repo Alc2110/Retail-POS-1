@@ -48,13 +48,13 @@ namespace POS.View
             {
                 try
                 {
-                    int id;
-                    Int32.TryParse(textBox_ID.Text, out id);
+                    //int id;
+                    //Int32.TryParse(textBox_ID.Text, out id);
                     float price;
                     float.TryParse(textBox_price.Text, out price);
                     int quantity;
                     Int32.TryParse(textBox_quantity.Text, out quantity);
-                    controller.addProduct(id, textBox_description.Text, quantity, price);
+                    controller.addProduct(textBox_ID.Text, textBox_description.Text, quantity, price);
                 }
                 catch (Exception ex)
                 {
@@ -69,6 +69,7 @@ namespace POS.View
                 // success
                 // inform the user
                 string successMessage = "Successfully added new product";
+                MessageBox.Show(successMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 logger.Info(successMessage);
 
                 // clean up UI

@@ -21,6 +21,7 @@ namespace Model.DataAccessLayer
             {
                 using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
                 {
+                    // define the command object
                     SqlCommand cmd = new SqlCommand(queryGetAllStaff, conn);
 
                     // try a connection

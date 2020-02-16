@@ -7,6 +7,7 @@ using Model.ObjectModel;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using POS;
+using System.Diagnostics;
 
 namespace Model.DataAccessLayer
 {

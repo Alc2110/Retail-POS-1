@@ -7,9 +7,9 @@ BEGIN Transaction
         DECLARE @varCustomerID int;
         DECLARE @varStaffID int;
         DECLARE @varProductID int;
-        SET @varCustomerID = 2;
+        SET @varCustomerID = 1;
         SET @varStaffID = 1;
-        SET @varProductID = 10004;
+        SET @varProductID = 1;
 
         --New record in Transactions table
         INSERT INTO  Transactions (Timestamp_, CustomerID, StaffID, ProductID)

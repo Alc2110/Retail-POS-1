@@ -10,10 +10,6 @@ namespace Model.ServiceLayer
 {
     public static class CustomerOps
     {
-        // delegate and event for retrieving all customer data
-        public delegate void showCustomers(List<Customer> customers);
-        public static event showCustomers QueryAllCustomersEvent;
-
         public static void addCustomer(string FullName, string streetAddress, string phoneNumber, string Email, string City, string state, int postcode)
         {
             // object
@@ -60,6 +56,9 @@ namespace Model.ServiceLayer
             // DAO
             CustomerDAO dao = new CustomerDAO();
             dao.addCustomer(newCustomer);
+
+            // fire the event
+            getAllCustomers();
         }
 
         public static void deleteCustomer(int id)
@@ -71,16 +70,40 @@ namespace Model.ServiceLayer
             // DAO
             CustomerDAO dao = new CustomerDAO();
             dao.deleteCustomer(customer);
+
+            // fire the event
+            getAllCustomers();
         }
 
-        public static void getAllCustomers()
+        public static List<Customer> getAllCustomers()
         {
             // DAO
             CustomerDAO dao = new CustomerDAO();
-            List<Customer> allCustomers = dao.getAllCustomers().ToList<Customer>();
+            List<Customer> allCustomers = (List<Customer>)dao.getAllCustomers();
 
             // fire the event
-            QueryAllCustomersEvent(allCustomers);
+            OnGetAllCustomers(null, new GetAllCustomersEventArgs(allCustomers));
+
+            return allCustomers;
+        }
+
+        // event for getting all customers
+        public static event EventHandler<GetAllCustomersEventArgs> OnGetAllCustomers = delegate { };     
+    }
+
+    public class GetAllCustomersEventArgs
+    {
+        private List<Customer> customerList;
+
+        // ctor
+        public GetAllCustomersEventArgs(List<Customer> customerList)
+        {
+            this.customerList = customerList;
+        }
+
+        public List<Customer> getList()
+        {
+            return this.customerList;
         }
     }
 }

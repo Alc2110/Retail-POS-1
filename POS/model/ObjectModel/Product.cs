@@ -10,15 +10,17 @@ namespace Model.ObjectModel
         }
 
         // ctor
-        public Product(long ProductID, string Description, int Quantity, float price)
+        public Product(long ProductID, string ProductIDNumber, string Description, int Quantity, float price)
         {
             this.ProductID = ProductID;
+            this.ProductIDNumber = ProductIDNumber;
             this.Description = Description;
             this.Quantity = Quantity;
             this.price = price;
         }
 
         private long ProductID;
+        private string ProductIDNumber;
         private string Description;
         private int Quantity;
         private float price;
@@ -31,6 +33,16 @@ namespace Model.ObjectModel
         public long getProductID()
         {
             return ProductID;
+        }
+
+        public void setProductIDNumber(string id)
+        {
+            this.ProductIDNumber = id;
+        }
+
+        public string getProductIDNumber()
+        {
+            return this.ProductIDNumber;
         }
 
         public void setQuantity(int quantity)

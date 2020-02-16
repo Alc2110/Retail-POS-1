@@ -20,10 +20,14 @@ namespace Model.ServiceLayer
             {
                 case "Admin":
                     newStaff.setPrivelege(Staff.Privelege.Admin);
+
                     break;
+
                 case "Normal":
                     newStaff.setPrivelege(Staff.Privelege.Normal);
+
                     break;
+                     
                 default:
                     // this shouldn't happen
                     throw new Exception("Invalid data input");
@@ -32,6 +36,41 @@ namespace Model.ServiceLayer
             // DAO
             StaffDAO dao = new StaffDAO();
             dao.addStaff(newStaff);
+
+            // fire the event
+            getAllStaff();
+        }
+
+        // event for getting all staff
+        public static event EventHandler<GetAllStaffEventArgs> OnGetAllStaff = delegate { };
+
+        public static List<Staff> getAllStaff()
+        {
+            // DAO
+            // retrieve from database
+            StaffDAO dao = new StaffDAO();
+            List<Staff> staffList = (List<Staff>)dao.getAllStaff();
+
+            // fire the event
+            OnGetAllStaff(null, new GetAllStaffEventArgs(staffList));
+
+            return staffList;
+        }
+    }
+
+    public class GetAllStaffEventArgs : EventArgs
+    {
+        private List<Staff> staffList;
+
+        // ctor
+        public GetAllStaffEventArgs(List<Staff> staffList)
+        {
+            this.staffList = staffList;
+        }
+
+        public List<Staff> getList()
+        {
+            return staffList;
         }
     }
 }

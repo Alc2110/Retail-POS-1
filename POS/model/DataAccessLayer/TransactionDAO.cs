@@ -15,9 +15,38 @@ namespace Model.DataAccessLayer
     {
         public IList<Transaction> getAllTransactions()
         {
-            IList<Transaction> list = new List<Transaction>();
+            IList<Transaction> transList = new List<Transaction>();
 
-            return list;
+            string getAllTransactionsQuery = "SELECT * FROM Transactions;";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+                {
+                    // define the command object
+                    SqlCommand cmd = new SqlCommand(getAllTransactionsQuery, conn);
+
+                    // try a connection
+                    conn.Open();
+
+                    // execute the query
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Transaction transaction = new Transaction();
+                        transaction.setTransactionID(reader.GetInt32(0));
+                        transaction.setTimestamp(reader.GetDateTime(1).ToString());
+                        // TODO: retrieve the associated product and customer objects
+                        transList.Add(transaction);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {     
+                throw;
+            }
+
+            return transList;
         }
 
         // actually, may not want to delete transactions...

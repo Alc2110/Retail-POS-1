@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Controller;
+using Model.ServiceLayer;
+using Model.ObjectModel;
 
 namespace POS.View
 {
@@ -21,18 +23,24 @@ namespace POS.View
             InitializeComponent();
 
             // prepare the listView
-            listView_products.Columns.Add("Product ID");
+            listView_products.Columns.Add("Product ID Number");
             listView_products.Columns.Add("Description");
             listView_products.Columns.Add("Quantity");
             listView_products.Columns.Add("Price");
-
             listView_products.View = System.Windows.Forms.View.Details;
+            listView_products.GridLines = true;
 
             // can't delete anything until something is selected
             button_deleteSelectedProduct.Enabled = false;
 
             // controller dependency injection
             controller = ProductController.getInstance();
+
+            // subscribe to Model events
+            ProductOps.OnGetAllProducts += new EventHandler<GetAllProductsEventArgs>(productEventHandler);
+
+            // populate the list upon loading
+            populateView(ProductOps.getAllProducts());
         }
 
         #region UI event handlers
@@ -88,7 +96,31 @@ namespace POS.View
         }
         #endregion
 
-        private void populateView()
-        { }
+        private void productEventHandler(object sender, GetAllProductsEventArgs e)
+        {
+            populateView(e.getList());
+        }
+
+        private void populateView(List<Product> products)
+        {
+            // clean the list view
+            foreach (ListViewItem item in listView_products.Items)
+            {
+                listView_products.Items.Remove(item);
+            }
+
+            // populate it
+            foreach (Product product in products)
+            {
+                string[] itemArr = new string[4];
+                itemArr[0] = product.getProductIDNumber();
+                itemArr[1] = product.getDescription();
+                itemArr[2] = product.getQuantity().ToString();
+                itemArr[3] = product.getPrice().ToString();
+
+                ListViewItem item = new ListViewItem(itemArr);
+                listView_products.Items.Add(item);
+            }
+        }
     }
 }
