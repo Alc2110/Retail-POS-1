@@ -78,8 +78,16 @@ namespace POS
             button_priceLookup.Enabled = false;
             button_findCustomer.Enabled = false;
 
+            button_newSaleMember.Enabled = true;
+            button_newSaleNonMember.Enabled = true;
+
             textBox_itemProductID.Enabled = false;
             textBox_itemQuantity.Enabled = false;
+
+            foreach (ListViewItem listItem in listView_sales.Items)
+            {
+                listView_sales.Items.Remove(listItem);
+            }
         }
 
         #region UI Event Handlers
@@ -94,6 +102,15 @@ namespace POS
             // retrieve product record from database, for this ID 
             string productID = textBox_itemProductID.Text;
             Product retrievedProduct = ProductOps.getProduct(productID);
+
+            // could not find product
+            if (retrievedProduct==null)
+            {
+                MessageBox.Show("Could not find specified product", "Retail POS", 
+                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                return;
+            }
 
             // check if item already in list
             bool itemInList = false;
@@ -170,7 +187,16 @@ namespace POS
             else
             {
                 // items exist, ask user for confirmation
-                // TODO: finish implementing this
+                DialogResult dialogResult = MessageBox.Show("A sale is taking place. Do you really want to clear it?",
+                                                            "Retail POS", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                if (dialogResult==DialogResult.Yes)
+                {
+                    setUI();
+                }
+                else if (dialogResult==DialogResult.No)
+                {
+                    return;
+                }
             }
         }
 
@@ -252,7 +278,28 @@ namespace POS
 
         private void button_findCustomer_Click(object sender, EventArgs e)
         {
+            // get customer data
+            string customerAccNumber = textBox_customerAccNo.Text;
+            Customer retrievedCustomer = CustomerOps.getCustomer(Int32.Parse(customerAccNumber));
 
+            // could not find customer
+            if (retrievedCustomer==null)
+            {
+                MessageBox.Show("Could not find specified customer", "Retail POS",
+                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                return;
+            }
+
+            // found the customer
+            textBox_customerName.Text = retrievedCustomer.getName();
+            textBox_customerPhone.Text = retrievedCustomer.getPhoneNumber();
+            textBox_customerEmail.Text = retrievedCustomer.getEmail();
+            textBox_customerAddress.Text = retrievedCustomer.getAddress();
+            textBox_customerCity.Text = retrievedCustomer.getCity();
+            textBox_customerPostCode.Text = retrievedCustomer.getPostcode().ToString();
+
+            textBox_itemProductID.Enabled = true;
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -300,8 +347,11 @@ namespace POS
 
         private void button_newSaleMember_Click(object sender, EventArgs e)
         {
-
             currentState = State.SALE_MEMBER;
+
+            // get customer data
+            textBox_customerAccNo.Enabled = true;
+            button_findCustomer.Enabled = true;
         }
 
         private void textBox_itemQuantity_TextChanged(object sender, EventArgs e)
@@ -341,6 +391,45 @@ namespace POS
                     deselectAllItems();
 
                     break;
+            }
+        }
+
+        private void button_removeItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in listView_sales.Items)
+            {
+                listView_sales.Items.Remove(item);
+            }
+        }
+
+        private void button_checkout_Click(object sender, EventArgs e)
+        {
+            string stotal;
+            DialogResult dialogResult = MessageBox.Show("Total: " + "" + " Checkout now? Clicking NO will clear sale", "Retail POS",
+                                                        MessageBoxButtons.YesNoCancel);
+            if (dialogResult==DialogResult.Yes)
+            {
+                // collect items
+                Dictionary<string, int> saleItems = new Dictionary<string, int>();
+                foreach (ListViewItem item in listView_sales.Items)
+                {
+                    // get ID and quantity of each
+                    saleItems.Add(item.SubItems[0].Text, Int32.Parse(item.SubItems[2].Text));
+                }
+
+                // transaction
+
+                // reset
+                setUI();
+            }
+            else if (dialogResult==DialogResult.No)
+            {
+                // clear sale
+                setUI();
+            }
+            else if (dialogResult==DialogResult.Cancel)
+            {
+                return;
             }
         }
     }

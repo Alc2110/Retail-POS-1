@@ -75,6 +75,13 @@ namespace Model.ServiceLayer
             getAllCustomers();
         }
 
+        public static Customer getCustomer(int id)
+        {
+            // DAO
+            CustomerDAO dao = new CustomerDAO();
+            return dao.getCustomer(id);
+        }
+
         public static List<Customer> getAllCustomers()
         {
             // DAO

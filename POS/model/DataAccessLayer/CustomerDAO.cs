@@ -13,6 +13,92 @@ namespace Model.DataAccessLayer
 {
     public class CustomerDAO : ICustomerDAO
     {
+        public Customer getCustomer(int id)
+        {
+            Customer customer = new Customer();
+
+            string queryGetCustomer = "SELECT * From Customers " +
+                                      "WHERE CustomerID = @id;";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+                {
+                    // define the command object
+                    SqlCommand cmd = new SqlCommand(queryGetCustomer,conn);
+
+                    // parameterise
+                    SqlParameter idParam = new SqlParameter();
+                    idParam.ParameterName = "@id";
+                    idParam.Value = id;
+                    cmd.Parameters.Add(idParam);
+
+                    // try a connection
+                    conn.Open();
+
+                    // execute the query
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    // no results
+                    if (!reader.Read())
+                    {
+                        return null;
+                    }
+
+                    // results exist
+                    while (reader.Read())
+                    {
+                        customer.setID(reader.GetInt32(0));
+                        customer.setName(reader.GetString(1));
+                        customer.setAddress(reader.GetString(2));
+                        customer.setPhoneNumber(reader.GetString(3));
+                        customer.setEmail(reader.GetString(4));
+                        customer.setCity(reader.GetString(5));
+
+                        switch (reader.GetString(6))
+                        {
+                            case "NSW":
+                                customer.setState(Customer.States.NSW);
+                                break;
+                            case "Qld":
+                                customer.setState(Customer.States.Qld);
+                                break;
+                            case "Tas":
+                                customer.setState(Customer.States.Tas);
+                                break;
+                            case "ACT":
+                                customer.setState(Customer.States.ACT);
+                                break;
+                            case "Vic":
+                                customer.setState(Customer.States.Vic);
+                                break;
+                            case "SA":
+                                customer.setState(Customer.States.SA);
+                                break;
+                            case "WA":
+                                customer.setState(Customer.States.WA);
+                                break;
+                            case "NT":
+                                customer.setState(Customer.States.NT);
+                                break;
+                            case "Other":
+                                customer.setState(Customer.States.Other);
+                                break;
+                            default:
+                                // this shouldn't happen
+                                throw new Exception("Invalid data in database");
+                        }
+                    }
+
+                    return customer;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         // this works
         public IList<Customer> getAllCustomers()
         {

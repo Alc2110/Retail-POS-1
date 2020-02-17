@@ -421,6 +421,7 @@
             this.button_removeItem.TabIndex = 6;
             this.button_removeItem.Text = "Remove item";
             this.button_removeItem.UseVisualStyleBackColor = true;
+            this.button_removeItem.Click += new System.EventHandler(this.button_removeItem_Click);
             // 
             // button_addItem
             // 
@@ -603,6 +604,7 @@
             this.button_checkout.TabIndex = 14;
             this.button_checkout.Text = "Checkout";
             this.button_checkout.UseVisualStyleBackColor = true;
+            this.button_checkout.Click += new System.EventHandler(this.button_checkout_Click);
             // 
             // button_newSaleMember
             // 

@@ -78,6 +78,13 @@ namespace Model.DataAccessLayer
                     // execute the query
                     SqlDataReader reader = cmd.ExecuteReader();
 
+                    // no results
+                    if (!reader.Read())
+                    {
+                        return null; 
+                    }
+
+                    // results exist
                     while (reader.Read())
                     {
                         
@@ -89,17 +96,6 @@ namespace Model.DataAccessLayer
                         double dprice = reader.GetDouble(4);
                         float fprice = Convert.ToSingle(dprice);
                         product.setPrice(fprice);
-
-                        
-                        /*
-                        long productID = reader.GetInt32(0);
-                        string productIDNumber = reader.GetString(1);
-                        string description = reader.GetString(2);
-                        int quantity = reader.GetInt32(3);
-                        float price = reader.GetFloat(4);
-
-                        product = new Product(productID, productIDNumber, description, quantity, price);
-                        */
                     }
 
                     return product;
@@ -161,13 +157,6 @@ namespace Model.DataAccessLayer
                     SqlCommand cmd = new SqlCommand(queryAddProduct, conn);
 
                     // parameterise
-                    /*
-                    SqlParameter idParam = new SqlParameter();
-                    idParam.ParameterName = "@id";
-                    idParam.Value = product.getProductID();
-                    cmd.Parameters.Add(idParam);
-                    */
-
                     SqlParameter idNumberParam = new SqlParameter();
                     idNumberParam.ParameterName = "@idNumber";
                     idNumberParam.Value = product.getProductIDNumber();
