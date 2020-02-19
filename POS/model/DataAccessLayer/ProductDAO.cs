@@ -78,24 +78,26 @@ namespace Model.DataAccessLayer
                     // execute the query
                     SqlDataReader reader = cmd.ExecuteReader();
 
-                    // no results
-                    if (!reader.Read())
+                    // check if results exist
+                    if (reader.HasRows)
                     {
-                        return null; 
-                    }
+                        // results exist
+                        while (reader.Read())
+                        {
 
-                    // results exist
-                    while (reader.Read())
+                            product.setProductID(reader.GetInt32(0));
+                            product.setProductIDNumber(reader.GetString(1));
+                            product.setDescription(reader.GetString(2));
+                            product.setQuantity(reader.GetInt32(3));
+                            // a SQL float is a .NET double
+                            double dprice = reader.GetDouble(4);
+                            float fprice = Convert.ToSingle(dprice);
+                            product.setPrice(fprice);
+                        }
+                    }
+                    else
                     {
-                        
-                        product.setProductID(reader.GetInt32(0));
-                        product.setProductIDNumber(reader.GetString(1));
-                        product.setDescription(reader.GetString(2));
-                        product.setQuantity(reader.GetInt32(3));
-                        // a SQL float is a .NET double
-                        double dprice = reader.GetDouble(4);
-                        float fprice = Convert.ToSingle(dprice);
-                        product.setPrice(fprice);
+                        return null;
                     }
 
                     return product;

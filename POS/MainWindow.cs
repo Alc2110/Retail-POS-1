@@ -21,6 +21,18 @@ namespace POS
         {
             InitializeComponent();
 
+            // customer state combo box
+            comboBox_customerState.Items.Add("NSW");
+            comboBox_customerState.Items.Add("Vic");
+            comboBox_customerState.Items.Add("Qld");
+            comboBox_customerState.Items.Add("ACT");
+            comboBox_customerState.Items.Add("NT");
+            comboBox_customerState.Items.Add("SA");
+            comboBox_customerState.Items.Add("WA");
+            comboBox_customerState.Items.Add("Other");
+
+            listView_sales.GridLines = true;
+
             setUI();  
         }
 
@@ -69,6 +81,16 @@ namespace POS
             textBox_customerPostCode.Enabled = false;
             comboBox_customerState.Enabled = false;
             textBox_customerAccNo.Enabled = false;
+
+            textBox_customerAccNo.Text = null;
+            textBox_customerAddress.Text = null;
+            textBox_customerCity.Text = null;
+            textBox_customerEmail.Text = null;
+            textBox_customerName.Text = null;
+            textBox_customerPhone.Text = null;
+            textBox_customerPostCode.Text = null;
+            textBox_itemProductID.Text = null;
+            textBox_itemQuantity.Text = null;
 
             button_checkout.Enabled = false;
             button_Discount.Enabled = false;
@@ -122,15 +144,15 @@ namespace POS
                     itemInList = true;
 
                     // just increment the total count, and update total item cost
-                    string squantity = listItem.SubItems[2].Text;
-                    int iquantity = Int32.Parse(squantity);
-                    listItem.SubItems[2].Text = (iquantity += iquantity).ToString();
+                    string sQuantity = listItem.SubItems[2].Text;
+                    int iQuantity = Int32.Parse(sQuantity);
+                    listItem.SubItems[2].Text = (iQuantity += 1).ToString();
 
-                    string scost = listItem.SubItems[4].Text;
-                    float fcost = float.Parse(scost);
-                    string sprice = listItem.SubItems[3].Text;
-                    float fprice = float.Parse(sprice);
-                    listItem.SubItems[4].Text = (fprice + fcost).ToString();
+                    string sCost = listItem.SubItems[4].Text;
+                    float fCost = float.Parse(sCost);
+                    string sPrice = listItem.SubItems[3].Text;
+                    float fPrice = float.Parse(sPrice);
+                    listItem.SubItems[4].Text = (fPrice + fCost).ToString();
 
                     // select this item in the list
                     deselectAllItems();
@@ -147,7 +169,7 @@ namespace POS
                 itemArr[0] = retrievedProduct.getProductIDNumber();
                 itemArr[1] = retrievedProduct.getDescription();
                 itemArr[2] = "1";// quantity
-                itemArr[4] = "1";// total
+                itemArr[4] = retrievedProduct.getPrice().ToString();// total
                 itemArr[3] = retrievedProduct.getPrice().ToString();
                 ListViewItem item = new ListViewItem(itemArr);
                 listView_sales.Items.Add(item);
@@ -155,6 +177,16 @@ namespace POS
                 // select this item in the list
                 deselectAllItems();
                 item.Selected = true;
+            }
+
+            // checkout button
+            if (listView_sales.Items.Count>0)
+            {
+                button_checkout.Enabled = true;
+            }
+            else
+            {
+                button_checkout.Enabled = false;
             }
 
             // clean up UI
@@ -170,6 +202,7 @@ namespace POS
         {
             button_newSaleMember.Enabled = false;
             button_newSaleNonMember.Enabled = false;
+
             button_clearSale.Enabled = true;
 
             textBox_itemProductID.Enabled = true;
@@ -298,8 +331,44 @@ namespace POS
             textBox_customerAddress.Text = retrievedCustomer.getAddress();
             textBox_customerCity.Text = retrievedCustomer.getCity();
             textBox_customerPostCode.Text = retrievedCustomer.getPostcode().ToString();
+            
+            switch (retrievedCustomer.getState())
+            {
+                case Customer.States.ACT:
+                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("ACT");
+                    break;
+                case Customer.States.NSW:
+                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("NSW");
+                    break;
+                case Customer.States.Vic:
+                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("Vic");
+                    break;
+                case Customer.States.Qld:
+                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("Qld");
+                    break;
+                case Customer.States.NT:
+                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("NT");
+                    break;
+                case Customer.States.Tas:
+                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("Tas");
+                    break;
+                case Customer.States.SA:
+                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("SA");
+                    break;
+                case Customer.States.WA:
+                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("WA");
+                    break;
+                case Customer.States.Other:
+                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("Other");
+                    break;
+                default:
+                    // this shouldn't happen, but handle it anyway
+                    throw new Exception("Invalid data");
+            }
 
             textBox_itemProductID.Enabled = true;
+
+            textBox_customerAccNo.Enabled = false;
         }
 
         private void logoutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -349,6 +418,8 @@ namespace POS
         {
             currentState = State.SALE_MEMBER;
 
+            button_clearSale.Enabled = true;
+
             // get customer data
             textBox_customerAccNo.Enabled = true;
             button_findCustomer.Enabled = true;
@@ -396,16 +467,33 @@ namespace POS
 
         private void button_removeItem_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem item in listView_sales.Items)
+            foreach (ListViewItem selectedItem in listView_sales.SelectedItems)
             {
-                listView_sales.Items.Remove(item);
+                listView_sales.Items.Remove(selectedItem);
+            }
+
+            // checkout button
+            if (listView_sales.Items.Count > 0)
+            {
+                button_checkout.Enabled = true;
+            }
+            else
+            {
+                button_checkout.Enabled = false;
             }
         }
 
         private void button_checkout_Click(object sender, EventArgs e)
         {
-            string stotal;
-            DialogResult dialogResult = MessageBox.Show("Total: " + "" + " Checkout now? Clicking NO will clear sale", "Retail POS",
+            float fTotal = 0;
+            foreach (ListViewItem item in listView_sales.Items)
+            {
+                float fItemTotal = float.Parse(item.SubItems[4].Text);
+                fTotal += fItemTotal;
+            }
+            string sTotal = fTotal.ToString();
+
+            DialogResult dialogResult = MessageBox.Show("Total: " + sTotal + " Checkout now? Clicking NO will clear sale", "Retail POS",
                                                         MessageBoxButtons.YesNoCancel);
             if (dialogResult==DialogResult.Yes)
             {

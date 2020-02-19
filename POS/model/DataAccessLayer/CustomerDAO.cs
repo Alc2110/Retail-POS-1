@@ -39,55 +39,59 @@ namespace Model.DataAccessLayer
                     // execute the query
                     SqlDataReader reader = cmd.ExecuteReader();
 
-                    // no results
-                    if (!reader.Read())
+                    // check if results exist
+                    if (reader.HasRows)
                     {
-                        return null;
-                    }
-
-                    // results exist
-                    while (reader.Read())
-                    {
-                        customer.setID(reader.GetInt32(0));
-                        customer.setName(reader.GetString(1));
-                        customer.setAddress(reader.GetString(2));
-                        customer.setPhoneNumber(reader.GetString(3));
-                        customer.setEmail(reader.GetString(4));
-                        customer.setCity(reader.GetString(5));
-
-                        switch (reader.GetString(6))
+                        // results exist
+                        while (reader.Read())
                         {
-                            case "NSW":
-                                customer.setState(Customer.States.NSW);
-                                break;
-                            case "Qld":
-                                customer.setState(Customer.States.Qld);
-                                break;
-                            case "Tas":
-                                customer.setState(Customer.States.Tas);
-                                break;
-                            case "ACT":
-                                customer.setState(Customer.States.ACT);
-                                break;
-                            case "Vic":
-                                customer.setState(Customer.States.Vic);
-                                break;
-                            case "SA":
-                                customer.setState(Customer.States.SA);
-                                break;
-                            case "WA":
-                                customer.setState(Customer.States.WA);
-                                break;
-                            case "NT":
-                                customer.setState(Customer.States.NT);
-                                break;
-                            case "Other":
-                                customer.setState(Customer.States.Other);
-                                break;
-                            default:
-                                // this shouldn't happen
-                                throw new Exception("Invalid data in database");
+                            customer.setID(reader.GetInt32(0));
+                            customer.setName(reader.GetString(1));
+                            customer.setAddress(reader.GetString(2));
+                            customer.setPhoneNumber(reader.GetString(3));
+                            customer.setEmail(reader.GetString(4));
+                            customer.setCity(reader.GetString(5));
+
+                            switch (reader.GetString(6))
+                            {
+                                case "NSW":
+                                    customer.setState(Customer.States.NSW);
+                                    break;
+                                case "Qld":
+                                    customer.setState(Customer.States.Qld);
+                                    break;
+                                case "Tas":
+                                    customer.setState(Customer.States.Tas);
+                                    break;
+                                case "ACT":
+                                    customer.setState(Customer.States.ACT);
+                                    break;
+                                case "Vic":
+                                    customer.setState(Customer.States.Vic);
+                                    break;
+                                case "SA":
+                                    customer.setState(Customer.States.SA);
+                                    break;
+                                case "WA":
+                                    customer.setState(Customer.States.WA);
+                                    break;
+                                case "NT":
+                                    customer.setState(Customer.States.NT);
+                                    break;
+                                case "Other":
+                                    customer.setState(Customer.States.Other);
+                                    break;
+                                default:
+                                    // this shouldn't happen
+                                    throw new Exception("Invalid data in database");
+                            }
+
+                            customer.setPostcode(reader.GetInt32(7));
                         }
+                    }
+                    else
+                    {
+                        //return null;
                     }
 
                     return customer;
