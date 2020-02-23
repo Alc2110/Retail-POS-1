@@ -17,9 +17,10 @@ namespace Model.DataAccessLayer
         {
             IList<Transaction> transList = new List<Transaction>();
 
-            //string getAllTransactionsQuery = "SELECT * FROM Transactions;";
-            string getAllTransactionsQuery = "SELECT Transactions.TransactionID, Transactions.Timestamp_, Customers.CustomerID, Customers.FullName, Staff.StaffID, Staff.FullName, " +
-                                             "Products.ProductIDNumber, Products.Description_, Products.Price " +
+            string getAllTransactionsQuery = "SELECT Transactions.TransactionID, Transactions.Timestamp_," +
+                                             "Customers.CustomerID, Customers.FullName, Customers.PhoneNumber, Customers.Email, Customers.StreetAddress, Customers.State_, Customers.Postcode," +
+                                             "Staff.StaffID, Staff.FullName, Staff.PasswordHash, Staff.Privelege, " +
+                                             "Products.ProductID, Products.ProductIDNumber, Products.Description_, Products.Price" + 
                                              "FROM(((Transactions " + 
                                               "FULL JOIN Customers ON Transactions.CustomerID = Customers.CustomerID)" + 
                                               "INNER JOIN Products ON Transactions.ProductID = Products.ProductID)" +
@@ -40,8 +41,11 @@ namespace Model.DataAccessLayer
                     while (reader.Read())
                     {
                         Transaction transaction = new Transaction();
-                        transaction.setTransactionID(reader.GetInt32(0));
-                        transaction.setTimestamp(reader.GetDateTime(1).ToString());
+                        //transaction.setTransactionID(reader.GetInt32(0));
+                        //transaction.setTimestamp(reader.GetDateTime(1).ToString());
+                        Product transactionProduct = new Product();
+                        Staff transactionStaff = new Staff();
+                        Customer transactionCustomer = new Customer();
 
                         transList.Add(transaction);
                     }
