@@ -26,7 +26,7 @@ namespace POS
 
                 // target where to log to
                 string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var logfile = new NLog.Targets.FileTarget("logfile") { FileName = path + @"\log.txt" };
+                var logfile = new NLog.Targets.FileTarget("logfile") { FileName = path + @"\log.txt", KeepFileOpen=true, OpenFileCacheTimeout=5 };
 
                 // rules for mapping loggers to targets
                 // minimum and maximum log levels for logging targets

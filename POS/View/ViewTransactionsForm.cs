@@ -61,10 +61,24 @@ namespace POS.View
             // populate it
             foreach (Transaction transaction in transactions)
             {
-                string[] itemArr = new string[2];
+                string[] itemArr = new string[9];
+
                 itemArr[0] = transaction.getTransactionID().ToString();
                 itemArr[1] = transaction.getTimestamp();
-                // TODO: complete this
+
+                if (transaction.getCustomer() != null)
+                {
+                    itemArr[2] = transaction.getCustomer().getID().ToString();
+                    itemArr[3] = transaction.getCustomer().getName();
+                }
+
+                itemArr[4] = transaction.getStaff().getID().ToString();
+                itemArr[5] = transaction.getStaff().getName();
+
+                itemArr[6] = transaction.getProduct().getProductIDNumber();
+                itemArr[7] = transaction.getProduct().getDescription();
+                itemArr[8] = transaction.getProduct().getPrice().ToString();
+                
                 ListViewItem transactionItem = new ListViewItem(itemArr);
                 listView_transactions.Items.Add(transactionItem);
             }

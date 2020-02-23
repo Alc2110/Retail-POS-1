@@ -20,11 +20,11 @@ namespace Model.DataAccessLayer
             string getAllTransactionsQuery = "SELECT Transactions.TransactionID, Transactions.Timestamp_," +
                                              "Customers.CustomerID, Customers.FullName, Customers.PhoneNumber, Customers.Email, Customers.StreetAddress, Customers.State_, Customers.Postcode," +
                                              "Staff.StaffID, Staff.FullName, Staff.PasswordHash, Staff.Privelege, " +
-                                             "Products.ProductID, Products.ProductIDNumber, Products.Description_, Products.Price" + 
+                                             "Products.ProductID, Products.ProductIDNumber, Products.Description_, Products.Price " + 
                                              "FROM(((Transactions " + 
-                                              "FULL JOIN Customers ON Transactions.CustomerID = Customers.CustomerID)" + 
-                                              "INNER JOIN Products ON Transactions.ProductID = Products.ProductID)" +
-                                              "INNER JOIN Staff ON Transactions.StaffID = Staff.StaffID);";
+                                              " FULL JOIN Customers ON Transactions.CustomerID = Customers.CustomerID)" + 
+                                              " INNER JOIN Products ON Transactions.ProductID = Products.ProductID)" +
+                                              " INNER JOIN Staff ON Transactions.StaffID = Staff.StaffID);";
 
             try
             {
@@ -41,11 +41,90 @@ namespace Model.DataAccessLayer
                     while (reader.Read())
                     {
                         Transaction transaction = new Transaction();
-                        //transaction.setTransactionID(reader.GetInt32(0));
-                        //transaction.setTimestamp(reader.GetDateTime(1).ToString());
+                        transaction.setTransactionID(reader.GetInt32(0));
+                        transaction.setTimestamp(reader.GetDateTime(1).ToString());
+
                         Product transactionProduct = new Product();
+                        transactionProduct.setProductID(reader.GetInt32(13));
+                        transactionProduct.setProductIDNumber(reader.GetString(14));
+                        transactionProduct.setDescription(reader.GetString(15));
+                        // an SQL float is a .NET double
+                        double productPrice = reader.GetDouble(16);
+                        transactionProduct.setPrice(Convert.ToSingle(productPrice));
+
                         Staff transactionStaff = new Staff();
+                        transactionStaff.setID(reader.GetInt32(9));
+                        transactionStaff.setName(reader.GetString(10));
+                        transactionStaff.setPasswordHash(reader.GetString(11));
+                        switch (reader.GetString(12))
+                        {
+                            case "Admin":
+                                transactionStaff.setPrivelege(Staff.Privelege.Admin);
+
+                                break;
+
+                            case "Normal":
+                                transactionStaff.setPrivelege(Staff.Privelege.Normal);
+
+                                break;
+
+                            default:
+                                // this shouldn't happen
+                                throw new Exception("Invalid data in database");
+                        }
+
                         Customer transactionCustomer = new Customer();
+                        // check if Customer exists for this transaction
+                        if (!reader.IsDBNull(2))
+                        {
+                            transactionCustomer.setID(reader.GetInt32(2));
+                            transactionCustomer.setName(reader.GetString(3));
+                            transactionCustomer.setPhoneNumber(reader.GetString(4));
+                            transactionCustomer.setEmail(reader.GetString(5));
+                            transactionCustomer.setAddress(reader.GetString(6));
+                            switch (reader.GetString(7))
+                            {
+                                case "NSW":
+                                    transactionCustomer.setState(Customer.States.NSW);
+                                    break;
+                                case "ACT":
+                                    transactionCustomer.setState(Customer.States.ACT);
+                                    break;
+                                case "NT":
+                                    transactionCustomer.setState(Customer.States.NT);
+                                    break;
+                                case "Qld":
+                                    transactionCustomer.setState(Customer.States.Qld);
+                                    break;
+                                case "SA":
+                                    transactionCustomer.setState(Customer.States.SA);
+                                    break;
+                                case "Vic":
+                                    transactionCustomer.setState(Customer.States.Vic);
+                                    break;
+                                case "Tas":
+                                    transactionCustomer.setState(Customer.States.Tas);
+                                    break;
+                                case "WA":
+                                    transactionCustomer.setState(Customer.States.WA);
+                                    break;
+                                case "Other":
+                                    transactionCustomer.setState(Customer.States.Other);
+                                    break;
+                                default:
+                                    // this shouldn't happen, but handle it anyway
+                                    throw new Exception("Invalid data in database");
+                            }
+                        }
+                        else
+                        {
+                            // no customer
+                            transactionCustomer = null;
+                        }
+
+                        transaction.setStaff(transactionStaff);
+                        transaction.setProduct(transactionProduct);
+                        transaction.setCustomer(transactionCustomer);
 
                         transList.Add(transaction);
                     }

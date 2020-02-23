@@ -21,9 +21,15 @@ namespace POS
         // controller dependency injection
         private TransactionController transController;
 
+        // create an instance of the logger for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public MainWindow()
         {
             InitializeComponent();
+
+            // logging
+            logger.Info("Initialising main window");
 
             // customer state combo box
             comboBox_customerState.Items.Add("NSW");
@@ -53,8 +59,10 @@ namespace POS
         private void setUI()
         {
             currentState = State.READY;
+            logger.Info("Current state: " + currentState.ToString());
 
             // user priveleges
+            logger.Info("Current user level: " + Configuration.USER_LEVEL.ToString());
             switch (Configuration.USER_LEVEL)
             {
                 case Configuration.Role.ADMIN:
@@ -134,10 +142,13 @@ namespace POS
             string productID = textBox_itemProductID.Text;
             Product retrievedProduct = ProductOps.getProduct(productID);
 
+            logger.Info("Retrieving product from database, for product ID: " + productID);
+
             // could not find product
             if (retrievedProduct==null)
             {
-                MessageBox.Show("Could not find specified product", "Retail POS", 
+                string nullProductMessage = "Could not find specified product";
+                MessageBox.Show(nullProductMessage, "Retail POS", 
                                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
                 return;
@@ -151,6 +162,8 @@ namespace POS
                 {
                     // item already exists
                     itemInList = true;
+
+                    logger.Info("Item of this type is already in list");
 
                     // just increment the total count, and update total item cost
                     string sQuantity = listItem.SubItems[2].Text;
@@ -466,19 +479,35 @@ namespace POS
 
                     button_removeItem.Enabled = false;
 
+                    button_Discount.Enabled = false;
+
                     break;
 
                 case 1:
                     // display price
                     richTextBox_itemPrice.Text = listView_sales.SelectedItems[0].SubItems[3].Text;
+
                     button_removeItem.Enabled = true;
+
+                    // only Admins can approve discounts
+                    if (Configuration.USER_LEVEL == Configuration.Role.ADMIN)
+                    {
+                        button_Discount.Enabled = true;
+                    }
+                    else
+                    {
+                        button_Discount.Enabled = false;
+                    }
 
                     break;
 
                 default:
                     // cannot select multiple items
                     deselectAllItems();
+
                     button_removeItem.Enabled = false;
+
+                    button_Discount.Enabled = false;
 
                     break;
             }
@@ -598,6 +627,11 @@ namespace POS
                 richTextBox_itemPrice.Text = "0.00";
                 button_removeItem.Enabled = false;
             }
+        }
+
+        private void button_Discount_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

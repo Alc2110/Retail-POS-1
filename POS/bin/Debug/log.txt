@@ -752,3 +752,43 @@ Starting Retail POS
 2020-02-23 20:30:52.0327|INFO|POS.LoginForm|Attempting connection with database
 2020-02-23 20:30:52.6649|INFO|POS.LoginForm|Admin user
 2020-02-23 20:30:53.4229|INFO|POS.LoginForm|Login successful
+2020-02-23 21:57:58.2619|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-23 21:57:58.4480|INFO|POS.LoginForm|Initialising login form
+2020-02-23 21:58:04.5678|INFO|POS.LoginForm|Attempting connection with database
+2020-02-23 21:58:05.0479|INFO|POS.LoginForm|Admin user
+2020-02-23 21:58:05.8491|INFO|POS.LoginForm|Login successful
+2020-02-23 22:00:37.9012|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-23 22:00:38.1172|INFO|POS.LoginForm|Initialising login form
+2020-02-23 22:00:43.2968|INFO|POS.LoginForm|Attempting connection with database
+2020-02-23 22:00:43.6819|INFO|POS.LoginForm|Admin user
+2020-02-23 22:00:44.1680|INFO|POS.LoginForm|Login successful
+2020-02-23 22:04:32.3776|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-23 22:04:33.2208|INFO|POS.LoginForm|Initialising login form
+2020-02-23 22:04:41.6249|INFO|POS.LoginForm|Attempting connection with database
+2020-02-23 22:04:42.2241|INFO|POS.LoginForm|Admin user
+2020-02-23 22:04:42.6752|INFO|POS.LoginForm|Login successful
+2020-02-23 22:05:23.8015|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-23 22:05:24.1576|INFO|POS.LoginForm|Initialising login form
+2020-02-23 22:05:28.8648|INFO|POS.LoginForm|Attempting connection with database
+2020-02-23 22:05:29.3579|INFO|POS.LoginForm|Admin user
+2020-02-23 22:05:29.7410|INFO|POS.LoginForm|Login successful
+2020-02-23 22:06:17.6935|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-23 22:06:17.9066|INFO|POS.LoginForm|Initialising login form
+2020-02-23 22:06:22.7558|INFO|POS.LoginForm|Attempting connection with database
+2020-02-23 22:06:23.6810|INFO|POS.LoginForm|Admin user
+2020-02-23 22:06:23.7811|INFO|POS.LoginForm|Login successful
+2020-02-23 22:46:17.1486|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-23 22:46:17.2486|INFO|POS.LoginForm|Initialising login form
+2020-02-23 22:46:21.5837|INFO|POS.LoginForm|Attempting connection with database
+2020-02-23 22:46:23.3481|INFO|POS.LoginForm|Admin user
+2020-02-23 22:46:23.8582|INFO|POS.LoginForm|Login successful
+2020-02-23 22:46:23.9733|INFO|POS.MainWindow|Initialising main window
+2020-02-23 22:46:23.9733|INFO|POS.MainWindow|Current state: READY
+2020-02-23 22:46:23.9733|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-23 22:46:49.9385|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399

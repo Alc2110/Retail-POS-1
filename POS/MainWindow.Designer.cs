@@ -569,6 +569,7 @@
             this.button_Discount.TabIndex = 11;
             this.button_Discount.Text = "Discount";
             this.button_Discount.UseVisualStyleBackColor = true;
+            this.button_Discount.Click += new System.EventHandler(this.button_Discount_Click);
             // 
             // button_clearSale
             // 
