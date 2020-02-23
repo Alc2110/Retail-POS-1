@@ -13,6 +13,7 @@ namespace POS
             ADMIN
         }
 
+        public static int STAFF_ID;
         public static Role USER_LEVEL;
         public static string CONNECTION_STRING = "Server=localhost;Database=Retail_POS;Trusted_Connection=Yes";
         //public static string CONNECTION_STRING = "Server=192.168.56.1;Database=Retail_POS;Trusted_Connection=Yes";

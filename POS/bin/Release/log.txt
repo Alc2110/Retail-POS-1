@@ -289,3 +289,9 @@ Starting Retail POS
 2020-02-16 17:47:16.7678|INFO|POS.LoginForm|Attempting connection with database
 2020-02-16 17:47:18.3982|INFO|POS.LoginForm|Admin user
 2020-02-16 17:47:20.0596|INFO|POS.LoginForm|Login successful
+2020-02-20 12:15:12.8904|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-20 12:15:13.0311|INFO|POS.LoginForm|Initialising login form
+2020-02-20 12:15:18.7099|INFO|POS.LoginForm|Attempting connection with database
+2020-02-20 12:15:19.0849|INFO|POS.LoginForm|Admin user
+2020-02-20 12:15:19.8244|INFO|POS.LoginForm|Login successful

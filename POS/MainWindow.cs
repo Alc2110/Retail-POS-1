@@ -10,12 +10,16 @@ using System.Windows.Forms;
 using POS.View;
 using Model.ServiceLayer;
 using Model.ObjectModel;
+using Controller;
 
 namespace POS
 {
     public partial class MainWindow : Form
     {
         public State currentState;
+
+        // controller dependency injection
+        private TransactionController transController;
 
         public MainWindow()
         {
@@ -33,7 +37,10 @@ namespace POS
 
             listView_sales.GridLines = true;
 
-            setUI();  
+            setUI();
+
+            // controller dependency injection
+            transController = TransactionController.getInstance();
         }
 
         public enum State
@@ -106,6 +113,8 @@ namespace POS
             textBox_itemProductID.Enabled = false;
             textBox_itemQuantity.Enabled = false;
 
+            richTextBox_itemPrice.Text = "0.00";
+
             foreach (ListViewItem listItem in listView_sales.Items)
             {
                 listView_sales.Items.Remove(listItem);
@@ -154,9 +163,10 @@ namespace POS
                     float fPrice = float.Parse(sPrice);
                     listItem.SubItems[4].Text = (fPrice + fCost).ToString();
 
-                    // select this item in the list
                     deselectAllItems();
-                    listItem.Selected = true;
+                    //listItem.Selected = true;
+
+                    // display total price
 
                     break;
                 }
@@ -176,7 +186,9 @@ namespace POS
 
                 // select this item in the list
                 deselectAllItems();
-                item.Selected = true;
+                //item.Selected = true;
+
+                // display total price
             }
 
             // checkout button
@@ -192,6 +204,10 @@ namespace POS
             // clean up UI
             button_addItem.Enabled = false;
             textBox_itemProductID.Text = string.Empty;
+
+            deselectAllItems();
+
+            displayTotal();
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
@@ -445,7 +461,9 @@ namespace POS
             switch (numberSelectedItems)
             {
                 case 0:
-                    richTextBox_itemPrice.Text = "0.00";
+                    // display total cost of items in cart
+                    displayTotal();
+
                     button_removeItem.Enabled = false;
 
                     break;
@@ -460,6 +478,7 @@ namespace POS
                 default:
                     // cannot select multiple items
                     deselectAllItems();
+                    button_removeItem.Enabled = false;
 
                     break;
             }
@@ -481,10 +500,13 @@ namespace POS
             {
                 button_checkout.Enabled = false;
             }
+
+            displayTotal();
         }
 
         private void button_checkout_Click(object sender, EventArgs e)
         {
+            // calculate total and ask user for confirmation
             float fTotal = 0;
             foreach (ListViewItem item in listView_sales.Items)
             {
@@ -492,12 +514,11 @@ namespace POS
                 fTotal += fItemTotal;
             }
             string sTotal = fTotal.ToString();
-
             DialogResult dialogResult = MessageBox.Show("Total: " + sTotal + " Checkout now? Clicking NO will clear sale", "Retail POS",
                                                         MessageBoxButtons.YesNoCancel);
             if (dialogResult==DialogResult.Yes)
             {
-                // collect items
+                // collect items for transactions
                 Dictionary<string, int> saleItems = new Dictionary<string, int>();
                 foreach (ListViewItem item in listView_sales.Items)
                 {
@@ -505,7 +526,42 @@ namespace POS
                     saleItems.Add(item.SubItems[0].Text, Int32.Parse(item.SubItems[2].Text));
                 }
 
-                // transaction
+                // transactions
+                ValueTuple<int, int, Dictionary<string, int>> currTransaction;
+                switch (currentState)
+                {
+                    case State.SALE_MEMBER:
+                        currTransaction = (Configuration.STAFF_ID, Int32.Parse(textBox_customerAccNo.Text), saleItems);
+                        try
+                        {
+                            transController.addTransaction(currTransaction);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error in transaction: " + ex.Message, "Retail POS",
+                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
+                        break;
+
+                    case State.SALE_NON_MEMBER:
+                        currTransaction = (Configuration.STAFF_ID, 0, saleItems);
+                        try
+                        {
+                            transController.addTransaction(currTransaction);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error in transaction: " + ex.Message, "Retail POS",
+                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
+                        break;
+
+                    default:
+
+                        break;
+                }
 
                 // reset
                 setUI();
@@ -518,6 +574,29 @@ namespace POS
             else if (dialogResult==DialogResult.Cancel)
             {
                 return;
+            }
+        }
+
+        private void displayTotal()
+        {
+            if (listView_sales.Items.Count > 0)
+            {
+                float fTotalCost = 0;
+                foreach (ListViewItem item in listView_sales.Items)
+                {
+                    // get total price of current item
+                    string sCurrentItemCost = item.SubItems[4].Text;
+                    float fCurrentItemCost = float.Parse(sCurrentItemCost);
+                    fTotalCost += fCurrentItemCost;
+                }
+
+                richTextBox_itemPrice.Text = "Total: " + fTotalCost;
+                button_removeItem.Enabled = true;
+            }
+            else
+            {
+                richTextBox_itemPrice.Text = "0.00";
+                button_removeItem.Enabled = false;
             }
         }
     }

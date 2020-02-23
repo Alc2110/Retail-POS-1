@@ -36,6 +36,13 @@ namespace Model.ServiceLayer
             return dao.getProduct(idNumber);
         }
 
+        public static void decrementQuantity(string idNumber)
+        {
+            // DAO
+            ProductDAO dao = new ProductDAO();
+            
+        }
+
         public static List<Product> getAllProducts()
         {
             // DAO

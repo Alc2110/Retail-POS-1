@@ -10,6 +10,16 @@ namespace Model.ServiceLayer
 {
     public static class TransactionOps
     {
+        public static void addTransaction(ValueTuple<int,int,Dictionary<string,int>> items)
+        {
+            // DAO
+            TransactionDAO dao = new TransactionDAO();
+            dao.addTransaction(items);
+
+            // fire the event
+            getAllTransactions();
+        }
+
         public static List<Transaction> getAllTransactions()
         {
             // DAO

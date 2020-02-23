@@ -194,6 +194,16 @@ namespace Model.DataAccessLayer
             return result;
         }
 
+        public void decrementQuantity(string productID)
+        {
+            string queryDecrementQuantity = "";
+        }
+
+        public void setQuantity(string productID, int quantity)
+        {
+
+        }
+
         public int updateProduct(Product newProduct, Product oldProduct)
         {
             throw new NotImplementedException();

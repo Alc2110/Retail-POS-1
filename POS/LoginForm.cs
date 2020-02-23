@@ -19,6 +19,8 @@ namespace POS
         // create instance of logger for this class
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        int staffID;
+
         public LoginForm()
         {
             // start logging
@@ -60,6 +62,9 @@ namespace POS
                     string authSuccessMessage = "Login successful";
                     MessageBox.Show(authSuccessMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     logger.Info(authSuccessMessage);
+
+                    // config
+                    Configuration.STAFF_ID = staffID;
 
                     // show main form and close this one
                     MainWindow mainForm = new MainWindow();
@@ -103,6 +108,7 @@ namespace POS
             while (userNameDataReader.Read())
             {
                 retrievedHash = userNameDataReader.GetString(2);
+                staffID = userNameDataReader.GetInt32(0);
 
                 string retrievedPrivelege = userNameDataReader.GetString(3);
                 switch (retrievedPrivelege)
@@ -129,9 +135,12 @@ namespace POS
             if (retrievedHash.Equals(hash))
             {
                 // success
+                Configuration.STAFF_ID = staffID;
+                
                 return true;
             }
 
+            // access denied
             return false;
         }
 
