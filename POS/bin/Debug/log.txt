@@ -792,3 +792,133 @@ Starting Retail POS
 2020-02-23 22:46:23.9733|INFO|POS.MainWindow|Current state: READY
 2020-02-23 22:46:23.9733|INFO|POS.MainWindow|Current user level: ADMIN
 2020-02-23 22:46:49.9385|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-02-24 19:15:50.4267|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-24 19:15:50.6067|INFO|POS.LoginForm|Initialising login form
+2020-02-24 19:16:04.0838|INFO|POS.LoginForm|Attempting connection with database
+2020-02-24 19:16:05.4220|INFO|POS.LoginForm|Admin user
+2020-02-24 19:16:06.2252|INFO|POS.LoginForm|Login successful
+2020-02-24 19:16:06.5854|INFO|POS.MainWindow|Initialising main window
+2020-02-24 19:16:06.5874|INFO|POS.MainWindow|Current state: READY
+2020-02-24 19:16:06.5874|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-24 19:16:15.9125|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9310059009031
+2020-02-24 19:48:43.9315|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-24 19:48:44.1325|INFO|POS.LoginForm|Initialising login form
+2020-02-24 19:48:53.4770|INFO|POS.LoginForm|Attempting connection with database
+2020-02-24 19:48:53.6820|INFO|POS.LoginForm|Admin user
+2020-02-24 19:48:54.2201|INFO|POS.LoginForm|Login successful
+2020-02-24 19:48:54.3221|INFO|POS.MainWindow|Initialising main window
+2020-02-24 19:48:54.3221|INFO|POS.MainWindow|Current state: READY
+2020-02-24 19:48:54.3221|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-24 19:49:01.6235|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9310059009031
+2020-02-24 19:59:34.2099|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-24 19:59:34.3179|INFO|POS.LoginForm|Initialising login form
+2020-02-24 19:59:40.1188|INFO|POS.LoginForm|Attempting connection with database
+2020-02-24 19:59:40.3248|INFO|POS.LoginForm|Admin user
+2020-02-24 19:59:40.9019|INFO|POS.LoginForm|Login successful
+2020-02-24 19:59:41.0180|INFO|POS.MainWindow|Initialising main window
+2020-02-24 19:59:41.0180|INFO|POS.MainWindow|Current state: READY
+2020-02-24 19:59:41.0180|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-24 19:59:45.7531|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9310059009031
+2020-02-24 20:01:15.4613|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-24 20:01:15.5853|INFO|POS.LoginForm|Initialising login form
+2020-02-24 20:01:20.5355|INFO|POS.LoginForm|Attempting connection with database
+2020-02-24 20:01:21.9009|INFO|POS.LoginForm|Admin user
+2020-02-24 20:01:21.9369|INFO|POS.LoginForm|Login successful
+2020-02-24 20:01:22.0529|INFO|POS.MainWindow|Initialising main window
+2020-02-24 20:01:22.0529|INFO|POS.MainWindow|Current state: READY
+2020-02-24 20:01:22.0529|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-24 20:01:26.7122|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9310059009031
+2020-02-24 20:11:18.4690|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-24 20:11:18.7251|INFO|POS.LoginForm|Initialising login form
+2020-02-24 20:11:26.8078|INFO|POS.LoginForm|Attempting connection with database
+2020-02-24 20:11:26.9948|INFO|POS.LoginForm|Admin user
+2020-02-24 20:11:27.5134|INFO|POS.LoginForm|Login successful
+2020-02-24 20:11:27.5804|INFO|POS.MainWindow|Initialising main window
+2020-02-24 20:11:27.5804|INFO|POS.MainWindow|Current state: READY
+2020-02-24 20:11:27.5804|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-24 20:11:33.6544|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9310059009031
+2020-02-25 12:51:43.1968|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-25 12:51:43.3098|INFO|POS.LoginForm|Initialising login form
+2020-02-25 12:51:48.0259|INFO|POS.LoginForm|Attempting connection with database
+2020-02-25 12:51:49.4083|INFO|POS.LoginForm|Admin user
+2020-02-25 12:51:50.8769|INFO|POS.LoginForm|Login successful
+2020-02-25 12:51:51.0489|INFO|POS.MainWindow|Initialising main window
+2020-02-25 12:51:51.0489|INFO|POS.MainWindow|Current state: READY
+2020-02-25 12:51:51.0489|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-25 12:52:24.5694|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9310059009031
+2020-02-25 12:56:27.1681|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-25 12:56:27.3291|INFO|POS.LoginForm|Initialising login form
+2020-02-25 12:56:36.9789|INFO|POS.LoginForm|Attempting connection with database
+2020-02-25 12:56:37.2960|INFO|POS.LoginForm|Admin user
+2020-02-25 12:56:37.8548|INFO|POS.LoginForm|Login successful
+2020-02-25 12:56:37.9416|INFO|POS.MainWindow|Initialising main window
+2020-02-25 12:56:37.9416|INFO|POS.MainWindow|Current state: READY
+2020-02-25 12:56:37.9416|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-25 12:56:43.2691|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9310059009031
+2020-02-25 12:57:43.5827|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-25 12:57:43.7097|INFO|POS.LoginForm|Initialising login form
+2020-02-25 12:57:48.9456|INFO|POS.LoginForm|Attempting connection with database
+2020-02-25 12:57:49.8008|INFO|POS.LoginForm|Admin user
+2020-02-25 12:57:50.5685|INFO|POS.LoginForm|Login successful
+2020-02-25 12:57:50.6437|INFO|POS.MainWindow|Initialising main window
+2020-02-25 12:57:50.6437|INFO|POS.MainWindow|Current state: READY
+2020-02-25 12:57:50.6437|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-25 12:57:55.9626|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9310059009031
+2020-02-25 12:59:22.6380|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-25 12:59:22.9001|INFO|POS.LoginForm|Initialising login form
+2020-02-25 12:59:26.2939|INFO|POS.LoginForm|Attempting connection with database
+2020-02-25 12:59:27.6043|INFO|POS.LoginForm|Admin user
+2020-02-25 12:59:28.2314|INFO|POS.LoginForm|Login successful
+2020-02-25 12:59:28.3905|INFO|POS.MainWindow|Initialising main window
+2020-02-25 12:59:28.3925|INFO|POS.MainWindow|Current state: READY
+2020-02-25 12:59:28.3925|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-25 12:59:33.5045|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9310059009031
+2020-02-25 19:51:40.1124|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-25 19:51:40.2195|INFO|POS.LoginForm|Initialising login form
+2020-02-25 19:52:36.8196|INFO|POS.LoginForm|Attempting connection with database
+2020-02-25 19:52:37.0477|INFO|POS.LoginForm|Admin user
+2020-02-25 19:52:37.5337|INFO|POS.LoginForm|Login successful
+2020-02-25 19:52:37.6028|INFO|POS.MainWindow|Initialising main window
+2020-02-25 19:52:37.6028|INFO|POS.MainWindow|Current state: READY
+2020-02-25 19:52:37.6028|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-25 19:52:43.2817|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9310059009031
+2020-02-25 20:14:59.6372|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-25 20:14:59.7332|INFO|POS.LoginForm|Initialising login form
+2020-02-25 20:16:54.2522|INFO|POS.LoginForm|Attempting connection with database
+2020-02-25 20:16:54.4652|INFO|POS.LoginForm|Admin user
+2020-02-25 20:16:54.9947|INFO|POS.LoginForm|Login successful
+2020-02-25 20:16:55.0377|INFO|POS.MainWindow|Initialising main window
+2020-02-25 20:16:55.0377|INFO|POS.MainWindow|Current state: READY
+2020-02-25 20:16:55.0377|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-25 20:17:00.3740|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9310059009031
+2020-02-25 20:23:22.9694|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-25 20:23:23.1715|INFO|POS.LoginForm|Initialising login form
+2020-02-25 20:23:30.1497|INFO|POS.LoginForm|Attempting connection with database
+2020-02-25 20:23:30.3327|INFO|POS.LoginForm|Admin user
+2020-02-25 20:23:30.8305|INFO|POS.LoginForm|Login successful
+2020-02-25 20:23:30.8735|INFO|POS.MainWindow|Initialising main window
+2020-02-25 20:23:30.8735|INFO|POS.MainWindow|Current state: READY
+2020-02-25 20:23:30.8735|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-25 20:23:36.3324|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9310059009031
+2020-02-25 20:25:19.0278|INFO|POS.LoginForm|
+Starting Retail POS
+2020-02-25 20:25:19.2198|INFO|POS.LoginForm|Initialising login form
+2020-02-25 20:25:24.1599|INFO|POS.LoginForm|Attempting connection with database
+2020-02-25 20:25:24.4860|INFO|POS.LoginForm|Admin user
+2020-02-25 20:25:25.0422|INFO|POS.LoginForm|Login successful
+2020-02-25 20:25:25.1132|INFO|POS.MainWindow|Initialising main window
+2020-02-25 20:25:25.1132|INFO|POS.MainWindow|Current state: READY
+2020-02-25 20:25:25.1132|INFO|POS.MainWindow|Current user level: ADMIN
+2020-02-25 20:25:30.4870|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9310059009031

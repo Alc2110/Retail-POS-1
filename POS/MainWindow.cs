@@ -631,7 +631,34 @@ namespace POS
 
         private void button_Discount_Click(object sender, EventArgs e)
         {
+            // create discount form and show it
+            string selectedItemID = listView_sales.SelectedItems[0].SubItems[0].Text;
+            float selectedItemPrice = float.Parse(listView_sales.SelectedItems[0].SubItems[4].Text);
+            DiscountForm discountForm = new DiscountForm(selectedItemID, selectedItemPrice);
+            discountForm.Show();
 
+            // subscribe to events from the discount form
+            discountForm.OnApplyDiscount += new EventHandler<DiscountForm.DiscountEventArgs>(applyDiscount);
+        }
+
+        // discount event handler
+        private void applyDiscount(object sender, DiscountForm.DiscountEventArgs e)
+        {
+            // extract data from event arguments
+            string itemNumber = e.getItemIDNumber();
+            float totalItemPrice = e.getPrice();
+
+            // find the correct item in the list
+            foreach (ListViewItem item in listView_sales.Items)
+            {
+                if (item.SubItems[0].Text.Equals(itemNumber))
+                {
+                    // apply discount
+                    item.SubItems[4].Text = totalItemPrice.ToString();
+
+                    break;
+                }
+            }
         }
     }
 }

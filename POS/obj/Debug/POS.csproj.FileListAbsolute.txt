@@ -50,3 +50,4 @@ C:\Users\alexc\Documents\GitHub\Retail-POS\POS\obj\Debug\POS.exe
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\obj\Debug\POS.pdb
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\System.ValueTuple.dll
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\System.ValueTuple.xml
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\obj\Debug\POS.View.DiscountForm.resources
