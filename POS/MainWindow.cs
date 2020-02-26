@@ -169,7 +169,7 @@ namespace POS
                     string sQuantity = listItem.SubItems[2].Text;
                     int iQuantity = Int32.Parse(sQuantity);
                     listItem.SubItems[2].Text = (iQuantity += 1).ToString();
-
+                    
                     string sCost = listItem.SubItems[4].Text;
                     float fCost = float.Parse(sCost);
                     string sPrice = listItem.SubItems[3].Text;
@@ -464,6 +464,12 @@ namespace POS
             if (textBox_itemProductID.Text!=string.Empty)
             {
                 button_addItem.Enabled = true;
+                button_priceLookup.Enabled = true;
+            }
+            else
+            {
+                button_addItem.Enabled = false;
+                button_priceLookup.Enabled = false;
             }
         }
 
@@ -485,7 +491,7 @@ namespace POS
 
                 case 1:
                     // display price
-                    richTextBox_itemPrice.Text = listView_sales.SelectedItems[0].SubItems[3].Text;
+                    richTextBox_itemPrice.Text = listView_sales.SelectedItems[0].SubItems[4].Text;
 
                     button_removeItem.Enabled = true;
 
@@ -569,6 +575,8 @@ namespace POS
                         {
                             MessageBox.Show("Error in transaction: " + ex.Message, "Retail POS",
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                            return;
                         }
 
                         break;
@@ -583,6 +591,8 @@ namespace POS
                         {
                             MessageBox.Show("Error in transaction: " + ex.Message, "Retail POS",
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                            return;
                         }
 
                         break;
@@ -591,6 +601,8 @@ namespace POS
 
                         break;
                 }
+
+                MessageBox.Show("Checkout successful", "Retail POS", MessageBoxButtons.OK);
 
                 // reset
                 setUI();
@@ -656,9 +668,32 @@ namespace POS
                     // apply discount
                     item.SubItems[4].Text = totalItemPrice.ToString();
 
+                    // reselect item
+                    ListViewItem currSelectedItem = listView_sales.SelectedItems[0];
+                    currSelectedItem.Selected = false;
+                    currSelectedItem.Selected = true;
+
                     break;
                 }
             }
+        }
+
+        private void button_priceLookup_Click(object sender, EventArgs e)
+        {
+            string productIDnumber = textBox_itemProductID.Text;
+            Product retrievedProduct = ProductOps.getProduct(productIDnumber);
+
+            if (retrievedProduct==null)
+            {
+                MessageBox.Show("Could not find specified product", "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else
+            {
+                MessageBox.Show("Product ID: " + productIDnumber + "\nDescription: " + retrievedProduct.getDescription() +
+                                "\nPrice: " + retrievedProduct.getPrice().ToString(), "Item Lookup", MessageBoxButtons.OK);
+            }
+
+            textBox_itemProductID.Text = string.Empty;
         }
     }
 }

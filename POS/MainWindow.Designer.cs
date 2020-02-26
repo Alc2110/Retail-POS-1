@@ -412,6 +412,7 @@
             this.button_priceLookup.TabIndex = 7;
             this.button_priceLookup.Text = "Price lookup";
             this.button_priceLookup.UseVisualStyleBackColor = true;
+            this.button_priceLookup.Click += new System.EventHandler(this.button_priceLookup_Click);
             // 
             // button_removeItem
             // 
