@@ -21,7 +21,7 @@
 3. Main window closed, login dialog box displayed.
 
 
-### Create new staff profile (Admin only)
+### Create new staff profile (Admin only) (DONE)
 1. File->Add new staff clicked (greyed out unless current user is admin).
 2. Dialog box displayed.
 3. Staff data entered. 
@@ -29,11 +29,11 @@
 4. Confirmation if successful, otherwise error message displayed. 
 
 
-### Create new customer profile
+### Create new customer profile (DONE)
 Similar to create new staff profile, except any staff member can do this.
 
 
-### View customer list
+### View customer list (DONE)
 1. User clicks "Customer List" button
 2. Attempt connection to database, retrieve data.
 3. Form with read-only list of customer data displayed if successful, otherwise error message displayed.
@@ -54,24 +54,24 @@ Similar to create new staff profile, except any staff member can do this.
 2.1 Both "new sale" buttons disabled. "Add item" button enabled. "Clear sale" button enabled.
 
 
-### Add item to checkout list.
+### Add item to checkout list. (DONE)
 1. Product ID entered.
 2. Click "Add Item" button. Attempt to retrieve information from database. If there is an error, tell the user. Otherwise, continue.
 3. Display item information in the list.
 
 
-### Remove item from checkout list.
+### Remove item from checkout list. (DONE)
 1. Item selected in list.
 2. "Remove Item" button clicked. Item removed from list. Price removed. If no more items, disable this button.
 
 
-## Clear sale (PARTIALLY IMPLEMENTED)
+## Clear sale (DONE)
 1. "Clear sale" button clicked.
 2. If there are no items in the list, reset the UI. Else, show confirmation dialog.
 3. If the user confirms, clear the items, reset the UI.
 
 
-### Checkout 
+### Checkout (DONE)
 1. Checkout clicked
 2. For all items in the list, transaction is performed in the database. If there is an error, inform the user, reset the UI. Otherwise, continue.
 3. Confirmation. 
@@ -79,9 +79,12 @@ Similar to create new staff profile, except any staff member can do this.
 
 
 ### Look up item.
+1. "Price Lookup" button clicked.
+2. Database queried for item.
+3. If found, display price in message box. Else, display error message.
+4. When "Ok" button clicked, clear the Product ID textbox, make ready for next item to be added to this sale.
 
-
-### Add new item (Admin only)
+### Add new item (Admin only) (DONE)
 1. "New Item" button clicked.
 2. Dialog displayed.
 3. Data entered.
@@ -89,7 +92,7 @@ Similar to create new staff profile, except any staff member can do this.
 5. Confirmation.
 
 
-### Look up transactions (Admin only)
+### Look up transactions (Admin only) (DONE)
 
 
 ### Generate report
