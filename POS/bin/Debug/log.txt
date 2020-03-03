@@ -1030,3 +1030,12 @@ Starting Retail POS
 2020-02-26 21:07:01.7387|INFO|POS.MainWindow|Current state: READY
 2020-02-26 21:07:01.7387|INFO|POS.MainWindow|Current user level: ADMIN
 2020-02-26 21:14:08.0616|INFO|POS.MainWindow|Retrieving product from database, for product ID: g
+2020-03-03 19:14:58.8758|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-03 19:14:58.9758|INFO|POS.LoginForm|Initialising login form
+2020-03-03 19:15:11.2631|INFO|POS.LoginForm|Attempting connection with database
+2020-03-03 19:15:12.4233|INFO|POS.LoginForm|Admin user
+2020-03-03 19:15:13.1578|INFO|POS.LoginForm|Login successful
+2020-03-03 19:15:13.3118|INFO|POS.MainWindow|Initialising main window
+2020-03-03 19:15:13.3118|INFO|POS.MainWindow|Current state: READY
+2020-03-03 19:15:13.3118|INFO|POS.MainWindow|Current user level: ADMIN
