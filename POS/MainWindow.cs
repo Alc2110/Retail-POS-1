@@ -541,6 +541,11 @@ namespace POS
 
         private void button_checkout_Click(object sender, EventArgs e)
         {
+            // create invoice object
+            // implement PDF invoices for now
+            // TODO: implement spreadsheet invoices, based on a choice
+            PDFInvoice invoice = new PDFInvoice();
+
             // calculate total and ask user for confirmation
             float fTotal = 0;
             foreach (ListViewItem item in listView_sales.Items)
@@ -565,11 +570,20 @@ namespace POS
                 ValueTuple<int, int, Dictionary<string, int>> currTransaction;
                 switch (currentState)
                 {
+                    // this sale is for a member
                     case State.SALE_MEMBER:
-                        currTransaction = (Configuration.STAFF_ID, Int32.Parse(textBox_customerAccNo.Text), saleItems);
+                        int staffID = Configuration.STAFF_ID;
+                        int customerID = Int32.Parse(textBox_customerAccNo.Text);
+                        currTransaction = (staffID, customerID, saleItems);
                         try
                         {
+                            // create the transaction in the database
                             transController.addTransaction(currTransaction);
+
+                            // retrieve the customer object for the invoice
+                            invoice.customer = CustomerOps.getCustomer(customerID);
+                            // retrieve the staff object for the invoice
+                            invoice.salesperson = StaffOps.getStaff(staffID);
                         }
                         catch (Exception ex)
                         {
@@ -580,12 +594,19 @@ namespace POS
                         }
 
                         break;
-
+                    
+                    // this sale is for a non-member
                     case State.SALE_NON_MEMBER:
-                        currTransaction = (Configuration.STAFF_ID, 0, saleItems);
+                        staffID = Configuration.STAFF_ID;
+                        currTransaction = (staffID, 0, saleItems);
+                        invoice.customer = null;
                         try
                         {
+                            // create the transaction in the database
                             transController.addTransaction(currTransaction);
+
+                            // retrieve the staff object for the invoice
+                            invoice.salesperson = StaffOps.getStaff(staffID);
                         }
                         catch (Exception ex)
                         {
@@ -602,7 +623,13 @@ namespace POS
                         break;
                 }
 
+                // at this point, the checkout succeeded
+                // tell the user and the logger
                 MessageBox.Show("Checkout successful", "Retail POS", MessageBoxButtons.OK);
+
+                // now deal with the invoice
+                // TODO: perhaps display invoice on screen
+                invoice.save();
 
                 // reset
                 setUI();

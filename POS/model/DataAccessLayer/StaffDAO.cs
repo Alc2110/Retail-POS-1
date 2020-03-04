@@ -11,6 +11,59 @@ namespace Model.DataAccessLayer
 {
     public class StaffDAO : IStaffDAO
     {
+        public Staff getStaff(int id)
+        {
+            Staff staff = new Staff();
+            staff.setID(id);
+
+            string queryGetStaff = "SELECT * FROM Staff WHERE StaffID = @id";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+                {
+                    // define the command object
+                    SqlCommand cmd = new SqlCommand(queryGetStaff, conn);
+
+                    // parameterise
+                    SqlParameter idParam = new SqlParameter();
+                    idParam.ParameterName = "@id";
+                    idParam.Value = id;
+                    cmd.Parameters.Add(idParam);
+
+                    // try a connection
+                    conn.Open();
+
+                    // execute the query
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        staff.setName(reader.GetString(1));
+                        staff.setPasswordHash(reader.GetString(2));
+                        string sPrivelege = reader.GetString(3);
+                        switch (sPrivelege)
+                        {
+                            case "Admin":
+                                staff.setPrivelege(Staff.Privelege.Admin);
+                                break;
+                            case "Normal":
+                                staff.setPrivelege(Staff.Privelege.Normal);
+                                break;
+                            default:
+                                // this shouldn't happen
+                                throw new Exception("Invalid data in database");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return staff;
+        }
+
         public IList<Staff> getAllStaff()
         {
             IList<Staff> staffList = new List<Staff>();
@@ -52,7 +105,7 @@ namespace Model.DataAccessLayer
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -83,7 +136,7 @@ namespace Model.DataAccessLayer
             }
             catch (Exception ex)
             {
-
+                throw;
             }
 
             return result;

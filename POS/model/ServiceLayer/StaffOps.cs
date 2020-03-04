@@ -41,6 +41,14 @@ namespace Model.ServiceLayer
             getAllStaff();
         }
 
+        public static Staff getStaff(int id)
+        {
+            // DAO
+            // retrieve from database
+            StaffDAO dao = new StaffDAO();
+            return dao.getStaff(id);
+        }
+
         // event for getting all staff
         public static event EventHandler<GetAllStaffEventArgs> OnGetAllStaff = delegate { };
 

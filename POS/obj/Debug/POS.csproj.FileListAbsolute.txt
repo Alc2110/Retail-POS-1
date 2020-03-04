@@ -51,3 +51,9 @@ C:\Users\alexc\Documents\GitHub\Retail-POS\POS\obj\Debug\POS.pdb
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\System.ValueTuple.dll
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\System.ValueTuple.xml
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\obj\Debug\POS.View.DiscountForm.resources
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\PdfSharp.Charting.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\PdfSharp.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\PdfSharp.xml
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\PdfSharp.Charting.xml
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\de\PdfSharp.resources.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\de\PdfSharp.Charting.resources.dll

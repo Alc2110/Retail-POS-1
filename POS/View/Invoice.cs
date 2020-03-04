@@ -10,16 +10,13 @@ namespace POS.View
     public abstract class Invoice : IInvoice
     {
         public List<Transaction> transactions;
+        public Staff salesperson;
+        public Customer customer;
 
-        public void addEntry()
+        public void addEntry(Transaction transaction)
         {
-            // ask the model to retrieve the transaction object,
-            // based on the supplied information in the parameters
-            Transaction trans = new Transaction();
-            // TODO: implement this
-
             // add it to the list
-            transactions.Add(trans);
+            transactions.Add(transaction);
         }
 
         public void removeEntry()
@@ -44,38 +41,6 @@ namespace POS.View
         public override void save()
         {
             // save the spreadsheet file
-        }
-    }
-
-    public class CSVInvoice : Invoice
-    {
-        public override void save()
-        {
-            // save the CSV file
-        }
-    }
-
-    public class PlainTextInvoice : Invoice
-    {
-        public override void save()
-        {
-            // save the text file
-        }
-    }
-
-    public class JSONInvoice : Invoice
-    {
-        public override void save()
-        {
-            // save the JSON file
-        }
-    }
-
-    public class XMLInvoice : Invoice
-    {
-        public override void save()
-        {
-            // save the XML file
         }
     }
 }
