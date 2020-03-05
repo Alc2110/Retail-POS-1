@@ -187,6 +187,7 @@ namespace POS
 
             if (!itemInList)
             {
+                // item not yet in list
                 // add it to the list
                 string[] itemArr = new string[5];
                 itemArr[0] = retrievedProduct.getProductIDNumber();
@@ -202,6 +203,17 @@ namespace POS
                 //item.Selected = true;
 
                 // display total price
+
+                // item not yet in list
+                // item should now be 1
+                textBox_itemQuantity.Text = "1";
+            }
+            else
+            {
+                // increment item count
+                string sItemCount = textBox_itemQuantity.Text;
+                int iItemCount = Int32.Parse(sItemCount);
+                textBox_itemQuantity.Text = (iItemCount + 1).ToString();
             }
 
             // checkout button

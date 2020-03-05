@@ -57,3 +57,6 @@ C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\PdfSharp.xml
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\PdfSharp.Charting.xml
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\de\PdfSharp.resources.dll
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\de\PdfSharp.Charting.resources.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\EPPlus.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\Reports.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\EPPlus.xml

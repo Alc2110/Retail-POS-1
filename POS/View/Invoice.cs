@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model.ObjectModel;
+using PdfSharp;
+using OfficeOpenXml;
+using Root.Reports;
 
 namespace POS.View
 {
@@ -30,6 +33,12 @@ namespace POS.View
 
     public class PDFInvoice : Invoice
     {
+        public void generateDocument()
+        {
+            Report invoice = new Report(new PdfFormatter());
+            FontDef fd = new FontDef(invoice, "Arial");
+        }
+
         public override void save()
         {
             // save the PDF file

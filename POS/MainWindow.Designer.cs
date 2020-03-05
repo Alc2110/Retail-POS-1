@@ -85,6 +85,15 @@
             this.button_newSaleMember = new System.Windows.Forms.Button();
             this.button_newSaleNonMember = new System.Windows.Forms.Button();
             this.button_staffList = new System.Windows.Forms.Button();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.staffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.customersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.productsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.staffToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.customersToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.productsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.transactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -146,7 +155,9 @@
             // databaseToolStripMenuItem
             // 
             this.databaseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.scriptingToolStripMenuItem});
+            this.scriptingToolStripMenuItem,
+            this.importToolStripMenuItem,
+            this.exportToolStripMenuItem});
             this.databaseToolStripMenuItem.Name = "databaseToolStripMenuItem";
             this.databaseToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
             this.databaseToolStripMenuItem.Text = "Database";
@@ -154,7 +165,7 @@
             // scriptingToolStripMenuItem
             // 
             this.scriptingToolStripMenuItem.Name = "scriptingToolStripMenuItem";
-            this.scriptingToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.scriptingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.scriptingToolStripMenuItem.Text = "Scripting";
             // 
             // transactionToolStripMenuItem
@@ -168,7 +179,7 @@
             // viewHistoryToolStripMenuItem
             // 
             this.viewHistoryToolStripMenuItem.Name = "viewHistoryToolStripMenuItem";
-            this.viewHistoryToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.viewHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.viewHistoryToolStripMenuItem.Text = "View history";
             this.viewHistoryToolStripMenuItem.Click += new System.EventHandler(this.viewHistoryToolStripMenuItem_Click);
             // 
@@ -494,7 +505,7 @@
             this.listView_sales.HideSelection = false;
             this.listView_sales.Location = new System.Drawing.Point(12, 202);
             this.listView_sales.Name = "listView_sales";
-            this.listView_sales.Size = new System.Drawing.Size(1075, 166);
+            this.listView_sales.Size = new System.Drawing.Size(1075, 227);
             this.listView_sales.TabIndex = 3;
             this.listView_sales.UseCompatibleStateImageBehavior = false;
             this.listView_sales.View = System.Windows.Forms.View.Details;
@@ -528,7 +539,7 @@
             // 
             this.button_findItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_findItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_findItem.Location = new System.Drawing.Point(12, 389);
+            this.button_findItem.Location = new System.Drawing.Point(12, 450);
             this.button_findItem.Name = "button_findItem";
             this.button_findItem.Size = new System.Drawing.Size(75, 49);
             this.button_findItem.TabIndex = 8;
@@ -540,7 +551,7 @@
             // 
             this.button_newItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_newItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_newItem.Location = new System.Drawing.Point(93, 389);
+            this.button_newItem.Location = new System.Drawing.Point(93, 450);
             this.button_newItem.Name = "button_newItem";
             this.button_newItem.Size = new System.Drawing.Size(75, 49);
             this.button_newItem.TabIndex = 9;
@@ -552,7 +563,7 @@
             // 
             this.button_customerList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_customerList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.button_customerList.Location = new System.Drawing.Point(174, 389);
+            this.button_customerList.Location = new System.Drawing.Point(174, 450);
             this.button_customerList.Name = "button_customerList";
             this.button_customerList.Size = new System.Drawing.Size(75, 49);
             this.button_customerList.TabIndex = 10;
@@ -564,7 +575,7 @@
             // 
             this.button_Discount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Discount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_Discount.Location = new System.Drawing.Point(336, 389);
+            this.button_Discount.Location = new System.Drawing.Point(336, 450);
             this.button_Discount.Name = "button_Discount";
             this.button_Discount.Size = new System.Drawing.Size(75, 49);
             this.button_Discount.TabIndex = 11;
@@ -576,7 +587,7 @@
             // 
             this.button_clearSale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_clearSale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_clearSale.Location = new System.Drawing.Point(417, 389);
+            this.button_clearSale.Location = new System.Drawing.Point(417, 450);
             this.button_clearSale.Name = "button_clearSale";
             this.button_clearSale.Size = new System.Drawing.Size(75, 49);
             this.button_clearSale.TabIndex = 12;
@@ -588,7 +599,7 @@
             // 
             this.button_logOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_logOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_logOut.Location = new System.Drawing.Point(498, 389);
+            this.button_logOut.Location = new System.Drawing.Point(498, 450);
             this.button_logOut.Name = "button_logOut";
             this.button_logOut.Size = new System.Drawing.Size(75, 49);
             this.button_logOut.TabIndex = 13;
@@ -600,7 +611,7 @@
             // 
             this.button_checkout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_checkout.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.button_checkout.Location = new System.Drawing.Point(925, 389);
+            this.button_checkout.Location = new System.Drawing.Point(925, 450);
             this.button_checkout.Name = "button_checkout";
             this.button_checkout.Size = new System.Drawing.Size(156, 49);
             this.button_checkout.TabIndex = 14;
@@ -611,7 +622,7 @@
             // button_newSaleMember
             // 
             this.button_newSaleMember.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_newSaleMember.Location = new System.Drawing.Point(844, 389);
+            this.button_newSaleMember.Location = new System.Drawing.Point(844, 450);
             this.button_newSaleMember.Name = "button_newSaleMember";
             this.button_newSaleMember.Size = new System.Drawing.Size(75, 49);
             this.button_newSaleMember.TabIndex = 15;
@@ -622,7 +633,7 @@
             // button_newSaleNonMember
             // 
             this.button_newSaleNonMember.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_newSaleNonMember.Location = new System.Drawing.Point(753, 389);
+            this.button_newSaleNonMember.Location = new System.Drawing.Point(753, 450);
             this.button_newSaleNonMember.Name = "button_newSaleNonMember";
             this.button_newSaleNonMember.Size = new System.Drawing.Size(85, 49);
             this.button_newSaleNonMember.TabIndex = 16;
@@ -634,7 +645,7 @@
             // 
             this.button_staffList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_staffList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.button_staffList.Location = new System.Drawing.Point(255, 389);
+            this.button_staffList.Location = new System.Drawing.Point(255, 450);
             this.button_staffList.Name = "button_staffList";
             this.button_staffList.Size = new System.Drawing.Size(75, 49);
             this.button_staffList.TabIndex = 17;
@@ -642,11 +653,74 @@
             this.button_staffList.UseVisualStyleBackColor = true;
             this.button_staffList.Click += new System.EventHandler(this.button_staffList_Click);
             // 
+            // importToolStripMenuItem
+            // 
+            this.importToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.staffToolStripMenuItem,
+            this.customersToolStripMenuItem,
+            this.productsToolStripMenuItem});
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importToolStripMenuItem.Text = "Import";
+            // 
+            // exportToolStripMenuItem
+            // 
+            this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.staffToolStripMenuItem1,
+            this.customersToolStripMenuItem1,
+            this.productsToolStripMenuItem1,
+            this.transactionsToolStripMenuItem});
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportToolStripMenuItem.Text = "Export";
+            // 
+            // staffToolStripMenuItem
+            // 
+            this.staffToolStripMenuItem.Name = "staffToolStripMenuItem";
+            this.staffToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.staffToolStripMenuItem.Text = "Staff";
+            // 
+            // customersToolStripMenuItem
+            // 
+            this.customersToolStripMenuItem.Name = "customersToolStripMenuItem";
+            this.customersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.customersToolStripMenuItem.Text = "Customers";
+            // 
+            // productsToolStripMenuItem
+            // 
+            this.productsToolStripMenuItem.Name = "productsToolStripMenuItem";
+            this.productsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.productsToolStripMenuItem.Text = "Products";
+            // 
+            // staffToolStripMenuItem1
+            // 
+            this.staffToolStripMenuItem1.Name = "staffToolStripMenuItem1";
+            this.staffToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.staffToolStripMenuItem1.Text = "Staff";
+            // 
+            // customersToolStripMenuItem1
+            // 
+            this.customersToolStripMenuItem1.Name = "customersToolStripMenuItem1";
+            this.customersToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.customersToolStripMenuItem1.Text = "Customers";
+            // 
+            // productsToolStripMenuItem1
+            // 
+            this.productsToolStripMenuItem1.Name = "productsToolStripMenuItem1";
+            this.productsToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.productsToolStripMenuItem1.Text = "Products";
+            // 
+            // transactionsToolStripMenuItem
+            // 
+            this.transactionsToolStripMenuItem.Name = "transactionsToolStripMenuItem";
+            this.transactionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.transactionsToolStripMenuItem.Text = "Transactions";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1099, 450);
+            this.ClientSize = new System.Drawing.Size(1099, 511);
             this.Controls.Add(this.button_staffList);
             this.Controls.Add(this.button_newSaleNonMember);
             this.Controls.Add(this.button_newSaleMember);
@@ -736,6 +810,15 @@
         private System.Windows.Forms.Button button_newSaleMember;
         private System.Windows.Forms.Button button_newSaleNonMember;
         private System.Windows.Forms.Button button_staffList;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem staffToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem customersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem productsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem staffToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem customersToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem productsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem transactionsToolStripMenuItem;
     }
 }
 
