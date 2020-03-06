@@ -295,3 +295,145 @@ Starting Retail POS
 2020-02-20 12:15:18.7099|INFO|POS.LoginForm|Attempting connection with database
 2020-02-20 12:15:19.0849|INFO|POS.LoginForm|Admin user
 2020-02-20 12:15:19.8244|INFO|POS.LoginForm|Login successful
+2020-03-05 23:22:36.8492|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-05 23:22:37.1263|INFO|POS.LoginForm|Initialising login form
+2020-03-05 23:22:41.3554|INFO|POS.LoginForm|Attempting connection with database
+2020-03-05 23:22:41.5995|INFO|POS.LoginForm|Admin user
+2020-03-05 23:22:42.2237|INFO|POS.LoginForm|Login successful
+2020-03-05 23:22:42.3077|INFO|POS.MainWindow|Initialising main window
+2020-03-05 23:22:42.3077|INFO|POS.MainWindow|Current state: READY
+2020-03-05 23:22:42.3077|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-05 23:23:37.1908|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-05 23:23:37.3308|INFO|POS.LoginForm|Initialising login form
+2020-03-05 23:23:41.0208|INFO|POS.LoginForm|Attempting connection with database
+2020-03-05 23:23:41.5570|INFO|POS.LoginForm|Admin user
+2020-03-05 23:23:42.1671|INFO|POS.LoginForm|Login successful
+2020-03-05 23:23:42.3704|INFO|POS.MainWindow|Initialising main window
+2020-03-05 23:23:42.4878|INFO|POS.MainWindow|Current state: READY
+2020-03-05 23:23:42.4878|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-06 12:54:14.2169|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-06 12:54:14.4300|INFO|POS.LoginForm|Initialising login form
+2020-03-06 12:54:20.0704|INFO|POS.LoginForm|Attempting connection with database
+2020-03-06 12:54:20.9466|INFO|POS.LoginForm|Admin user
+2020-03-06 12:54:21.6138|INFO|POS.LoginForm|Login successful
+2020-03-06 12:54:21.7378|INFO|POS.MainWindow|Initialising main window
+2020-03-06 12:54:21.7378|INFO|POS.MainWindow|Current state: READY
+2020-03-06 12:54:21.7378|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-06 13:07:17.8985|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-06 13:07:17.9985|INFO|POS.LoginForm|Initialising login form
+2020-03-06 13:07:24.5873|INFO|POS.LoginForm|Attempting connection with database
+2020-03-06 13:07:26.0057|INFO|POS.LoginForm|Admin user
+2020-03-06 13:07:27.4803|INFO|POS.LoginForm|Login successful
+2020-03-06 13:07:27.5994|INFO|POS.MainWindow|Initialising main window
+2020-03-06 13:07:27.5994|INFO|POS.MainWindow|Current state: READY
+2020-03-06 13:07:27.5994|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-06 20:46:19.6931|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-06 20:46:19.7981|INFO|POS.LoginForm|Initialising login form
+2020-03-06 20:46:30.4194|INFO|POS.LoginForm|Attempting connection with database
+2020-03-06 20:46:30.7757|INFO|POS.LoginForm|Admin user
+2020-03-06 20:46:31.9640|INFO|POS.LoginForm|Login successful
+2020-03-06 20:46:32.1421|INFO|POS.MainWindow|Initialising main window
+2020-03-06 20:46:32.1421|INFO|POS.MainWindow|Current state: READY
+2020-03-06 20:46:32.1421|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-06 21:58:26.8844|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-06 21:58:27.0284|INFO|POS.LoginForm|Initialising login form
+2020-03-06 21:58:37.4321|INFO|POS.LoginForm|Attempting connection with database
+2020-03-06 21:58:37.6181|INFO|POS.LoginForm|Admin user
+2020-03-06 21:58:38.7170|INFO|POS.LoginForm|Login successful
+2020-03-06 21:58:38.9441|INFO|POS.MainWindow|Initialising main window
+2020-03-06 21:58:38.9441|INFO|POS.MainWindow|Current state: READY
+2020-03-06 21:58:38.9441|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-06 21:59:12.4163|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-06 22:03:57.6320|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-06 22:03:57.7470|INFO|POS.LoginForm|Initialising login form
+2020-03-06 22:04:04.6879|INFO|POS.LoginForm|Attempting connection with database
+2020-03-06 22:04:04.9209|INFO|POS.LoginForm|Admin user
+2020-03-06 22:04:05.4281|INFO|POS.LoginForm|Login successful
+2020-03-06 22:04:05.5081|INFO|POS.MainWindow|Initialising main window
+2020-03-06 22:04:05.5081|INFO|POS.MainWindow|Current state: READY
+2020-03-06 22:04:05.5081|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-06 22:04:21.1941|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-06 22:15:00.9764|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-06 22:15:01.0845|INFO|POS.LoginForm|Initialising login form
+2020-03-06 22:15:31.0426|INFO|POS.LoginForm|Attempting connection with database
+2020-03-06 22:15:31.2386|INFO|POS.LoginForm|Admin user
+2020-03-06 22:15:31.8727|INFO|POS.LoginForm|Login successful
+2020-03-06 22:15:31.9418|INFO|POS.MainWindow|Initialising main window
+2020-03-06 22:15:31.9418|INFO|POS.MainWindow|Current state: READY
+2020-03-06 22:15:31.9418|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-06 22:15:44.8395|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-06 23:00:32.0641|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-06 23:00:32.3031|INFO|POS.LoginForm|Initialising login form
+2020-03-06 23:00:37.1484|INFO|POS.LoginForm|Attempting connection with database
+2020-03-06 23:00:37.5535|INFO|POS.LoginForm|Admin user
+2020-03-06 23:00:38.2137|INFO|POS.LoginForm|Login successful
+2020-03-06 23:00:38.3497|INFO|POS.MainWindow|Initialising main window
+2020-03-06 23:00:38.3497|INFO|POS.MainWindow|Current state: READY
+2020-03-06 23:00:38.3497|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-06 23:00:57.2865|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-06 23:01:52.4441|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-06 23:01:52.6521|INFO|POS.LoginForm|Initialising login form
+2020-03-06 23:01:59.8700|INFO|POS.LoginForm|Attempting connection with database
+2020-03-06 23:02:00.3651|INFO|POS.LoginForm|Admin user
+2020-03-06 23:02:00.8226|INFO|POS.LoginForm|Login successful
+2020-03-06 23:02:00.9167|INFO|POS.MainWindow|Initialising main window
+2020-03-06 23:02:00.9167|INFO|POS.MainWindow|Current state: READY
+2020-03-06 23:02:00.9167|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-06 23:02:14.1777|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-06 23:12:00.4506|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-06 23:12:00.6976|INFO|POS.LoginForm|Initialising login form
+2020-03-06 23:12:06.0330|INFO|POS.LoginForm|Attempting connection with database
+2020-03-06 23:12:06.3010|INFO|POS.LoginForm|Admin user
+2020-03-06 23:12:06.8222|INFO|POS.LoginForm|Login successful
+2020-03-06 23:12:06.9352|INFO|POS.MainWindow|Initialising main window
+2020-03-06 23:12:06.9352|INFO|POS.MainWindow|Current state: READY
+2020-03-06 23:12:06.9382|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-06 23:13:01.9169|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-06 23:13:11.8500|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-06 23:13:21.2244|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-06 23:13:32.1188|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-06 23:13:34.8247|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-06 23:13:34.8247|INFO|POS.LoginForm|Initialising login form
+2020-03-06 23:13:35.6182|INFO|POS.LoginForm|Exiting application
+2020-03-06 23:19:30.0797|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-06 23:19:30.2608|INFO|POS.LoginForm|Initialising login form
+2020-03-06 23:19:39.3894|INFO|POS.LoginForm|Attempting connection with database
+2020-03-06 23:19:39.6035|INFO|POS.LoginForm|Admin user
+2020-03-06 23:19:40.2396|INFO|POS.LoginForm|Login successful
+2020-03-06 23:19:40.3477|INFO|POS.MainWindow|Initialising main window
+2020-03-06 23:19:40.3477|INFO|POS.MainWindow|Current state: READY
+2020-03-06 23:19:40.3477|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-06 23:19:58.4184|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-06 23:27:52.4017|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-06 23:27:52.5937|INFO|POS.LoginForm|Initialising login form
+2020-03-06 23:28:00.2100|INFO|POS.LoginForm|Attempting connection with database
+2020-03-06 23:28:00.4140|INFO|POS.LoginForm|Admin user
+2020-03-06 23:28:01.0428|INFO|POS.LoginForm|Login successful
+2020-03-06 23:28:01.1388|INFO|POS.MainWindow|Initialising main window
+2020-03-06 23:28:01.1418|INFO|POS.MainWindow|Current state: READY
+2020-03-06 23:28:01.1418|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-06 23:28:13.8849|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-06 23:31:07.6739|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-06 23:31:07.8739|INFO|POS.LoginForm|Initialising login form
+2020-03-06 23:31:13.0791|INFO|POS.LoginForm|Attempting connection with database
+2020-03-06 23:31:13.3942|INFO|POS.LoginForm|Admin user
+2020-03-06 23:31:13.9054|INFO|POS.LoginForm|Login successful
+2020-03-06 23:31:13.9804|INFO|POS.MainWindow|Initialising main window
+2020-03-06 23:31:13.9804|INFO|POS.MainWindow|Current state: READY
+2020-03-06 23:31:13.9804|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-06 23:31:30.7959|INFO|POS.MainWindow|Saved spreadsheet file

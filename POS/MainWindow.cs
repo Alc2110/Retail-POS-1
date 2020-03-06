@@ -734,5 +734,148 @@ namespace POS
 
             textBox_itemProductID.Text = string.Empty;
         }
+
+        private void staffToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            // export staff data from database
+
+            // create an instance of the view
+            StaffSpreadsheetExport exportView = new StaffSpreadsheetExport();
+
+            // create the spreadsheet
+            exportView.retrieveData();
+            exportView.prepareSpreadsheet();
+
+            try
+            {
+                // save the spreadsheet
+                exportView.saveSpreadsheet("staff");
+            }
+            catch (Exception ex)
+            {
+                // it failed
+                // tell the user and the logger
+                System.Windows.Forms.MessageBox.Show("Error saving spreadsheet file", "Retail POS",
+                                                     System.Windows.Forms.MessageBoxButtons.OK,
+                                                     System.Windows.Forms.MessageBoxIcon.Error);
+                logger.Error(ex, "Error saving spreadsheet file: " + ex.Message);
+                logger.Error("Stack trace: ", ex.StackTrace);
+
+                return;
+            }
+
+            // at this point, it succeeded
+            // tell the user and the logger
+            System.Windows.Forms.MessageBox.Show("Saved spreadsheet file", "Retail POS",
+                                                 System.Windows.Forms.MessageBoxButtons.OK,
+                                                 System.Windows.Forms.MessageBoxIcon.Information);
+            logger.Info("Saved spreadsheet file");
+        }
+
+        private void customersToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            // export customer data from database
+
+            // create an instance of the view
+            CustomerSpreadsheetExport exportView = new CustomerSpreadsheetExport();
+
+            // create the spreadsheet
+            exportView.retrieveData();
+            exportView.prepareSpreadsheet();
+
+            try
+            {
+                // save the spreadsheet
+                exportView.saveSpreadsheet("customer");
+            }
+            catch (Exception ex)
+            {
+                // it failed
+                // tell the user and the logger
+                System.Windows.Forms.MessageBox.Show("Error saving spreadsheet file", "Retail POS",
+                                                     System.Windows.Forms.MessageBoxButtons.OK,
+                                                     System.Windows.Forms.MessageBoxIcon.Error);
+                logger.Error(ex, "Error saving spreadsheet file: " + ex.Message);
+                logger.Error("Stack trace: ", ex.StackTrace);
+            }
+
+            // at this point, it succeeded
+            // tell the user and the logger
+            System.Windows.Forms.MessageBox.Show("Saved spreadsheet file", "Retail POS",
+                                                 System.Windows.Forms.MessageBoxButtons.OK,
+                                                 System.Windows.Forms.MessageBoxIcon.Information);
+            logger.Info("Saved spreadsheet file");
+        }
+
+        private void productsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            // export product data from database
+
+            // create an instance of the view
+            ProductSpreadsheetExport exportView = new ProductSpreadsheetExport();
+
+            // create the spreadsheet
+            exportView.retrieveData();
+            exportView.prepareSpreadsheet();
+
+            try
+            {
+                // save the spreadsheet
+                exportView.saveSpreadsheet("product");
+            }
+            catch (Exception ex)
+            {
+                // it failed
+                // tell the user and the logger
+                System.Windows.Forms.MessageBox.Show("Error saving spreadsheet file", "Retail POS",
+                                                     System.Windows.Forms.MessageBoxButtons.OK,
+                                                     System.Windows.Forms.MessageBoxIcon.Error);
+                logger.Error(ex, "Error saving spreadsheet file: " + ex.Message);
+                logger.Error("Stack trace: ", ex.StackTrace);
+            }
+
+            // at this point, it succeeded
+            // tell the user and the logger
+            System.Windows.Forms.MessageBox.Show("Saved spreadsheet file", "Retail POS",
+                                                 System.Windows.Forms.MessageBoxButtons.OK,
+                                                 System.Windows.Forms.MessageBoxIcon.Information);
+            logger.Info("Saved spreadsheet file");
+
+        }
+
+        private void transactionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // export transaction data from database
+
+            // create an instance of the view
+            TransactionSpreadsheetExport exportView = new TransactionSpreadsheetExport();
+
+            // create the spreadsheet
+            exportView.retrieveData();
+            exportView.prepareSpreadsheet();
+
+            try
+            {
+                // save the spreadsheet
+                exportView.saveSpreadsheet("transaction");
+            }
+            catch (Exception ex)
+            {
+                // it failed
+                // tell the user and the logger
+                System.Windows.Forms.MessageBox.Show("Error saving spreadsheet file", "Retail POS",
+                                                     System.Windows.Forms.MessageBoxButtons.OK,
+                                                     System.Windows.Forms.MessageBoxIcon.Error);
+                logger.Error(ex, "Error saving spreadsheet file: " + ex.Message);
+                logger.Error("Stack trace: ", ex.StackTrace);
+            }
+
+            // at this point, it succeeded
+            // tell the user and the logger
+            System.Windows.Forms.MessageBox.Show("Saved spreadsheet file", "Retail POS",
+                                                 System.Windows.Forms.MessageBoxButtons.OK,
+                                                 System.Windows.Forms.MessageBoxIcon.Information);
+            logger.Info("Saved spreadsheet file");
+        }
     }
 }
