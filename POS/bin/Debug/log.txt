@@ -108,3 +108,130 @@ Starting Retail POS
 2020-03-07 20:41:42.6516|INFO|POS.MainWindow|Current state: READY
 2020-03-07 20:41:42.6516|INFO|POS.MainWindow|Current user level: ADMIN
 2020-03-07 20:42:39.3093|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-07 21:07:42.1604|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-07 21:07:42.2515|INFO|POS.LoginForm|Initialising login form
+2020-03-07 21:07:48.1700|INFO|POS.LoginForm|Attempting connection with database
+2020-03-07 21:07:48.3900|INFO|POS.LoginForm|Admin user
+2020-03-07 21:07:49.0289|INFO|POS.LoginForm|Login successful
+2020-03-07 21:07:49.1661|INFO|POS.MainWindow|Initialising main window
+2020-03-07 21:07:49.1661|INFO|POS.MainWindow|Resetting the main window
+2020-03-07 21:07:49.1681|INFO|POS.MainWindow|Current state: READY
+2020-03-07 21:07:49.1681|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-07 21:08:00.3406|INFO|POS.MainWindow|Initiating nom-member sale
+2020-03-07 21:08:04.0639|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:08:04.0639|INFO|POS.MainWindow|Item of this type not yet in list. Adding item to list
+2020-03-07 21:08:10.6627|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:08:10.6627|INFO|POS.MainWindow|Item of this type is already in list
+2020-03-07 21:08:17.5819|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:08:17.5819|INFO|POS.MainWindow|Item of this type is already in list
+2020-03-07 21:08:25.9074|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:08:25.9074|INFO|POS.MainWindow|Item of this type is already in list
+2020-03-07 21:09:35.2748|INFO|POS.MainWindow|Retrieving product from database, for product ID: sdfsdsdfsdf
+2020-03-07 21:09:36.4901|WARN|POS.MainWindow|Could not find specified product
+2020-03-07 21:09:38.1273|INFO|POS.MainWindow|Retrieving product from database, for product ID: sdfsdsdfsdf
+2020-03-07 21:09:39.5508|WARN|POS.MainWindow|Could not find specified product
+2020-03-07 21:09:40.3600|INFO|POS.MainWindow|Retrieving product from database, for product ID: sdfsdsdfsdf
+2020-03-07 21:09:41.3090|WARN|POS.MainWindow|Could not find specified product
+2020-03-07 21:18:23.0174|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-07 21:18:23.0995|INFO|POS.LoginForm|Initialising login form
+2020-03-07 21:18:34.3755|INFO|POS.LoginForm|Attempting connection with database
+2020-03-07 21:18:34.6235|INFO|POS.LoginForm|Admin user
+2020-03-07 21:18:35.1897|INFO|POS.LoginForm|Login successful
+2020-03-07 21:18:35.2937|INFO|POS.MainWindow|Initialising main window
+2020-03-07 21:18:35.2937|INFO|POS.MainWindow|Resetting the main window
+2020-03-07 21:18:35.2937|INFO|POS.MainWindow|Current state: READY
+2020-03-07 21:18:35.2937|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-07 21:18:44.7025|INFO|POS.MainWindow|Initiating nom-member sale
+2020-03-07 21:18:49.3175|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:18:49.3175|INFO|POS.MainWindow|Item of this type not yet in list. Adding item to list
+2020-03-07 21:18:57.9486|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:18:57.9486|INFO|POS.MainWindow|Item of this type is already in list
+2020-03-07 21:19:02.8946|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:19:02.8946|INFO|POS.MainWindow|Item of this type is already in list
+2020-03-07 21:20:19.4521|INFO|POS.MainWindow|Resetting the main window
+2020-03-07 21:20:19.4521|INFO|POS.MainWindow|Current state: READY
+2020-03-07 21:20:19.4521|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-07 21:23:17.2162|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-07 21:23:17.4453|INFO|POS.LoginForm|Initialising login form
+2020-03-07 21:25:56.7099|INFO|POS.LoginForm|Attempting connection with database
+2020-03-07 21:25:56.9000|INFO|POS.LoginForm|Admin user
+2020-03-07 21:25:57.9004|INFO|POS.LoginForm|Login successful
+2020-03-07 21:25:57.9994|INFO|POS.MainWindow|Initialising main window
+2020-03-07 21:25:57.9994|INFO|POS.MainWindow|Resetting the main window
+2020-03-07 21:25:57.9994|INFO|POS.MainWindow|Current state: READY
+2020-03-07 21:25:57.9994|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-07 21:26:07.6349|INFO|POS.MainWindow|Initiating nom-member sale
+2020-03-07 21:27:23.4146|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-07 21:27:23.5096|INFO|POS.LoginForm|Initialising login form
+2020-03-07 21:27:28.1168|INFO|POS.LoginForm|Attempting connection with database
+2020-03-07 21:27:28.3228|INFO|POS.LoginForm|Admin user
+2020-03-07 21:27:28.8369|INFO|POS.LoginForm|Login successful
+2020-03-07 21:27:28.9390|INFO|POS.MainWindow|Initialising main window
+2020-03-07 21:27:28.9390|INFO|POS.MainWindow|Resetting the main window
+2020-03-07 21:27:28.9390|INFO|POS.MainWindow|Current state: READY
+2020-03-07 21:27:28.9390|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-07 21:27:43.9470|INFO|POS.MainWindow|Initiating nom-member sale
+2020-03-07 21:27:52.5663|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:27:52.5663|INFO|POS.MainWindow|Item of this type not yet in list. Adding item to list
+2020-03-07 21:27:56.2692|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:27:56.2692|INFO|POS.MainWindow|Item of this type is already in list
+2020-03-07 21:28:01.7742|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:28:01.7742|INFO|POS.MainWindow|Item of this type is already in list
+2020-03-07 21:28:31.1351|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:28:31.1381|INFO|POS.MainWindow|Item of this type is already in list
+2020-03-07 21:28:35.7819|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:28:35.7819|INFO|POS.MainWindow|Item of this type is already in list
+2020-03-07 21:38:47.5888|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-07 21:38:47.7458|INFO|POS.LoginForm|Initialising login form
+2020-03-07 21:38:56.9001|INFO|POS.LoginForm|Attempting connection with database
+2020-03-07 21:38:57.2612|INFO|POS.LoginForm|Admin user
+2020-03-07 21:38:57.8016|INFO|POS.LoginForm|Login successful
+2020-03-07 21:38:57.9019|INFO|POS.MainWindow|Initialising main window
+2020-03-07 21:38:57.9019|INFO|POS.MainWindow|Resetting the main window
+2020-03-07 21:38:57.9019|INFO|POS.MainWindow|Current state: READY
+2020-03-07 21:38:57.9019|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-07 21:39:04.2578|INFO|POS.MainWindow|Initiating nom-member sale
+2020-03-07 21:39:08.7825|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:39:08.7825|INFO|POS.MainWindow|Item of this type not yet in list. Adding item to list
+2020-03-07 21:39:21.3842|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:39:21.3862|INFO|POS.MainWindow|Item of this type not yet in list. Adding item to list
+2020-03-07 21:39:25.2547|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:39:25.2547|INFO|POS.MainWindow|Item of this type is already in list
+2020-03-07 21:39:30.5487|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:39:30.5487|INFO|POS.MainWindow|Item of this type is already in list
+2020-03-07 21:39:52.2546|INFO|POS.MainWindow|Clearing sale
+2020-03-07 21:39:52.2546|INFO|POS.MainWindow|Resetting the main window
+2020-03-07 21:39:52.2546|INFO|POS.MainWindow|Current state: READY
+2020-03-07 21:39:52.2546|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-07 21:39:54.3382|INFO|POS.MainWindow|Initiating nom-member sale
+2020-03-07 21:40:34.9869|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:40:34.9869|INFO|POS.MainWindow|Item of this type not yet in list. Adding item to list
+2020-03-07 21:40:38.4317|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:40:38.4317|INFO|POS.MainWindow|Item of this type is already in list
+2020-03-07 21:40:41.8436|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:40:41.8436|INFO|POS.MainWindow|Item of this type is already in list
+2020-03-07 21:40:45.0245|INFO|POS.MainWindow|Clearing sale
+2020-03-07 21:40:45.0245|INFO|POS.MainWindow|Resetting the main window
+2020-03-07 21:40:45.0245|INFO|POS.MainWindow|Current state: READY
+2020-03-07 21:40:45.0245|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-07 21:41:49.5051|INFO|POS.MainWindow|Initiating nom-member sale
+2020-03-07 21:41:52.7748|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:41:52.7748|INFO|POS.MainWindow|Item of this type not yet in list. Adding item to list
+2020-03-07 21:43:12.8185|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-07 21:43:13.0526|INFO|POS.LoginForm|Initialising login form
+2020-03-07 21:43:18.5571|INFO|POS.LoginForm|Attempting connection with database
+2020-03-07 21:43:18.9083|INFO|POS.LoginForm|Admin user
+2020-03-07 21:43:19.4584|INFO|POS.LoginForm|Login successful
+2020-03-07 21:43:19.5844|INFO|POS.MainWindow|Initialising main window
+2020-03-07 21:43:19.5844|INFO|POS.MainWindow|Resetting the main window
+2020-03-07 21:43:19.5844|INFO|POS.MainWindow|Current state: READY
+2020-03-07 21:43:19.5844|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-07 21:43:26.8270|INFO|POS.MainWindow|Initiating nom-member sale
+2020-03-07 21:43:30.7055|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
+2020-03-07 21:43:30.7055|INFO|POS.MainWindow|Item of this type not yet in list. Adding item to list

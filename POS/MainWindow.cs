@@ -170,6 +170,7 @@ namespace POS
                 MessageBox.Show(nullProductMessage, "Retail POS", 
                                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 logger.Warn(nullProductMessage);
+                textBox_itemProductID.Text = string.Empty;
 
                 return;
             }
@@ -188,7 +189,8 @@ namespace POS
                     // just increment the total count, and update total item cost
                     string sQuantity = listItem.SubItems[2].Text;
                     int iQuantity = Int32.Parse(sQuantity);
-                    listItem.SubItems[2].Text = (iQuantity += 1).ToString();
+                    //listItem.SubItems[2].Text = (iQuantity += 1).ToString();
+                    listItem.SubItems[2].Text = (iQuantity += Int32.Parse(textBox_itemQuantity.Text)).ToString();
                     
                     string sCost = listItem.SubItems[4].Text;
                     float fCost = float.Parse(sCost);
@@ -213,7 +215,8 @@ namespace POS
                 string[] itemArr = new string[5];
                 itemArr[0] = retrievedProduct.getProductIDNumber();
                 itemArr[1] = retrievedProduct.getDescription();
-                itemArr[2] = "1";// quantity
+                //itemArr[2] = "1";// quantity
+                itemArr[2] = textBox_itemQuantity.Text;
                 itemArr[4] = retrievedProduct.getPrice().ToString();// total
                 itemArr[3] = retrievedProduct.getPrice().ToString();
                 ListViewItem item = new ListViewItem(itemArr);
@@ -250,6 +253,7 @@ namespace POS
             // clean up UI
             button_addItem.Enabled = false;
             textBox_itemProductID.Text = string.Empty;
+            textBox_itemQuantity.Text = string.Empty;
 
             deselectAllItems();
 
@@ -508,7 +512,32 @@ namespace POS
             {
                 if (currentState == State.SALE_MEMBER || currentState == State.SALE_NON_MEMBER)
                 {
+                    // enable "Add Item" button and item quantity textbox
                     button_addItem.Enabled = true;
+                    textBox_itemQuantity.Enabled = true;
+
+                    /*
+                    // check if this product is already in the list
+                    bool itemInList = false;
+                    foreach (ListViewItem item in listView_sales.Items)
+                    {
+                        if (item.SubItems[0].Text.Equals(textBox_itemProductID.Text))
+                        {
+                            // it is
+                            // get the quantity, and put it in the item quantity textbox
+                            itemInList = true;
+                            string sQuantity = item.SubItems[2].Text;
+                            textBox_itemQuantity.Text = sQuantity;
+
+                            break;
+                        }
+                    }
+                    if (!itemInList)
+                    {
+                        textBox_itemQuantity.Text = "1";
+                    }
+                    */
+                    textBox_itemQuantity.Text = "1";
                 }
 
                 button_priceLookup.Enabled = true;
@@ -517,6 +546,8 @@ namespace POS
             {
                 button_addItem.Enabled = false;
                 button_priceLookup.Enabled = false;
+
+                textBox_itemQuantity.Text = string.Empty;
             }
         }
 
@@ -533,6 +564,9 @@ namespace POS
                     button_removeItem.Enabled = false;
 
                     button_Discount.Enabled = false;
+
+                    textBox_itemQuantity.ReadOnly = false;
+                    textBox_itemQuantity.Text = string.Empty;
 
                     break;
 
@@ -551,6 +585,13 @@ namespace POS
                     {
                         button_Discount.Enabled = false;
                     }
+
+                    // cannot add items
+                    button_addItem.Enabled = false;
+                    textBox_itemProductID.Text = string.Empty;
+                    // display quantity in quantity textbox, which is readonly
+                    textBox_itemQuantity.ReadOnly = true;
+                    textBox_itemQuantity.Text = listView_sales.SelectedItems[0].SubItems[2].Text;
 
                     break;
 
@@ -684,6 +725,7 @@ namespace POS
             else if (dialogResult==DialogResult.No)
             {
                 // clear sale
+                richTextBox_itemPrice.Text = "0.00";
                 setUI();
             }
             else if (dialogResult==DialogResult.Cancel)
