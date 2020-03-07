@@ -759,12 +759,17 @@ namespace POS
 
             if (retrievedProduct==null)
             {
-                MessageBox.Show("Could not find specified product", "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                // could not retrieve product
+                // tell the user and the logger
+                string nullProductMessage = "Could not find specified product";
+                MessageBox.Show(nullProductMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                logger.Warn(nullProductMessage);
 
                 return;
             }
             else
             {
+                // it succeeded
                 MessageBox.Show("Product ID: " + productIDnumber + "\nDescription: " + retrievedProduct.getDescription() +
                                 "\nPrice: " + retrievedProduct.getPrice().ToString(), "Item Lookup", MessageBoxButtons.OK);
 
@@ -778,36 +783,9 @@ namespace POS
             // export staff data from database
 
             // create an instance of the view
-            StaffSpreadsheetExport exportView = new StaffSpreadsheetExport();
+            StaffSpreadsheetExport exportView = new StaffSpreadsheetExport("Staff");
 
-            // create the spreadsheet
-            exportView.retrieveData();
-            exportView.prepareSpreadsheet();
-
-            try
-            {
-                // save the spreadsheet
-                exportView.saveSpreadsheet("staff");
-            }
-            catch (Exception ex)
-            {
-                // it failed
-                // tell the user and the logger
-                System.Windows.Forms.MessageBox.Show("Error saving spreadsheet file", "Retail POS",
-                                                     System.Windows.Forms.MessageBoxButtons.OK,
-                                                     System.Windows.Forms.MessageBoxIcon.Error);
-                logger.Error(ex, "Error saving spreadsheet file: " + ex.Message);
-                logger.Error("Stack trace: ", ex.StackTrace);
-
-                return;
-            }
-
-            // at this point, it succeeded
-            // tell the user and the logger
-            System.Windows.Forms.MessageBox.Show("Saved spreadsheet file", "Retail POS",
-                                                 System.Windows.Forms.MessageBoxButtons.OK,
-                                                 System.Windows.Forms.MessageBoxIcon.Information);
-            logger.Info("Saved spreadsheet file");
+            executeExportSpreadsheetView(exportView);
         }
 
         private void customersToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -815,36 +793,9 @@ namespace POS
             // export customer data from database
 
             // create an instance of the view
-            CustomerSpreadsheetExport exportView = new CustomerSpreadsheetExport();
+            CustomerSpreadsheetExport exportView = new CustomerSpreadsheetExport("Customer");
 
-            // create the spreadsheet
-            exportView.retrieveData();
-            exportView.prepareSpreadsheet();
-
-            try
-            {
-                // save the spreadsheet
-                exportView.saveSpreadsheet("customer");
-            }
-            catch (Exception ex)
-            {
-                // it failed
-                // tell the user and the logger
-                System.Windows.Forms.MessageBox.Show("Error saving spreadsheet file", "Retail POS",
-                                                     System.Windows.Forms.MessageBoxButtons.OK,
-                                                     System.Windows.Forms.MessageBoxIcon.Error);
-                logger.Error(ex, "Error saving spreadsheet file: " + ex.Message);
-                logger.Error("Stack trace: ", ex.StackTrace);
-
-                return;
-            }
-
-            // at this point, it succeeded
-            // tell the user and the logger
-            System.Windows.Forms.MessageBox.Show("Saved spreadsheet file", "Retail POS",
-                                                 System.Windows.Forms.MessageBoxButtons.OK,
-                                                 System.Windows.Forms.MessageBoxIcon.Information);
-            logger.Info("Saved spreadsheet file");
+            executeExportSpreadsheetView(exportView);
         }
 
         private void productsToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -852,37 +803,10 @@ namespace POS
             // export product data from database
 
             // create an instance of the view
-            ProductSpreadsheetExport exportView = new ProductSpreadsheetExport();
+            ProductSpreadsheetExport exportView = new ProductSpreadsheetExport("Product");
 
             // create the spreadsheet
-            exportView.retrieveData();
-            exportView.prepareSpreadsheet();
-
-            try
-            {
-                // save the spreadsheet
-                exportView.saveSpreadsheet("product");
-            }
-            catch (Exception ex)
-            {
-                // it failed
-                // tell the user and the logger
-                System.Windows.Forms.MessageBox.Show("Error saving spreadsheet file", "Retail POS",
-                                                     System.Windows.Forms.MessageBoxButtons.OK,
-                                                     System.Windows.Forms.MessageBoxIcon.Error);
-                logger.Error(ex, "Error saving spreadsheet file: " + ex.Message);
-                logger.Error("Stack trace: ", ex.StackTrace);
-
-                return;
-            }
-
-            // at this point, it succeeded
-            // tell the user and the logger
-            System.Windows.Forms.MessageBox.Show("Saved spreadsheet file", "Retail POS",
-                                                 System.Windows.Forms.MessageBoxButtons.OK,
-                                                 System.Windows.Forms.MessageBoxIcon.Information);
-            logger.Info("Saved spreadsheet file");
-
+            executeExportSpreadsheetView(exportView);
         }
 
         private void transactionsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -890,8 +814,13 @@ namespace POS
             // export transaction data from database
 
             // create an instance of the view
-            TransactionSpreadsheetExport exportView = new TransactionSpreadsheetExport();
+            TransactionSpreadsheetExport exportView = new TransactionSpreadsheetExport("Transaction");
 
+            executeExportSpreadsheetView(exportView);
+        }
+
+        private void executeExportSpreadsheetView(SpreadsheetExport exportView)
+        {
             // create the spreadsheet
             exportView.retrieveData();
             exportView.prepareSpreadsheet();
@@ -899,7 +828,7 @@ namespace POS
             try
             {
                 // save the spreadsheet
-                exportView.saveSpreadsheet("transaction");
+                exportView.saveSpreadsheet();
             }
             catch (Exception ex)
             {

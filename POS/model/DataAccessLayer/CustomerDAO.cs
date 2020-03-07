@@ -165,6 +165,8 @@ namespace Model.DataAccessLayer
                                 throw new Exception("Invalid data in database");
                         }
 
+                        customer.setPostcode(reader.GetInt32(7));
+
                         customers.Add(customer);
                     }
                 }
