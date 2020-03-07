@@ -28,6 +28,16 @@ namespace Model.ServiceLayer
             getAllProducts();
         }
 
+        public static void updateProduct(Product product)
+        {
+            // DAO
+            ProductDAO dao = new ProductDAO();
+            dao.updateProduct(Convert.ToInt32(product.getProductID()), product.getProductIDNumber(), product.getDescription(), product.getQuantity(), product.getPrice());
+
+            // fire the event
+            getAllProducts();
+        }
+
         public static Product getProduct(string idNumber)
         {
             // DAO

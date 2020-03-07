@@ -12,6 +12,6 @@ namespace Model.DataAccessLayer
         IList<Product> getAllProducts();
         int deleteProduct(Product product);
         int addProduct(Product product);
-        int updateProduct(Product oldProduct, Product newProduct);
+        void updateProduct(int id, string productIdNumber, string description, int quantity, float price);
     }
 }

@@ -73,6 +73,7 @@
     <Compile Include="configuration.cs" />
     <Compile Include="Controller\CustomerController.cs" />
     <Compile Include="Controller\ProductController.cs" />
+    <Compile Include="Controller\SpreadsheetImport.cs" />
     <Compile Include="Controller\StaffController.cs" />
     <Compile Include="Controller\TransactionController.cs" />
     <Compile Include="LoginForm.cs">

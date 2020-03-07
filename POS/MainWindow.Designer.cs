@@ -94,9 +94,17 @@
             this.button_newSaleMember = new System.Windows.Forms.Button();
             this.button_newSaleNonMember = new System.Windows.Forms.Button();
             this.button_staffList = new System.Windows.Forms.Button();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel_accType = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel_state = new System.Windows.Forms.ToolStripStatusLabel();
+            this.iToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.staffToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.customersToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.productsToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -156,6 +164,7 @@
             // 
             this.databaseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.scriptingToolStripMenuItem,
+            this.iToolStripMenuItem,
             this.importToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.databaseToolStripMenuItem.Name = "databaseToolStripMenuItem";
@@ -176,25 +185,26 @@
             this.productsToolStripMenuItem});
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
             this.importToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.importToolStripMenuItem.Text = "Import";
+            this.importToolStripMenuItem.Text = "Import Update";
             // 
             // staffToolStripMenuItem
             // 
             this.staffToolStripMenuItem.Name = "staffToolStripMenuItem";
-            this.staffToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.staffToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.staffToolStripMenuItem.Text = "Staff";
             // 
             // customersToolStripMenuItem
             // 
             this.customersToolStripMenuItem.Name = "customersToolStripMenuItem";
-            this.customersToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.customersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.customersToolStripMenuItem.Text = "Customers";
             // 
             // productsToolStripMenuItem
             // 
             this.productsToolStripMenuItem.Name = "productsToolStripMenuItem";
-            this.productsToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.productsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.productsToolStripMenuItem.Text = "Products";
+            this.productsToolStripMenuItem.Click += new System.EventHandler(this.productsToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
@@ -572,7 +582,7 @@
             this.listView_sales.HideSelection = false;
             this.listView_sales.Location = new System.Drawing.Point(12, 202);
             this.listView_sales.Name = "listView_sales";
-            this.listView_sales.Size = new System.Drawing.Size(1075, 227);
+            this.listView_sales.Size = new System.Drawing.Size(1075, 265);
             this.listView_sales.TabIndex = 3;
             this.listView_sales.UseCompatibleStateImageBehavior = false;
             this.listView_sales.View = System.Windows.Forms.View.Details;
@@ -606,7 +616,7 @@
             // 
             this.button_findItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_findItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_findItem.Location = new System.Drawing.Point(12, 450);
+            this.button_findItem.Location = new System.Drawing.Point(12, 474);
             this.button_findItem.Name = "button_findItem";
             this.button_findItem.Size = new System.Drawing.Size(75, 49);
             this.button_findItem.TabIndex = 8;
@@ -618,7 +628,7 @@
             // 
             this.button_newItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_newItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_newItem.Location = new System.Drawing.Point(93, 450);
+            this.button_newItem.Location = new System.Drawing.Point(93, 474);
             this.button_newItem.Name = "button_newItem";
             this.button_newItem.Size = new System.Drawing.Size(75, 49);
             this.button_newItem.TabIndex = 9;
@@ -630,7 +640,7 @@
             // 
             this.button_customerList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_customerList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.button_customerList.Location = new System.Drawing.Point(174, 450);
+            this.button_customerList.Location = new System.Drawing.Point(174, 474);
             this.button_customerList.Name = "button_customerList";
             this.button_customerList.Size = new System.Drawing.Size(75, 49);
             this.button_customerList.TabIndex = 10;
@@ -642,7 +652,7 @@
             // 
             this.button_Discount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Discount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_Discount.Location = new System.Drawing.Point(336, 450);
+            this.button_Discount.Location = new System.Drawing.Point(336, 474);
             this.button_Discount.Name = "button_Discount";
             this.button_Discount.Size = new System.Drawing.Size(75, 49);
             this.button_Discount.TabIndex = 11;
@@ -654,7 +664,7 @@
             // 
             this.button_clearSale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_clearSale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_clearSale.Location = new System.Drawing.Point(417, 450);
+            this.button_clearSale.Location = new System.Drawing.Point(417, 474);
             this.button_clearSale.Name = "button_clearSale";
             this.button_clearSale.Size = new System.Drawing.Size(75, 49);
             this.button_clearSale.TabIndex = 12;
@@ -666,7 +676,7 @@
             // 
             this.button_logOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_logOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_logOut.Location = new System.Drawing.Point(498, 450);
+            this.button_logOut.Location = new System.Drawing.Point(498, 474);
             this.button_logOut.Name = "button_logOut";
             this.button_logOut.Size = new System.Drawing.Size(75, 49);
             this.button_logOut.TabIndex = 13;
@@ -678,9 +688,9 @@
             // 
             this.button_checkout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_checkout.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.button_checkout.Location = new System.Drawing.Point(925, 450);
+            this.button_checkout.Location = new System.Drawing.Point(925, 474);
             this.button_checkout.Name = "button_checkout";
-            this.button_checkout.Size = new System.Drawing.Size(156, 49);
+            this.button_checkout.Size = new System.Drawing.Size(162, 49);
             this.button_checkout.TabIndex = 14;
             this.button_checkout.Text = "Checkout";
             this.button_checkout.UseVisualStyleBackColor = true;
@@ -689,7 +699,7 @@
             // button_newSaleMember
             // 
             this.button_newSaleMember.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_newSaleMember.Location = new System.Drawing.Point(844, 450);
+            this.button_newSaleMember.Location = new System.Drawing.Point(844, 474);
             this.button_newSaleMember.Name = "button_newSaleMember";
             this.button_newSaleMember.Size = new System.Drawing.Size(75, 49);
             this.button_newSaleMember.TabIndex = 15;
@@ -700,7 +710,7 @@
             // button_newSaleNonMember
             // 
             this.button_newSaleNonMember.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_newSaleNonMember.Location = new System.Drawing.Point(753, 450);
+            this.button_newSaleNonMember.Location = new System.Drawing.Point(753, 474);
             this.button_newSaleNonMember.Name = "button_newSaleNonMember";
             this.button_newSaleNonMember.Size = new System.Drawing.Size(85, 49);
             this.button_newSaleNonMember.TabIndex = 16;
@@ -712,7 +722,7 @@
             // 
             this.button_staffList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_staffList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.button_staffList.Location = new System.Drawing.Point(255, 450);
+            this.button_staffList.Location = new System.Drawing.Point(255, 474);
             this.button_staffList.Name = "button_staffList";
             this.button_staffList.Size = new System.Drawing.Size(75, 49);
             this.button_staffList.TabIndex = 17;
@@ -720,11 +730,63 @@
             this.button_staffList.UseVisualStyleBackColor = true;
             this.button_staffList.Click += new System.EventHandler(this.button_staffList_Click);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel_accType,
+            this.toolStripStatusLabel_state});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 527);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1099, 22);
+            this.statusStrip1.TabIndex = 18;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel_accType
+            // 
+            this.toolStripStatusLabel_accType.Name = "toolStripStatusLabel_accType";
+            this.toolStripStatusLabel_accType.Size = new System.Drawing.Size(79, 17);
+            this.toolStripStatusLabel_accType.Text = "Account Type";
+            // 
+            // toolStripStatusLabel_state
+            // 
+            this.toolStripStatusLabel_state.Name = "toolStripStatusLabel_state";
+            this.toolStripStatusLabel_state.Size = new System.Drawing.Size(33, 17);
+            this.toolStripStatusLabel_state.Text = "State";
+            // 
+            // iToolStripMenuItem
+            // 
+            this.iToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.staffToolStripMenuItem2,
+            this.customersToolStripMenuItem2,
+            this.productsToolStripMenuItem2});
+            this.iToolStripMenuItem.Name = "iToolStripMenuItem";
+            this.iToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.iToolStripMenuItem.Text = "Import";
+            // 
+            // staffToolStripMenuItem2
+            // 
+            this.staffToolStripMenuItem2.Name = "staffToolStripMenuItem2";
+            this.staffToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.staffToolStripMenuItem2.Text = "Staff";
+            // 
+            // customersToolStripMenuItem2
+            // 
+            this.customersToolStripMenuItem2.Name = "customersToolStripMenuItem2";
+            this.customersToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.customersToolStripMenuItem2.Text = "Customers";
+            // 
+            // productsToolStripMenuItem2
+            // 
+            this.productsToolStripMenuItem2.Name = "productsToolStripMenuItem2";
+            this.productsToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.productsToolStripMenuItem2.Text = "Products";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1099, 511);
+            this.ClientSize = new System.Drawing.Size(1099, 549);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.button_staffList);
             this.Controls.Add(this.button_newSaleNonMember);
             this.Controls.Add(this.button_newSaleMember);
@@ -750,6 +812,8 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -823,6 +887,13 @@
         private System.Windows.Forms.ToolStripMenuItem customersToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem productsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem transactionsToolStripMenuItem;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_accType;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel_state;
+        private System.Windows.Forms.ToolStripMenuItem iToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem staffToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem customersToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem productsToolStripMenuItem2;
     }
 }
 

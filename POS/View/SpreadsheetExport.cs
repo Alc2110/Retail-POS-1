@@ -44,6 +44,7 @@ namespace POS.View
             try
             {
                 // save the spreadsheet
+
                 // create a save file dialog
                 System.Windows.Forms.SaveFileDialog saveSpreadsheetDialog = new System.Windows.Forms.SaveFileDialog();
                 saveSpreadsheetDialog.Filter = "Excel spreadsheet|*.xlsx";

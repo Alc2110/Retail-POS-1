@@ -196,7 +196,7 @@ namespace Model.DataAccessLayer
 
         public void decrementQuantity(string productID)
         {
-            string queryDecrementQuantity = "";
+            
         }
 
         public void setQuantity(string productID, int quantity)
@@ -204,9 +204,50 @@ namespace Model.DataAccessLayer
 
         }
 
-        public int updateProduct(Product newProduct, Product oldProduct)
+        public void updateProduct(int id, string productIdNumber, string description, int quantity, float price)
         {
-            throw new NotImplementedException();
+            string queryUpdateProduct = "UPDATE Products " +
+                                        "SET ProductIDNumber = @idNumber, Description_ = @desc, Quantity = @quantity, Price = @price " +
+                                        "WHERE ProductID = " + id + ";";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+                {
+                    SqlCommand cmd = new SqlCommand(queryUpdateProduct, conn);
+
+                    // paramterise
+                    SqlParameter idNumParam = new SqlParameter();
+                    idNumParam.ParameterName = "@idNumber";
+                    idNumParam.Value = productIdNumber;
+                    cmd.Parameters.Add(idNumParam);
+
+                    SqlParameter descParam = new SqlParameter();
+                    descParam.ParameterName = "@desc";
+                    descParam.Value = description;
+                    cmd.Parameters.Add(descParam);
+
+                    SqlParameter quantParam = new SqlParameter();
+                    quantParam.ParameterName = "@quantity";
+                    quantParam.Value = quantity;
+                    cmd.Parameters.Add(quantParam);
+
+                    SqlParameter priceParam = new SqlParameter();
+                    priceParam.ParameterName = "@price";
+                    priceParam.Value = price;
+                    cmd.Parameters.Add(priceParam);
+
+                    // attempt a connection
+                    conn.Open();
+
+                    // execute the query
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw;
+            }
         }
     }
 }

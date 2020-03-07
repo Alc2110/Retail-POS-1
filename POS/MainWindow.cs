@@ -41,6 +41,9 @@ namespace POS
             comboBox_customerState.Items.Add("WA");
             comboBox_customerState.Items.Add("Other");
 
+            // TODO: implement this
+            scriptingToolStripMenuItem.Enabled = false;
+
             listView_sales.GridLines = true;
 
             setUI();
@@ -58,6 +61,8 @@ namespace POS
 
         private void setUI()
         {
+            logger.Info("Resetting the main window");
+
             currentState = State.READY;
             logger.Info("Current state: " + currentState.ToString());
 
@@ -118,7 +123,7 @@ namespace POS
             button_newSaleMember.Enabled = true;
             button_newSaleNonMember.Enabled = true;
 
-            textBox_itemProductID.Enabled = false;
+            textBox_itemProductID.Enabled = true;
             textBox_itemQuantity.Enabled = false;
 
             richTextBox_itemPrice.Text = "0.00";
@@ -127,6 +132,20 @@ namespace POS
             {
                 listView_sales.Items.Remove(listItem);
             }
+
+            switch (Configuration.USER_LEVEL)
+            {
+                case Configuration.Role.ADMIN:
+                    toolStripStatusLabel_accType.Text = "Admin";
+                    break;
+                case Configuration.Role.NORMAL:
+                    toolStripStatusLabel_accType.Text = "Normal";
+                    break;
+                default:
+                    // shouldn't happen
+                    throw new Exception("Unknown user access level");
+            }
+            toolStripStatusLabel_state.Text = "Ready";
         }
 
         #region UI Event Handlers
@@ -150,6 +169,7 @@ namespace POS
                 string nullProductMessage = "Could not find specified product";
                 MessageBox.Show(nullProductMessage, "Retail POS", 
                                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                logger.Warn(nullProductMessage);
 
                 return;
             }
@@ -188,6 +208,7 @@ namespace POS
             if (!itemInList)
             {
                 // item not yet in list
+                logger.Info("Item of this type not yet in list. Adding item to list");
                 // add it to the list
                 string[] itemArr = new string[5];
                 itemArr[0] = retrievedProduct.getProductIDNumber();
@@ -241,6 +262,8 @@ namespace POS
 
         private void button_newSaleNonMember_Click(object sender, EventArgs e)
         {
+            logger.Info("Initiating nom-member sale");
+
             button_newSaleMember.Enabled = false;
             button_newSaleNonMember.Enabled = false;
 
@@ -249,6 +272,7 @@ namespace POS
             textBox_itemProductID.Enabled = true;
 
             currentState = State.SALE_NON_MEMBER;
+            toolStripStatusLabel_state.Text = "Non-member sale";
         }
 
         private void button_clearSale_Click(object sender, EventArgs e)
@@ -265,6 +289,7 @@ namespace POS
                                                             "Retail POS", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 if (dialogResult==DialogResult.Yes)
                 {
+                    logger.Info("Clearing sale");
                     setUI();
                 }
                 else if (dialogResult==DialogResult.No)
@@ -354,18 +379,21 @@ namespace POS
         {
             // get customer data
             string customerAccNumber = textBox_customerAccNo.Text;
+            logger.Info("Attempting to find customer with account number: " + customerAccNumber);
             Customer retrievedCustomer = CustomerOps.getCustomer(Int32.Parse(customerAccNumber));
 
             // could not find customer
             if (retrievedCustomer==null)
             {
-                MessageBox.Show("Could not find specified customer", "Retail POS",
+                string nullCustomerMessage = "Could not find specified customer";
+                MessageBox.Show(nullCustomerMessage, "Retail POS",
                                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 
                 return;
             }
 
             // found the customer
+            logger.Info("Found customer record");
             textBox_customerName.Text = retrievedCustomer.getName();
             textBox_customerPhone.Text = retrievedCustomer.getPhoneNumber();
             textBox_customerEmail.Text = retrievedCustomer.getEmail();
@@ -433,6 +461,7 @@ namespace POS
                 DialogResult logoutConfirmation = MessageBox.Show("A sale is taking place. Do you really want to log out?", "Retail POS", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 if (logoutConfirmation == DialogResult.Yes)
                 {
+                    logger.Info("Logging out");
                     LoginForm loginForm = new LoginForm();
                     loginForm.Show();
                     this.Close();
@@ -458,6 +487,8 @@ namespace POS
         private void button_newSaleMember_Click(object sender, EventArgs e)
         {
             currentState = State.SALE_MEMBER;
+            toolStripStatusLabel_state.Text = "Member Sale";
+            logger.Info("Initiating member sale");
 
             button_clearSale.Enabled = true;
 
@@ -475,7 +506,11 @@ namespace POS
         {
             if (textBox_itemProductID.Text!=string.Empty)
             {
-                button_addItem.Enabled = true;
+                if (currentState == State.SALE_MEMBER || currentState == State.SALE_NON_MEMBER)
+                {
+                    button_addItem.Enabled = true;
+                }
+
                 button_priceLookup.Enabled = true;
             }
             else
@@ -725,11 +760,14 @@ namespace POS
             if (retrievedProduct==null)
             {
                 MessageBox.Show("Could not find specified product", "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                return;
             }
             else
             {
                 MessageBox.Show("Product ID: " + productIDnumber + "\nDescription: " + retrievedProduct.getDescription() +
                                 "\nPrice: " + retrievedProduct.getPrice().ToString(), "Item Lookup", MessageBoxButtons.OK);
+
             }
 
             textBox_itemProductID.Text = string.Empty;
@@ -797,6 +835,8 @@ namespace POS
                                                      System.Windows.Forms.MessageBoxIcon.Error);
                 logger.Error(ex, "Error saving spreadsheet file: " + ex.Message);
                 logger.Error("Stack trace: ", ex.StackTrace);
+
+                return;
             }
 
             // at this point, it succeeded
@@ -832,6 +872,8 @@ namespace POS
                                                      System.Windows.Forms.MessageBoxIcon.Error);
                 logger.Error(ex, "Error saving spreadsheet file: " + ex.Message);
                 logger.Error("Stack trace: ", ex.StackTrace);
+
+                return;
             }
 
             // at this point, it succeeded
@@ -868,6 +910,8 @@ namespace POS
                                                      System.Windows.Forms.MessageBoxIcon.Error);
                 logger.Error(ex, "Error saving spreadsheet file: " + ex.Message);
                 logger.Error("Stack trace: ", ex.StackTrace);
+
+                return;
             }
 
             // at this point, it succeeded
@@ -876,6 +920,38 @@ namespace POS
                                                  System.Windows.Forms.MessageBoxButtons.OK,
                                                  System.Windows.Forms.MessageBoxIcon.Information);
             logger.Info("Saved spreadsheet file");
+        }
+
+        private void productsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // create an instance of the Controller
+            Controller.ProductsSpreadsheetImport import = new POS.Controller.ProductsSpreadsheetImport();
+
+            // execute it
+            try
+            {
+                import.openSpreadsheet();
+                import.importUpdate();
+            }
+            catch (Exception ex)
+            {
+                // it failed
+                // tell the user and the logger
+                System.Windows.Forms.MessageBox.Show("Error updating product data: " + ex.Message, "Retail POS",
+                                                     System.Windows.Forms.MessageBoxButtons.OK,
+                                                     System.Windows.Forms.MessageBoxIcon.Error);
+                logger.Error(ex, "Error updating product data: " + ex.Message);
+                logger.Error("Stack trace: " + ex.StackTrace);
+
+                return;
+            }
+
+            // at this point, it succeeded
+            // tell the user and the logger
+            System.Windows.Forms.MessageBox.Show("Successfully updated product data", "Retail POS",
+                                                System.Windows.Forms.MessageBoxButtons.OK,
+                                                System.Windows.Forms.MessageBoxIcon.Information);
+            logger.Info("Updated product data");
         }
     }
 }

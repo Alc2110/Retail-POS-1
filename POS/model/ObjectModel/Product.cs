@@ -2,7 +2,7 @@
 
 namespace Model.ObjectModel
 {
-    public class Product
+    public class Product : IEquatable<Product>
     {
         // default ctor
         public Product()
@@ -17,6 +17,17 @@ namespace Model.ObjectModel
             this.Description = Description;
             this.Quantity = Quantity;
             this.price = price;
+        }
+
+        // equality comparer
+        public bool Equals(Product that)
+        {
+            if ((this.ProductIDNumber==that.getProductIDNumber()) && (this.Description==that.getDescription()))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private long ProductID;
