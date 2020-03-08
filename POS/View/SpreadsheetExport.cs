@@ -10,15 +10,32 @@ using System.IO;
 
 namespace POS.View
 {
+    public class SpreadsheetExportFactory
+    {
+        public SpreadsheetExport getSpreadsheetExportView(string exportType)
+        {
+            switch (exportType)
+            {
+                case "Staff":
+                    return new StaffSpreadsheetExport(exportType);
+                case "Customer":
+                    return new CustomerSpreadsheetExport(exportType);
+                case "Product":
+                    return new ProductSpreadsheetExport(exportType);
+                case "Transaction":
+                    return new TransactionSpreadsheetExport(exportType);
+                default:
+                    // this shouldn't be allowed to happen!
+                    throw new Exception("Invalid spreadsheet export type requested");
+            }
+        }
+    }
+
     // TODO: continue factoring out common code
     public abstract class SpreadsheetExport
     {
         public string exportType;
         protected string[] headers;
-
-        // row constants
-        protected int SPREADSHEET_HEADER_ROW = 6;
-        protected int SPREADSHEET_ROW_OFFSET = 7;
 
         // spreadsheet objects
         protected ExcelPackage spreadsheet;
@@ -75,15 +92,18 @@ namespace POS.View
             applyThickAllBorders(this.worksheet.Cells["A1:B1"]);
             applyThickAllBorders(this.worksheet.Cells["A2:B2"]);
             applyBottomThickBorders(this.worksheet.Cells["A4:B4"]);
+            applyRightThickBorders(this.worksheet.Cells["B3"]);
             applyRightThickBorders(this.worksheet.Cells["B4"]);
 
             // write headers
             for (int i = 0; i < headers.Length; i++)
             {
-                this.worksheet.Cells[SPREADSHEET_HEADER_ROW, i + 1].Value = headers[i];
+                this.worksheet.Cells[Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, i + 1].Value = headers[i];
             }
-            applyThickAllBorders(this.worksheet.Cells[SPREADSHEET_HEADER_ROW, 1, SPREADSHEET_HEADER_ROW, headers.Length]);
-            colourHeader(this.worksheet.Cells[SPREADSHEET_HEADER_ROW, 1, SPREADSHEET_HEADER_ROW, headers.Length]);
+            applyThickAllBorders(this.worksheet.Cells[Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, 1, 
+                                 Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, headers.Length]);
+            colourHeader(this.worksheet.Cells[Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, 1, 
+                        Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, headers.Length]);
 
             // write data
             writeData();
@@ -189,7 +209,7 @@ namespace POS.View
 
         protected override void writeData()
         {
-            int row = SPREADSHEET_ROW_OFFSET;
+            int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
             for (int i = 0; i < this.customerList.Count; i++)
             {
                 Customer currCustomer = this.customerList[i];
@@ -250,7 +270,7 @@ namespace POS.View
 
         protected override void writeData()
         {
-            int row = SPREADSHEET_ROW_OFFSET;
+            int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
             for (int i = 0; i < this.staffList.Count; i++)
             {
                 Staff staff = this.staffList[i];
@@ -308,7 +328,7 @@ namespace POS.View
 
         protected override void writeData()
         {
-            int row = SPREADSHEET_ROW_OFFSET;
+            int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
             for (int i = 0; i < this.productList.Count; i++)
             {
                 Product product = this.productList[i];
@@ -368,7 +388,7 @@ namespace POS.View
 
         protected override void writeData()
         {
-            int row = SPREADSHEET_ROW_OFFSET;
+            int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
             for (int i = 0; i < this.transactionList.Count; i++)
             {
                 Transaction transaction = this.transactionList[i];

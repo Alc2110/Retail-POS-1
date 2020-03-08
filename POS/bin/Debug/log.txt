@@ -235,3 +235,25 @@ Starting Retail POS
 2020-03-07 21:43:26.8270|INFO|POS.MainWindow|Initiating nom-member sale
 2020-03-07 21:43:30.7055|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9300830002399
 2020-03-07 21:43:30.7055|INFO|POS.MainWindow|Item of this type not yet in list. Adding item to list
+2020-03-08 19:16:04.7170|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-08 19:16:04.8120|INFO|POS.LoginForm|Initialising login form
+2020-03-08 19:16:40.5376|INFO|POS.LoginForm|Attempting connection with database
+2020-03-08 19:16:41.8147|INFO|POS.LoginForm|Admin user
+2020-03-08 19:16:44.0618|INFO|POS.LoginForm|Login successful
+2020-03-08 19:16:44.4602|INFO|POS.MainWindow|Initialising main window
+2020-03-08 19:16:44.4602|INFO|POS.MainWindow|Resetting the main window
+2020-03-08 19:16:44.4602|INFO|POS.MainWindow|Current state: READY
+2020-03-08 19:16:44.4602|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-08 19:17:14.8461|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-08 19:21:39.8879|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-08 19:21:39.9749|INFO|POS.LoginForm|Initialising login form
+2020-03-08 19:21:48.6220|INFO|POS.LoginForm|Attempting connection with database
+2020-03-08 19:21:49.1323|INFO|POS.LoginForm|Admin user
+2020-03-08 19:21:49.7009|INFO|POS.LoginForm|Login successful
+2020-03-08 19:21:49.8049|INFO|POS.MainWindow|Initialising main window
+2020-03-08 19:21:49.8049|INFO|POS.MainWindow|Resetting the main window
+2020-03-08 19:21:49.8049|INFO|POS.MainWindow|Current state: READY
+2020-03-08 19:21:49.8049|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-08 19:22:07.2034|INFO|POS.MainWindow|Saved spreadsheet file

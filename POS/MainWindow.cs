@@ -166,10 +166,12 @@ namespace POS
             // could not find product
             if (retrievedProduct==null)
             {
+                // tell the user and the logger
                 string nullProductMessage = "Could not find specified product";
                 MessageBox.Show(nullProductMessage, "Retail POS", 
                                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 logger.Warn(nullProductMessage);
+
                 textBox_itemProductID.Text = string.Empty;
 
                 return;
@@ -392,6 +394,7 @@ namespace POS
                 string nullCustomerMessage = "Could not find specified customer";
                 MessageBox.Show(nullCustomerMessage, "Retail POS",
                                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                logger.Warn(nullCustomerMessage);
 
                 return;
             }
@@ -516,27 +519,6 @@ namespace POS
                     button_addItem.Enabled = true;
                     textBox_itemQuantity.Enabled = true;
 
-                    /*
-                    // check if this product is already in the list
-                    bool itemInList = false;
-                    foreach (ListViewItem item in listView_sales.Items)
-                    {
-                        if (item.SubItems[0].Text.Equals(textBox_itemProductID.Text))
-                        {
-                            // it is
-                            // get the quantity, and put it in the item quantity textbox
-                            itemInList = true;
-                            string sQuantity = item.SubItems[2].Text;
-                            textBox_itemQuantity.Text = sQuantity;
-
-                            break;
-                        }
-                    }
-                    if (!itemInList)
-                    {
-                        textBox_itemQuantity.Text = "1";
-                    }
-                    */
                     textBox_itemQuantity.Text = "1";
                 }
 
@@ -675,8 +657,13 @@ namespace POS
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("Error in transaction: " + ex.Message, "Retail POS",
+                            // it failed
+                            // tell the user and the logger
+                            string transactionErrorMessage = "Error in transaction: " + ex.Message;
+                            MessageBox.Show(transactionErrorMessage, "Retail POS",
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            logger.Error(ex, transactionErrorMessage);
+                            logger.Error("Stack trace: " + ex.StackTrace);
 
                             return;
                         }
@@ -698,8 +685,13 @@ namespace POS
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show("Error in transaction: " + ex.Message, "Retail POS",
+                            // it failed
+                            // tell the user and the logger
+                            string transactionErrorMessage = "Error in transaction: " + ex.Message;
+                            MessageBox.Show(transactionErrorMessage, "Retail POS",
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            logger.Error(ex, transactionErrorMessage);
+                            logger.Error("Stack trace: " + ex.StackTrace);
 
                             return;
                         }
@@ -812,55 +804,61 @@ namespace POS
             else
             {
                 // it succeeded
+                // tell the user and the logger
                 MessageBox.Show("Product ID: " + productIDnumber + "\nDescription: " + retrievedProduct.getDescription() +
                                 "\nPrice: " + retrievedProduct.getPrice().ToString(), "Item Lookup", MessageBoxButtons.OK);
+                logger.Info("Successfully retrieved product information");
 
             }
 
             textBox_itemProductID.Text = string.Empty;
         }
 
+        // "export" menu item click events
+        // create a factory
+        SpreadsheetExportFactory spreadsheetExportFactory = new SpreadsheetExportFactory();
         private void staffToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             // export staff data from database
 
             // create an instance of the view
-            StaffSpreadsheetExport exportView = new StaffSpreadsheetExport("Staff");
+            SpreadsheetExport exportView = spreadsheetExportFactory.getSpreadsheetExportView("Staff");
 
             executeExportSpreadsheetView(exportView);
         }
-
         private void customersToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             // export customer data from database
 
             // create an instance of the view
-            CustomerSpreadsheetExport exportView = new CustomerSpreadsheetExport("Customer");
+            SpreadsheetExport exportView = spreadsheetExportFactory.getSpreadsheetExportView("Customer");
 
             executeExportSpreadsheetView(exportView);
         }
-
         private void productsToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             // export product data from database
 
             // create an instance of the view
-            ProductSpreadsheetExport exportView = new ProductSpreadsheetExport("Product");
+            SpreadsheetExport exportView = spreadsheetExportFactory.getSpreadsheetExportView("Product");
 
             // create the spreadsheet
             executeExportSpreadsheetView(exportView);
         }
-
         private void transactionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // export transaction data from database
 
             // create an instance of the view
-            TransactionSpreadsheetExport exportView = new TransactionSpreadsheetExport("Transaction");
+            SpreadsheetExport exportView = spreadsheetExportFactory.getSpreadsheetExportView("Transaction");
 
             executeExportSpreadsheetView(exportView);
         }
 
+        /// <summary>
+        /// Create the export spreadsheet, then show a dialog to save it.
+        /// </summary>
+        /// <param name="exportView">SpreadsheetExport object. Can pass in objects of derived classes (export subtypes)</param>
         private void executeExportSpreadsheetView(SpreadsheetExport exportView)
         {
             // create the spreadsheet

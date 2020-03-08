@@ -33,21 +33,30 @@ namespace POS.Controller
             spreadsheet = new ExcelPackage(fi);
             worksheet = spreadsheet.Workbook.Worksheets[1];
             // TODO: improve this validation
-            if (!((worksheet.Cells["A1"].Value.Equals(Configuration.STORE_NAME)) && (worksheet.Cells["A2"].Value.Equals("Database Export"))))
+            //if (!((worksheet.Cells["A1"].Value.Equals(Configuration.STORE_NAME)) && (worksheet.Cells["A2"].Value.Equals("Database Export"))))
+            if ((spreadsheetCellsHaveData(worksheet.Cells["A1"])) && (spreadsheetCellsHaveData(worksheet.Cells["A2"])))
             {
-                // not a valid import
-                return false;
+                if ((readSpreadsheetCellData(worksheet.Cells["A1"]).Equals(Configuration.STORE_NAME)) && (readSpreadsheetCellData(worksheet.Cells["A2"]).Equals("Database Export")))
+                {
+                    // not a valid import
+                    return false;
+                }
             }
 
             return true;
         }
-
+        // check if cells are null or contain empty string
         protected bool spreadsheetCellsHaveData(ExcelRange cells)
         {
             if ((cells.Value != null) && (!(cells.Value.Equals(string.Empty))))
                 return true;
 
             return false;
+        }
+        // gets the cell value as a string
+        protected string readSpreadsheetCellData(ExcelRange cells)
+        {
+            return cells.Value.ToString();
         }
     }
 

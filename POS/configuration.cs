@@ -20,6 +20,12 @@ namespace POS
 
         public static string STORE_NAME = "Retail POS";
 
+        public static class SpreadsheetConstants
+        {
+            public static int SPREADHSEET_ROW_OFFSET = 7;
+            public static int SPREADSHEET_HEADER_ROW = SPREADHSEET_ROW_OFFSET - 1;
+        }
+
         public static class Logger
         {
             public static void ConfigureLogger()
@@ -28,6 +34,8 @@ namespace POS
 
                 // target where to log to
                 string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                // to a logfile
+                // keep it open to increase performance
                 var logfile = new NLog.Targets.FileTarget("logfile") { FileName = path + @"\log.txt", KeepFileOpen=true, OpenFileCacheTimeout=5 };
 
                 // rules for mapping loggers to targets

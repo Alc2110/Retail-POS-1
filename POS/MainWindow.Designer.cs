@@ -36,10 +36,10 @@
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.databaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.staffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.customersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.productsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.iToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.staffToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.customersToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.productsToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.staffToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.customersToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -97,10 +97,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel_accType = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel_state = new System.Windows.Forms.ToolStripStatusLabel();
-            this.iToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.staffToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.customersToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.productsToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -165,7 +161,6 @@
             this.databaseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.scriptingToolStripMenuItem,
             this.iToolStripMenuItem,
-            this.importToolStripMenuItem,
             this.exportToolStripMenuItem});
             this.databaseToolStripMenuItem.Name = "databaseToolStripMenuItem";
             this.databaseToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
@@ -177,34 +172,33 @@
             this.scriptingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.scriptingToolStripMenuItem.Text = "Scripting";
             // 
-            // importToolStripMenuItem
+            // iToolStripMenuItem
             // 
-            this.importToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.staffToolStripMenuItem,
-            this.customersToolStripMenuItem,
-            this.productsToolStripMenuItem});
-            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.importToolStripMenuItem.Text = "Import Update";
+            this.iToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.staffToolStripMenuItem2,
+            this.customersToolStripMenuItem2,
+            this.productsToolStripMenuItem2});
+            this.iToolStripMenuItem.Name = "iToolStripMenuItem";
+            this.iToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.iToolStripMenuItem.Text = "Import";
             // 
-            // staffToolStripMenuItem
+            // staffToolStripMenuItem2
             // 
-            this.staffToolStripMenuItem.Name = "staffToolStripMenuItem";
-            this.staffToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.staffToolStripMenuItem.Text = "Staff";
+            this.staffToolStripMenuItem2.Name = "staffToolStripMenuItem2";
+            this.staffToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.staffToolStripMenuItem2.Text = "Staff";
             // 
-            // customersToolStripMenuItem
+            // customersToolStripMenuItem2
             // 
-            this.customersToolStripMenuItem.Name = "customersToolStripMenuItem";
-            this.customersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.customersToolStripMenuItem.Text = "Customers";
+            this.customersToolStripMenuItem2.Name = "customersToolStripMenuItem2";
+            this.customersToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.customersToolStripMenuItem2.Text = "Customers";
             // 
-            // productsToolStripMenuItem
+            // productsToolStripMenuItem2
             // 
-            this.productsToolStripMenuItem.Name = "productsToolStripMenuItem";
-            this.productsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.productsToolStripMenuItem.Text = "Products";
-            this.productsToolStripMenuItem.Click += new System.EventHandler(this.productsToolStripMenuItem_Click);
+            this.productsToolStripMenuItem2.Name = "productsToolStripMenuItem2";
+            this.productsToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.productsToolStripMenuItem2.Text = "Products";
             // 
             // exportToolStripMenuItem
             // 
@@ -256,7 +250,7 @@
             // viewHistoryToolStripMenuItem
             // 
             this.viewHistoryToolStripMenuItem.Name = "viewHistoryToolStripMenuItem";
-            this.viewHistoryToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.viewHistoryToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.viewHistoryToolStripMenuItem.Text = "View history";
             this.viewHistoryToolStripMenuItem.Click += new System.EventHandler(this.viewHistoryToolStripMenuItem_Click);
             // 
@@ -753,34 +747,6 @@
             this.toolStripStatusLabel_state.Size = new System.Drawing.Size(33, 17);
             this.toolStripStatusLabel_state.Text = "State";
             // 
-            // iToolStripMenuItem
-            // 
-            this.iToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.staffToolStripMenuItem2,
-            this.customersToolStripMenuItem2,
-            this.productsToolStripMenuItem2});
-            this.iToolStripMenuItem.Name = "iToolStripMenuItem";
-            this.iToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.iToolStripMenuItem.Text = "Import";
-            // 
-            // staffToolStripMenuItem2
-            // 
-            this.staffToolStripMenuItem2.Name = "staffToolStripMenuItem2";
-            this.staffToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
-            this.staffToolStripMenuItem2.Text = "Staff";
-            // 
-            // customersToolStripMenuItem2
-            // 
-            this.customersToolStripMenuItem2.Name = "customersToolStripMenuItem2";
-            this.customersToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
-            this.customersToolStripMenuItem2.Text = "Customers";
-            // 
-            // productsToolStripMenuItem2
-            // 
-            this.productsToolStripMenuItem2.Name = "productsToolStripMenuItem2";
-            this.productsToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
-            this.productsToolStripMenuItem2.Text = "Products";
-            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -878,11 +844,7 @@
         private System.Windows.Forms.Button button_newSaleMember;
         private System.Windows.Forms.Button button_newSaleNonMember;
         private System.Windows.Forms.Button button_staffList;
-        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem staffToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem customersToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem productsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem staffToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem customersToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem productsToolStripMenuItem1;
