@@ -145,6 +145,7 @@ namespace POS
                     // shouldn't happen
                     throw new Exception("Unknown user access level");
             }
+            
             toolStripStatusLabel_state.Text = "Ready";
         }
 
@@ -894,13 +895,15 @@ namespace POS
         private void productsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // create an instance of the Controller
-            Controller.ProductsSpreadsheetImport import = new POS.Controller.ProductsSpreadsheetImport();
+            //Controller.ProductsSpreadsheetImport import = new POS.Controller.ProductsSpreadsheetImport();
 
             // execute it
             try
             {
+                /*
                 import.openSpreadsheet();
                 import.importUpdate();
+                */
             }
             catch (Exception ex)
             {
@@ -921,6 +924,16 @@ namespace POS
                                                 System.Windows.Forms.MessageBoxButtons.OK,
                                                 System.Windows.Forms.MessageBoxIcon.Information);
             logger.Info("Updated product data");
+        }
+
+        private void customersToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            // create an instance of the Controller
+            Controller.CustomerSpreadsheetImport import = new Controller.CustomerSpreadsheetImport("Customer");
+
+            // execute it
+            import.openSpreadsheet();
+            import.importUpdate();
         }
     }
 }

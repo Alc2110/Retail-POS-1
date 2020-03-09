@@ -10,6 +10,16 @@ namespace Model.ServiceLayer
 {
     public static class CustomerOps
     {
+        public static void addCustomer(Customer customer)
+        {
+            // DAO
+            CustomerDAO dao = new CustomerDAO();
+            dao.addCustomer(customer);
+
+            // fire the event
+            getAllCustomers();
+        }
+
         public static void addCustomer(string FullName, string streetAddress, string phoneNumber, string Email, string City, string state, int postcode)
         {
             // object
@@ -56,6 +66,17 @@ namespace Model.ServiceLayer
             // DAO
             CustomerDAO dao = new CustomerDAO();
             dao.addCustomer(newCustomer);
+
+            // fire the event
+            getAllCustomers();
+        }
+
+        public static void updateCustomer(Customer customer)
+        {
+            // strategy: find the customer record in the database with this ID. Update its remaining fields with these values.
+            // DAO
+            CustomerDAO dao = new CustomerDAO();
+            dao.updateCustomer(customer);
 
             // fire the event
             getAllCustomers();

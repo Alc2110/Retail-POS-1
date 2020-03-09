@@ -11,7 +11,7 @@ namespace Model.DataAccessLayer
     {
         IList<Customer> getAllCustomers();
         int deleteCustomer(Customer customer);
-        int addCustomer(Customer customer);
-        int updateCustomer(Customer oldCustomer, Customer newCustomer);
+        void addCustomer(Customer customer);
+        void updateCustomer(Customer customer);
     }
 }

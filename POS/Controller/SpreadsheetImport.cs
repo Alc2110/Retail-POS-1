@@ -10,21 +10,71 @@ using System.IO;
 
 namespace POS.Controller
 {
+    // TODO: continue factoring out common code
+    public class SpreadsheetImportFactory
+    {
+        public SpreadsheetImport getImportSpreadsheetController(string importType)
+        {
+            switch (importType)
+            {
+                case "Staff":
+                    return new StaffSpreadsheetImport(importType);
+                case "Customer":
+                    return new CustomerSpreadsheetImport(importType);
+                case "Product":
+                    return new ProductSpreadsheetImport(importType);
+                default:
+                    // shouldn't be allowed to happen
+                    throw new Exception("Invalid spreadsheet import type");
+            }
+        }
+    }
+
     public abstract class SpreadsheetImport
     {
-        // spreadsheet row constants
-        // TODO: these are also in SpreadsheetExport. Must factor out.
-        protected int SPREADSHEET_HEADER_ROW = 6;
-        protected int SPREADSHEET_ROW_OFFSET = 7;
+        public string importType;
+        protected string[] headers;
 
         // spreadsheet objects
         protected string filePath;
         protected ExcelPackage spreadsheet;
         protected ExcelWorksheet worksheet;
 
+        // ctor
+        public SpreadsheetImport(string importType)
+        {
+
+        }
+
         // spreadsheet handling methods
-        public abstract void openSpreadsheet();
-        public abstract void import();
+        public void openSpreadsheet()
+        {
+            try
+            {
+                // import the spreadsheet
+                // create an open file dialog
+                System.Windows.Forms.OpenFileDialog openSpreadsheetDialog = new System.Windows.Forms.OpenFileDialog();
+                openSpreadsheetDialog.Filter = "Excel spreadsheet |*.xlsx";
+                openSpreadsheetDialog.Title = "Import " + importType + " list as spreadsheet";
+
+                // check if user clicked open button
+                if (openSpreadsheetDialog.ShowDialog()==System.Windows.Forms.DialogResult.OK)
+                {
+                    // get the file info
+                    FileInfo fi = new FileInfo(openSpreadsheetDialog.FileName);
+
+                    // get the spreadsheet
+                    spreadsheet = new ExcelPackage(fi);
+                    worksheet = spreadsheet.Workbook.Worksheets[1];
+                }
+            }
+            catch (Exception ex)
+            {
+                // it failed
+                // pass it up
+                throw;
+            }
+        }
         public abstract void importUpdate();
         protected bool isSpreadsheetValidated()
         {
@@ -33,7 +83,6 @@ namespace POS.Controller
             spreadsheet = new ExcelPackage(fi);
             worksheet = spreadsheet.Workbook.Worksheets[1];
             // TODO: improve this validation
-            //if (!((worksheet.Cells["A1"].Value.Equals(Configuration.STORE_NAME)) && (worksheet.Cells["A2"].Value.Equals("Database Export"))))
             if ((spreadsheetCellsHaveData(worksheet.Cells["A1"])) && (spreadsheetCellsHaveData(worksheet.Cells["A2"])))
             {
                 if ((readSpreadsheetCellData(worksheet.Cells["A1"]).Equals(Configuration.STORE_NAME)) && (readSpreadsheetCellData(worksheet.Cells["A2"]).Equals("Database Export")))
@@ -45,7 +94,7 @@ namespace POS.Controller
 
             return true;
         }
-        // check if cells are null or contain empty string
+        // check if cells are null or contain empty strings
         protected bool spreadsheetCellsHaveData(ExcelRange cells)
         {
             if ((cells.Value != null) && (!(cells.Value.Equals(string.Empty))))
@@ -60,92 +109,116 @@ namespace POS.Controller
         }
     }
 
-    public class ProductsSpreadsheetImport : SpreadsheetImport
+    public class CustomerSpreadsheetImport : SpreadsheetImport
     {
-        private List<Product> spreadsheetProductList = new List<Product>();
-        private List<Product> databaseProductList = new List<Product>();
-
-        public override void openSpreadsheet()
+        public CustomerSpreadsheetImport(string importType) : base(importType)
         {
-            filePath = string.Empty;
 
-            try
-            {
-                // open the file with a dialog
-                using (System.Windows.Forms.OpenFileDialog openSpreadsheetDialog = new System.Windows.Forms.OpenFileDialog())
-                {
-                    openSpreadsheetDialog.Filter = "Excel spreadsheet |*.xlsx";
-
-                    if (openSpreadsheetDialog.ShowDialog()==System.Windows.Forms.DialogResult.OK)
-                    {
-                        // get the path of the file
-                        filePath = openSpreadsheetDialog.FileName;
-                    }
-                }
-
-                // create the spreadsheet objects
-                FileInfo fi = new FileInfo(filePath);
-                this.spreadsheet = new ExcelPackage(fi);
-                this.worksheet = this.spreadsheet.Workbook.Worksheets[1];
-            }
-            catch (Exception ex)
-            {
-                // it failed
-                // pass it up
-                throw;
-            }
-        }
-
-        public override void import()
-        {
-            throw new NotImplementedException();
         }
 
         public override void importUpdate()
         {
-            // at this point, the spreadsheet is assumed to have been validated
-            // if anything is wrong, throw an error
+            // ask the model for all customers in database
+            List<Customer> databaseCustomers = CustomerOps.getAllCustomers();
 
-            // import data
-            // read spreadsheet
-            int row = SPREADSHEET_ROW_OFFSET;
-            while (spreadsheetCellsHaveData(this.worksheet.Cells[row,1]))
+            // check for any Customer records in the spreadsheet that do not exist in the database (import)
+            List<Customer> spreadsheetCustomers = new List<Customer>();
+            // read the spreadsheet
+            int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
+            while (spreadsheetCellsHaveData(this.worksheet.Cells[row,2]))
             {
-                Product currRowProduct = new Product();
-                currRowProduct.setProductID(Int32.Parse(this.worksheet.Cells[row, 1].Value.ToString()));
-                currRowProduct.setProductIDNumber(this.worksheet.Cells[row, 2].Value.ToString());
-                currRowProduct.setDescription(this.worksheet.Cells[row, 3].Value.ToString());
-                currRowProduct.setQuantity(Int32.Parse(this.worksheet.Cells[row, 4].Value.ToString()));
-                currRowProduct.setPrice(float.Parse(this.worksheet.Cells[row, 5].Value.ToString()));
-               
-                this.spreadsheetProductList.Add(currRowProduct);
+                Customer currCustomerRecord = new Customer();
+                if ((this.worksheet.Cells[row, 1].Value != null) && !(this.worksheet.Cells[row, 1].Value.ToString().Equals(string.Empty)))
+                {
+                    currCustomerRecord.setID(Int32.Parse(this.worksheet.Cells[row, 1].Value.ToString()));
+                }
+                else
+                {
+                    currCustomerRecord.setID(0);
+                }
+                currCustomerRecord.setName(this.worksheet.Cells[row, 2].Value.ToString());
+                currCustomerRecord.setAddress(this.worksheet.Cells[row, 3].Value.ToString());
+                currCustomerRecord.setPhoneNumber(this.worksheet.Cells[row, 4].Value.ToString());
+                currCustomerRecord.setEmail(this.worksheet.Cells[row, 5].Value.ToString());
+                currCustomerRecord.setCity(this.worksheet.Cells[row, 6].Value.ToString());
+                switch (this.worksheet.Cells[row, 7].Value.ToString())
+                {
+                    case "NSW":
+                        currCustomerRecord.setState(Customer.States.NSW);
+                        break;
+                    case "Vic":
+                        currCustomerRecord.setState(Customer.States.Vic);
+                        break;
+                    case "Qld":
+                        currCustomerRecord.setState(Customer.States.Qld);
+                        break;
+                    case "ACT":
+                        currCustomerRecord.setState(Customer.States.ACT);
+                        break;
+                    case "Tas":
+                        currCustomerRecord.setState(Customer.States.Tas);
+                        break;
+                    case "SA":
+                        currCustomerRecord.setState(Customer.States.SA);
+                        break;
+                    case "NT":
+                        currCustomerRecord.setState(Customer.States.NT);
+                        break;
+                    case "Other":
+                        currCustomerRecord.setState(Customer.States.Other);
+                        break;
+                    default:
+                        // shouldn't happen
+                        throw new Exception("Invalid data in database");
+                }
+                currCustomerRecord.setPostcode(Int32.Parse(this.worksheet.Cells[row, 8].Value.ToString()));
+
+                spreadsheetCustomers.Add(currCustomerRecord);
 
                 row++;
             }
-            // database
-            databaseProductList = ProductOps.getAllProducts();
 
-            // do the comparison
-            // for existing products in database (unique id's are product number and description, update them).
-            foreach (Product spreadsheetProduct in this.spreadsheetProductList)
+            foreach (Customer spreadsheetCustomerRecord in spreadsheetCustomers)
             {
-                foreach (Product databaseProduct in this.databaseProductList)
+                if (!databaseCustomers.Any(c => c.getID()==spreadsheetCustomerRecord.getID()))
                 {
-                    if (spreadsheetProduct.Equals(databaseProduct))
-                    {
-                        // product number (barcode) and description match
-                        // update
-                        databaseProduct.setQuantity(spreadsheetProduct.getQuantity());
-                        databaseProduct.setPrice(spreadsheetProduct.getPrice());
-                    }
-                }
-            }
+                    // no customer exists in database with this ID
+                    // insert the record
+                    CustomerOps.addCustomer(spreadsheetCustomerRecord);
 
-            // send the imported/updated data to the model and database
-            foreach (Product databaseProduct in this.databaseProductList)
-            {
-                ProductOps.updateProduct(databaseProduct);
+                    break;
+                }
+
+                // customer record already exists
+                // update it
+                CustomerOps.updateCustomer(spreadsheetCustomerRecord);
             }
+        }
+    }
+
+    public class StaffSpreadsheetImport : SpreadsheetImport
+    {
+        public StaffSpreadsheetImport(string importType) : base(importType)
+        {
+
+        }
+
+        public override void importUpdate()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ProductSpreadsheetImport : SpreadsheetImport
+    {
+        public ProductSpreadsheetImport(string importType) : base(importType)
+        {
+
+        }
+
+        public override void importUpdate()
+        {
+            throw new NotImplementedException();
         }
     }
 }
