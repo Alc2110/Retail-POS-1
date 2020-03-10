@@ -197,11 +197,64 @@ namespace Model.DataAccessLayer
             return result;
         }
 
-        public int updateStaff(Staff newStaff, Staff oldStaff)
+        public void updateStaff(Staff staff)
         {
-            int result = 0;
+            // StaffID in the database is PK and AI
 
-            return result;
+
+            string queryUpdateCustomer = "UPDATE Staff " +
+                                         "SET FullName = @name, Passwordhash = @passHash, Privelege = @privelege " +
+                                         "WHERE StaffID = @id;";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+                {
+                    SqlCommand cmd = new SqlCommand(queryUpdateCustomer, conn);
+
+                    // parameterise
+                    SqlParameter idParam = new SqlParameter();
+                    idParam.ParameterName = "@id";
+                    idParam.Value = staff.getID();
+                    cmd.Parameters.Add(idParam);
+
+                    SqlParameter nameParam = new SqlParameter();
+                    nameParam.ParameterName = "@name";
+                    nameParam.Value = staff.getName();
+                    cmd.Parameters.Add(nameParam);
+
+                    SqlParameter passParam = new SqlParameter();
+                    passParam.ParameterName = "@passHash";
+                    passParam.Value = staff.getPasswordHash();
+                    cmd.Parameters.Add(passParam);
+
+                    SqlParameter privParam = new SqlParameter();
+                    privParam.ParameterName = "@privelege";
+                    switch (staff.getPrivelege())
+                    {
+                        case Staff.Privelege.Admin:
+                            privParam.Value = "Admin";
+                            break;
+                        case Staff.Privelege.Normal:
+                            privParam.Value = "Normal";
+                            break;
+                        default:
+                            // should never happen
+                            throw new Exception("Invalid staff data");
+                    }
+                    cmd.Parameters.Add(privParam);
+
+                    // try a connection
+                    conn.Open();
+
+                    // execute the query
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

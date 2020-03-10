@@ -362,3 +362,69 @@ Starting Retail POS
 2020-03-09 22:16:24.4772|INFO|POS.MainWindow|Current state: READY
 2020-03-09 22:16:24.4772|INFO|POS.MainWindow|Current user level: ADMIN
 2020-03-09 22:16:39.7939|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-10 19:13:41.2138|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-10 19:13:41.4238|INFO|POS.LoginForm|Initialising login form
+2020-03-10 19:13:50.1162|INFO|POS.LoginForm|Attempting connection with database
+2020-03-10 19:13:53.1140|INFO|POS.LoginForm|Admin user
+2020-03-10 19:13:59.2527|INFO|POS.LoginForm|Login successful
+2020-03-10 19:13:59.8950|INFO|POS.MainWindow|Initialising main window
+2020-03-10 19:13:59.8950|INFO|POS.MainWindow|Resetting the main window
+2020-03-10 19:13:59.8950|INFO|POS.MainWindow|Current state: READY
+2020-03-10 19:13:59.8950|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-10 19:14:20.2930|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-10 19:43:12.9356|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-10 19:43:13.1016|INFO|POS.LoginForm|Initialising login form
+2020-03-10 19:43:20.0324|INFO|POS.LoginForm|Attempting connection with database
+2020-03-10 19:43:20.7216|INFO|POS.LoginForm|Admin user
+2020-03-10 19:43:21.4908|INFO|POS.LoginForm|Login successful
+2020-03-10 19:43:21.8709|INFO|POS.MainWindow|Initialising main window
+2020-03-10 19:43:21.8709|INFO|POS.MainWindow|Resetting the main window
+2020-03-10 19:43:21.8709|INFO|POS.MainWindow|Current state: READY
+2020-03-10 19:43:21.8709|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-10 19:43:49.5972|ERROR|POS.MainWindow|Error importing  data: Must declare the scalar variable "@privelegeWHERE".
+2020-03-10 19:43:50.1543|ERROR|POS.MainWindow|Stack trace:    at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption, Boolean shouldCacheForAlwaysEncrypted)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   at System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   at Model.DataAccessLayer.StaffDAO.updateStaff(Staff staff) in C:\Users\alexc\Documents\GitHub\Retail-POS\POS\model\DataAccessLayer\StaffDAO.cs:line 256
+   at Model.ServiceLayer.StaffOps.updateStaff(Staff staff) in C:\Users\alexc\Documents\GitHub\Retail-POS\POS\model\ServiceLayer\StaffOps.cs:line 63
+   at POS.Controller.StaffSpreadsheetImport.importUpdate() in C:\Users\alexc\Documents\GitHub\Retail-POS\POS\Controller\SpreadsheetImport.cs:line 259
+   at POS.MainWindow.staffToolStripMenuItem2_Click(Object sender, EventArgs e) in C:\Users\alexc\Documents\GitHub\Retail-POS\POS\MainWindow.cs:line 966
+2020-03-10 19:44:37.6520|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-10 19:44:37.9261|INFO|POS.LoginForm|Initialising login form
+2020-03-10 19:44:43.9266|INFO|POS.LoginForm|Attempting connection with database
+2020-03-10 19:44:46.2612|INFO|POS.LoginForm|Admin user
+2020-03-10 19:44:47.4347|INFO|POS.LoginForm|Login successful
+2020-03-10 19:44:47.6751|INFO|POS.MainWindow|Initialising main window
+2020-03-10 19:44:47.6751|INFO|POS.MainWindow|Resetting the main window
+2020-03-10 19:44:47.6751|INFO|POS.MainWindow|Current state: READY
+2020-03-10 19:44:47.6751|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-10 20:06:00.9637|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-10 20:06:01.1648|INFO|POS.LoginForm|Initialising login form
+2020-03-10 20:06:07.2913|INFO|POS.LoginForm|Attempting connection with database
+2020-03-10 20:06:07.6964|INFO|POS.LoginForm|Admin user
+2020-03-10 20:06:08.2636|INFO|POS.LoginForm|Login successful
+2020-03-10 20:06:08.3816|INFO|POS.MainWindow|Initialising main window
+2020-03-10 20:06:08.3816|INFO|POS.MainWindow|Resetting the main window
+2020-03-10 20:06:08.3816|INFO|POS.MainWindow|Current state: READY
+2020-03-10 20:06:08.3816|INFO|POS.MainWindow|Current user level: ADMIN
+2020-03-10 20:06:23.0474|INFO|POS.MainWindow|Saved spreadsheet file
+2020-03-10 20:09:52.5858|INFO|POS.LoginForm|
+Starting Retail POS
+2020-03-10 20:09:52.7539|INFO|POS.LoginForm|Initialising login form
+2020-03-10 20:09:58.0682|INFO|POS.LoginForm|Attempting connection with database
+2020-03-10 20:09:58.6614|INFO|POS.LoginForm|Admin user
+2020-03-10 20:09:59.3075|INFO|POS.LoginForm|Login successful
+2020-03-10 20:09:59.4026|INFO|POS.MainWindow|Initialising main window
+2020-03-10 20:09:59.4026|INFO|POS.MainWindow|Resetting the main window
+2020-03-10 20:09:59.4026|INFO|POS.MainWindow|Current state: READY
+2020-03-10 20:09:59.4026|INFO|POS.MainWindow|Current user level: ADMIN

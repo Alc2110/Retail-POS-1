@@ -12,6 +12,6 @@ namespace Model.DataAccessLayer
         IList<Staff> getAllStaff();
         int deleteStaff(Staff staff);
         int addStaff(Staff staff);
-        int updateStaff(Staff oldStaff, Staff newStaff);
+        void updateStaff(Staff staff);
     }
 }

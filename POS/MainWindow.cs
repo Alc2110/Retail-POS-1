@@ -825,6 +825,7 @@ namespace POS
             // create an instance of the view
             SpreadsheetExport exportView = spreadsheetExportFactory.getSpreadsheetExportView("Staff");
 
+            // execute it
             executeExportSpreadsheetView(exportView);
         }
         private void customersToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -834,6 +835,7 @@ namespace POS
             // create an instance of the view
             SpreadsheetExport exportView = spreadsheetExportFactory.getSpreadsheetExportView("Customer");
 
+            // execute it
             executeExportSpreadsheetView(exportView);
         }
         private void productsToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -843,7 +845,7 @@ namespace POS
             // create an instance of the view
             SpreadsheetExport exportView = spreadsheetExportFactory.getSpreadsheetExportView("Product");
 
-            // create the spreadsheet
+            // execute it
             executeExportSpreadsheetView(exportView);
         }
         private void transactionsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -853,6 +855,7 @@ namespace POS
             // create an instance of the view
             SpreadsheetExport exportView = spreadsheetExportFactory.getSpreadsheetExportView("Transaction");
 
+            // execute it
             executeExportSpreadsheetView(exportView);
         }
 
@@ -892,6 +895,8 @@ namespace POS
             logger.Info("Saved spreadsheet file");
         }
 
+        // "import" menu item click events
+        Controller.SpreadsheetImportFactory spreadsheetImportFactory = new Controller.SpreadsheetImportFactory();
         private void productsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // create an instance of the Controller
@@ -901,8 +906,8 @@ namespace POS
             try
             {
                 /*
-                import.openSpreadsheet();
-                import.importUpdate();
+                spreadsheetImport.openSpreadsheet();
+                spreadsheetImport.importUpdate();
                 */
             }
             catch (Exception ex)
@@ -929,11 +934,70 @@ namespace POS
         private void customersToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             // create an instance of the Controller
-            Controller.CustomerSpreadsheetImport import = new Controller.CustomerSpreadsheetImport("Customer");
+            Controller.SpreadsheetImport spreadsheetImport = spreadsheetImportFactory.getImportSpreadsheetController("Customer");
 
-            // execute it
-            import.openSpreadsheet();
-            import.importUpdate();
+            try
+            {
+                // execute it
+                spreadsheetImport.openSpreadsheet();
+                spreadsheetImport.importUpdate();
+            }
+            catch (Exception ex)
+            {
+                // it failed
+                // tell the user and the logger
+                System.Windows.Forms.MessageBox.Show("Error importing " + spreadsheetImport.importType + " data: " + ex.Message, "Retail POS",
+                                                     System.Windows.Forms.MessageBoxButtons.OK,
+                                                     System.Windows.Forms.MessageBoxIcon.Error);
+                logger.Error(ex, "Error importing " + spreadsheetImport.importType + " data: " + ex.Message);
+                logger.Error("Stack trace: " + ex.StackTrace);
+            }
+        }
+
+        private void staffToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            // create an instance of the Controller
+            Controller.SpreadsheetImport spreadsheetImport = spreadsheetImportFactory.getImportSpreadsheetController("Staff");
+
+            try
+            {
+                // execute it
+                spreadsheetImport.openSpreadsheet();
+                spreadsheetImport.importUpdate();
+            }
+            catch (Exception ex)
+            {
+                // it failed
+                // tell the user and the logger
+                System.Windows.Forms.MessageBox.Show("Error importing " + spreadsheetImport.importType + " data: " + ex.Message, "Retail POS",
+                                                     System.Windows.Forms.MessageBoxButtons.OK,
+                                                     System.Windows.Forms.MessageBoxIcon.Error);
+                logger.Error(ex, "Error importing " + spreadsheetImport.importType + " data: " + ex.Message);
+                logger.Error("Stack trace: " + ex.StackTrace);
+            }
+        }
+
+        private void productsToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            // create an instance of the Controller
+            Controller.SpreadsheetImport spreadsheetImport = spreadsheetImportFactory.getImportSpreadsheetController("Product");
+
+            try
+            {
+                // execute it
+                spreadsheetImport.openSpreadsheet();
+                spreadsheetImport.importUpdate();
+            }
+            catch (Exception ex)
+            {
+                // it failed
+                // tell the user and the logger
+                System.Windows.Forms.MessageBox.Show("Error importing " + spreadsheetImport.importType + " data: " + ex.Message, "Retail POS",
+                                                     System.Windows.Forms.MessageBoxButtons.OK,
+                                                     System.Windows.Forms.MessageBoxIcon.Error);
+                logger.Error(ex, "Error importing " + spreadsheetImport.importType + " data: " + ex.Message);
+                logger.Error("Stack trace: " + ex.StackTrace);
+            }
         }
     }
 }

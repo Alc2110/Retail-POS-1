@@ -41,12 +41,26 @@ namespace Model.ServiceLayer
             getAllStaff();
         }
 
+        public static void addStaff(Staff staff)
+        {
+            // DAO
+            StaffDAO dao = new StaffDAO();
+            dao.addStaff(staff);
+        }
+
         public static Staff getStaff(int id)
         {
             // DAO
             // retrieve from database
             StaffDAO dao = new StaffDAO();
             return dao.getStaff(id);
+        }
+
+        public static void updateStaff(Staff staff)
+        {
+            // DAO
+            StaffDAO dao = new StaffDAO();
+            dao.updateStaff(staff);
         }
 
         // event for getting all staff

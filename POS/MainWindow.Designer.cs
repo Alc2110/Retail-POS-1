@@ -187,6 +187,7 @@
             this.staffToolStripMenuItem2.Name = "staffToolStripMenuItem2";
             this.staffToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
             this.staffToolStripMenuItem2.Text = "Staff";
+            this.staffToolStripMenuItem2.Click += new System.EventHandler(this.staffToolStripMenuItem2_Click);
             // 
             // customersToolStripMenuItem2
             // 
@@ -200,6 +201,7 @@
             this.productsToolStripMenuItem2.Name = "productsToolStripMenuItem2";
             this.productsToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
             this.productsToolStripMenuItem2.Text = "Products";
+            this.productsToolStripMenuItem2.Click += new System.EventHandler(this.productsToolStripMenuItem2_Click);
             // 
             // exportToolStripMenuItem
             // 

@@ -10,16 +10,8 @@ namespace Model.ServiceLayer
 {
     public static class ProductOps
     {
-        public static void addProduct(string idNumber, string description, int quantity, float price)
+        public static void addProduct(Product newProduct)
         {
-            // object
-            Product newProduct = new Product();
-            //newProduct.setProductID(id);
-            newProduct.setProductIDNumber(idNumber);
-            newProduct.setDescription(description);
-            newProduct.setQuantity(quantity);
-            newProduct.setPrice(price);
-
             // DAO
             ProductDAO dao = new ProductDAO();
             dao.addProduct(newProduct);

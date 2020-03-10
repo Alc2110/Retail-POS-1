@@ -205,7 +205,59 @@ namespace POS.Controller
 
         public override void importUpdate()
         {
-            throw new NotImplementedException();
+            // ask model for all staff records in database
+            List<Staff> databaseStaff = StaffOps.getAllStaff();
+
+            // check for any Staff records in the spreadsheet that do not exist in the database (import)
+            List<Staff> spreadsheetStaff = new List<Staff>();
+            // read the spreadsheet
+            int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
+            while (spreadsheetCellsHaveData(this.worksheet.Cells[row,2]))
+            {
+                Staff currStaffRecord = new Staff();
+                if ((this.worksheet.Cells[row, 1].Value != null) && !(this.worksheet.Cells[row, 1].Value.ToString().Equals(string.Empty)))
+                {
+                    currStaffRecord.setID(Int32.Parse(this.worksheet.Cells[row, 1].Value.ToString()));
+                }
+                else
+                {
+                    currStaffRecord.setID(0);
+                }
+                currStaffRecord.setName(this.worksheet.Cells[row, 2].Value.ToString());
+                currStaffRecord.setPasswordHash(this.worksheet.Cells[row, 3].Value.ToString());
+                switch (this.worksheet.Cells[row,4].Value.ToString())
+                {
+                    case "Admin":
+                        currStaffRecord.setPrivelege(Staff.Privelege.Admin);
+                        break;
+                    case "Normal":
+                        currStaffRecord.setPrivelege(Staff.Privelege.Normal);
+                        break;
+                    default:
+                        // shouldn't happen
+                        throw new Exception("Invalid data in spreadsheet");
+                }
+
+                spreadsheetStaff.Add(currStaffRecord);
+
+                row++;
+            }
+
+            foreach (Staff spreadsheetStaffRecord in spreadsheetStaff)
+            {
+                if (!spreadsheetStaff.Any(s => s.getID()==spreadsheetStaffRecord.getID()))
+                {
+                    // no staff record exists in database with this ID
+                    // insert the record
+                    StaffOps.addStaff(spreadsheetStaffRecord);
+
+                    break;
+                }
+
+                // staff record already exists
+                // update it
+                StaffOps.updateStaff(spreadsheetStaffRecord);
+            }
         }
     }
 
@@ -218,7 +270,49 @@ namespace POS.Controller
 
         public override void importUpdate()
         {
-            throw new NotImplementedException();
+            // ask the model for all product records in database
+            List<Product> databaseProducts = ProductOps.getAllProducts();
+
+            // check for any Product records in the spreadsheet that do not exist in the database (import)
+            List<Product> spreadsheetProducts = new List<Product>();
+            // read the spreadsheet
+            int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
+            while (spreadsheetCellsHaveData(this.worksheet.Cells[row, 2]))
+            {
+                Product currProductRecord = new Product();
+                if ((this.worksheet.Cells[row, 1].Value != null) && !(this.worksheet.Cells[row, 1].Value.ToString().Equals(string.Empty)))
+                {
+                    currProductRecord.setProductID(Int32.Parse(this.worksheet.Cells[row, 1].Value.ToString()));
+                }
+                else
+                {
+                    currProductRecord.setProductID(0);
+                }
+                currProductRecord.setProductIDNumber(this.worksheet.Cells[row, 2].Value.ToString());
+                currProductRecord.setDescription(this.worksheet.Cells[row, 3].Value.ToString());
+                currProductRecord.setQuantity(Int32.Parse(this.worksheet.Cells[row, 4].Value.ToString()));
+                currProductRecord.setPrice(float.Parse(this.worksheet.Cells[row, 5].Value.ToString()));
+
+                spreadsheetProducts.Add(currProductRecord);
+
+                row++;
+            }
+
+            foreach (Product spreadsheetProductRecord in spreadsheetProducts)
+            {
+                if (!databaseProducts.Any(c => c.getProductID()==spreadsheetProductRecord.getProductID()))
+                {
+                    // no product exists in the database with this ID
+                    // insert the record
+                    ProductOps.addProduct(spreadsheetProductRecord);
+
+                    break;
+                }
+
+                // product record already exists
+                // update it
+                ProductOps.updateProduct(spreadsheetProductRecord);
+            }
         }
     }
 }
