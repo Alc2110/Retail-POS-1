@@ -66,20 +66,20 @@ namespace POS.View
                     controller.addCustomer(textBox_fullName.Text, textBox_streetAddress.Text, textBox_phoneNumber.Text, textBox_email.Text, textBox_city.Text, comboBox_state.SelectedItem.ToString(),
                         postCode);
                 }
-                catch (Exception ex)
+                catch (System.Data.SqlClient.SqlException ex)
                 {
                     // error
-                    // inform the user
+                    // inform the user and the logger
                     string errorMessage = "Error adding new customer: " + ex.Message;
                     logger.Error(ex, errorMessage);
-
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                    // nothing more we can do
                     return;
                 }
 
                 // success
-                // inform the user
+                // inform the user and the logger
                 string successMessage = "Successfully added new customer";
                 logger.Info(successMessage);
                 MessageBox.Show(successMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);

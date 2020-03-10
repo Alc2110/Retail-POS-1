@@ -75,12 +75,13 @@ namespace POS.View
                 catch (Exception ex)
                 {
                     // failed to add new staff
+                    // tell the user and the logger
                     string errorMessage = "Error adding new staff member: " + ex.Message;
                     logger.Error(ex, errorMessage);
-                    
-                    // feedback for user
+                    logger.Error("Stack trace: " + ex.StackTrace);
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                    // nothing more we can do
                     return;
                 }
 

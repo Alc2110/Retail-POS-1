@@ -56,14 +56,16 @@ namespace POS.View
                     Int32.TryParse(textBox_quantity.Text, out quantity);
                     controller.addProduct(textBox_ID.Text, textBox_description.Text, quantity, price);
                 }
-                catch (Exception ex)
+                catch (System.Data.SqlClient.SqlException sqlEx)
                 {
                     // error adding new product
+                    // tell the user and the logger
                     string errorMessage = "Error adding new product: " + ex.Message;
-                    logger.Error(ex, errorMessage);
-
-                    // feedback for user
+                    logger.Error(sqlEx, errorMessage);
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    // nothing more we can do
+                    return;
                 }
 
                 // success

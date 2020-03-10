@@ -610,6 +610,7 @@ namespace POS
             displayTotal();
         }
 
+        // "Checkout" button click event handler
         private void button_checkout_Click(object sender, EventArgs e)
         {
             // create invoice object
@@ -656,16 +657,17 @@ namespace POS
                             // retrieve the staff object for the invoice
                             invoice.salesperson = StaffOps.getStaff(staffID);
                         }
-                        catch (Exception ex)
+                        catch (System.Data.SqlClient.SqlException sqlEx)
                         {
                             // it failed
                             // tell the user and the logger
-                            string transactionErrorMessage = "Error in transaction: " + ex.Message;
+                            string transactionErrorMessage = "Error in transaction: " + sqlEx.Message;
                             MessageBox.Show(transactionErrorMessage, "Retail POS",
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            logger.Error(ex, transactionErrorMessage);
-                            logger.Error("Stack trace: " + ex.StackTrace);
+                            logger.Error(sqlEx, transactionErrorMessage);
+                            logger.Error("Stack trace: " + sqlEx.StackTrace);
 
+                            // nothing more we can do
                             return;
                         }
 
@@ -706,7 +708,9 @@ namespace POS
 
                 // at this point, the checkout succeeded
                 // tell the user and the logger
-                MessageBox.Show("Checkout successful", "Retail POS", MessageBoxButtons.OK);
+                string checkoutSuccessMessage = "Checkout successful"
+                MessageBox.Show(checkoutSuccessMessage, "Retail POS", MessageBoxButtons.OK);
+                logger.Info(checkoutSuccessMessage);
 
                 // now deal with the invoice
                 // TODO: perhaps display invoice on screen
@@ -718,11 +722,19 @@ namespace POS
             else if (dialogResult==DialogResult.No)
             {
                 // clear sale
+                // tell the logger
+                logger.Info("Clear sale requested");
+
+                // clean up and reset
                 richTextBox_itemPrice.Text = "0.00";
                 setUI();
             }
             else if (dialogResult==DialogResult.Cancel)
             {
+                // cancelling
+                // tell the logger
+                logger.Info("Cancel checkout requested");
+
                 return;
             }
         }
@@ -750,6 +762,7 @@ namespace POS
             }
         }
 
+        // "Discount" button click event handler
         private void button_Discount_Click(object sender, EventArgs e)
         {
             // create discount form and show it
@@ -787,24 +800,42 @@ namespace POS
             }
         }
 
+        // "Lookup item" button click event handler
         private void button_priceLookup_Click(object sender, EventArgs e)
         {
             string productIDnumber = textBox_itemProductID.Text;
-            Product retrievedProduct = ProductOps.getProduct(productIDnumber);
+            Product retrievedProduct = null;
+            try
+            {
+                // ask the model for the product information
+                retrievedProduct = ProductOps.getProduct(productIDnumber);
+            }
+            catch (System.Data.SqlClient.SqlException sqlEx)
+            {
+                // database error
+                // tell the user and the logger
+                string dbErrorMessage = "Error: Could not retrieve item from database.";
+                MessageBox.Show(dbErrorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(sqlEx, dbErrorMessage + ": " + sqlEx.Message);
+                logger.Error("Stack trace: " + sqlEx.StackTrace);
+
+                // nothing more we can do
+                return;
+            }
 
             if (retrievedProduct==null)
             {
                 // could not retrieve product
                 // tell the user and the logger
-                string nullProductMessage = "Could not find specified product";
+                string nullProductMessage = "Error: Could not find specified product";
                 MessageBox.Show(nullProductMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                logger.Warn(nullProductMessage);
+                logger.Info(nullProductMessage);
 
                 return;
             }
             else
             {
-                // it succeeded
+                // at this point, it succeeded
                 // tell the user and the logger
                 MessageBox.Show("Product ID: " + productIDnumber + "\nDescription: " + retrievedProduct.getDescription() +
                                 "\nPrice: " + retrievedProduct.getPrice().ToString(), "Item Lookup", MessageBoxButtons.OK);
@@ -900,102 +931,60 @@ namespace POS
         private void productsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // create an instance of the Controller
-            //Controller.ProductsSpreadsheetImport import = new POS.Controller.ProductsSpreadsheetImport();
+            Controller.SpreadsheetImport spreadsheetImportController = spreadsheetImportFactory.getImportSpreadsheetController("Product");
 
             // execute it
-            try
-            {
-                /*
-                spreadsheetImport.openSpreadsheet();
-                spreadsheetImport.importUpdate();
-                */
-            }
-            catch (Exception ex)
-            {
-                // it failed
-                // tell the user and the logger
-                System.Windows.Forms.MessageBox.Show("Error updating product data: " + ex.Message, "Retail POS",
-                                                     System.Windows.Forms.MessageBoxButtons.OK,
-                                                     System.Windows.Forms.MessageBoxIcon.Error);
-                logger.Error(ex, "Error updating product data: " + ex.Message);
-                logger.Error("Stack trace: " + ex.StackTrace);
-
-                return;
-            }
-
-            // at this point, it succeeded
-            // tell the user and the logger
-            System.Windows.Forms.MessageBox.Show("Successfully updated product data", "Retail POS",
-                                                System.Windows.Forms.MessageBoxButtons.OK,
-                                                System.Windows.Forms.MessageBoxIcon.Information);
-            logger.Info("Updated product data");
+            executeImportSpreadsheetController(spreadsheetImportController);
         }
 
         private void customersToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             // create an instance of the Controller
-            Controller.SpreadsheetImport spreadsheetImport = spreadsheetImportFactory.getImportSpreadsheetController("Customer");
+            Controller.SpreadsheetImport spreadsheetImportController = spreadsheetImportFactory.getImportSpreadsheetController("Customer");
 
-            try
-            {
-                // execute it
-                spreadsheetImport.openSpreadsheet();
-                spreadsheetImport.importUpdate();
-            }
-            catch (Exception ex)
-            {
-                // it failed
-                // tell the user and the logger
-                System.Windows.Forms.MessageBox.Show("Error importing " + spreadsheetImport.importType + " data: " + ex.Message, "Retail POS",
-                                                     System.Windows.Forms.MessageBoxButtons.OK,
-                                                     System.Windows.Forms.MessageBoxIcon.Error);
-                logger.Error(ex, "Error importing " + spreadsheetImport.importType + " data: " + ex.Message);
-                logger.Error("Stack trace: " + ex.StackTrace);
-            }
+            // execute it
+            executeImportSpreadsheetController(spreadsheetImportController);
         }
 
         private void staffToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             // create an instance of the Controller
-            Controller.SpreadsheetImport spreadsheetImport = spreadsheetImportFactory.getImportSpreadsheetController("Staff");
+            Controller.SpreadsheetImport spreadsheetImportController = spreadsheetImportFactory.getImportSpreadsheetController("Staff");
 
-            try
-            {
-                // execute it
-                spreadsheetImport.openSpreadsheet();
-                spreadsheetImport.importUpdate();
-            }
-            catch (Exception ex)
-            {
-                // it failed
-                // tell the user and the logger
-                System.Windows.Forms.MessageBox.Show("Error importing " + spreadsheetImport.importType + " data: " + ex.Message, "Retail POS",
-                                                     System.Windows.Forms.MessageBoxButtons.OK,
-                                                     System.Windows.Forms.MessageBoxIcon.Error);
-                logger.Error(ex, "Error importing " + spreadsheetImport.importType + " data: " + ex.Message);
-                logger.Error("Stack trace: " + ex.StackTrace);
-            }
+            // execute it
+            executeImportSpreadsheetController(spreadsheetImportController);
         }
 
         private void productsToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             // create an instance of the Controller
-            Controller.SpreadsheetImport spreadsheetImport = spreadsheetImportFactory.getImportSpreadsheetController("Product");
+            Controller.SpreadsheetImport spreadsheetImportController = spreadsheetImportFactory.getImportSpreadsheetController("Product");
 
+            // execute it
+            executeImportSpreadsheetController(spreadsheetImportController);
+        }
+
+        /// <summary>
+        /// Show a dialog to import the spreadsheet, then import/update the data into the database.
+        /// </summary>
+        /// <param name="importController">Controller.SpreadsheetImport</param>
+        private void executeImportSpreadsheetController(Controller.SpreadsheetImport importController)
+        {
+            // TODO: split this to catch different exception types (database error, file error)
             try
             {
                 // execute it
-                spreadsheetImport.openSpreadsheet();
-                spreadsheetImport.importUpdate();
+                importController.openSpreadsheet();
+                importController.importUpdate();
             }
             catch (Exception ex)
             {
                 // it failed
                 // tell the user and the logger
-                System.Windows.Forms.MessageBox.Show("Error importing " + spreadsheetImport.importType + " data: " + ex.Message, "Retail POS",
+                System.Windows.Forms.MessageBox.Show("Error importing " + importController.importType + " data: " + ex.Message, "Retail POS",
                                                      System.Windows.Forms.MessageBoxButtons.OK,
                                                      System.Windows.Forms.MessageBoxIcon.Error);
-                logger.Error(ex, "Error importing " + spreadsheetImport.importType + " data: " + ex.Message);
+                logger.Error(ex, "Error importing " + importController.importType + " data: " + ex.Message);
                 logger.Error("Stack trace: " + ex.StackTrace);
             }
         }
