@@ -18,6 +18,9 @@ namespace POS.View
         // controller dependency injection
         private ProductController controller;
 
+        // get an instance of the logger for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public ViewProductsForm()
         {
             InitializeComponent();
@@ -40,7 +43,22 @@ namespace POS.View
             ProductOps.OnGetAllProducts += new EventHandler<GetAllProductsEventArgs>(productEventHandler);
 
             // populate the list upon loading
-            populateView(ProductOps.getAllProducts());
+            try
+            {
+                populateView(ProductOps.getAllProducts());
+            }
+            catch (System.Data.SqlClient.SqlException sqlEx)
+            {
+                // it failed
+                // tell the user and the logger
+                string errorMessage = "Error: failed to retrieve data from database";
+                MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(errorMessage);
+
+                // nothing more we can do
+                // TODO: do we want to close the window at this point?
+                this.Close();
+            }
         }
 
         #region UI event handlers
@@ -67,9 +85,14 @@ namespace POS.View
                         controller.deleteProduct(id);
                     }
                 }
-                catch (Exception ex)
+                catch (System.Data.SqlClient.SqlException sqlEx)
                 {
-
+                    // it failed
+                    // tell the user and the logger
+                    string errorMessage = "Error: could not delete product: " + sqlEx.Message;
+                    MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    logger.Error(errorMessage);
+                    logger.Error("Stack trace: " + sqlEx.StackTrace);
                 }
             }
         }

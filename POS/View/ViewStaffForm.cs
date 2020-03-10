@@ -18,6 +18,9 @@ namespace POS.View
         // controller dependency injection
         private StaffController controller;
 
+        // get an instance of the logger for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public ViewStaffForm()
         {
             InitializeComponent();
@@ -40,7 +43,22 @@ namespace POS.View
             StaffOps.OnGetAllStaff += new EventHandler<GetAllStaffEventArgs>(staffEventHandler);
 
             // populate the list view upon loading
-            populateView(StaffOps.getAllStaff());
+            try
+            {
+                populateView(StaffOps.getAllStaff());
+            }
+            catch (System.Data.SqlClient.SqlException sqlEx)
+            {
+                // it failed
+                // tell the user and the logger
+                string errorMessage = "Error: could not retrieve data from database: " + sqlEx.Message;
+                logger.Error(errorMessage);
+                MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                // nothing more we can do
+                // TODO: do we want to close the window at this point?
+                this.Close();
+            }
 
         }
 
@@ -66,9 +84,13 @@ namespace POS.View
                     Int32.TryParse(listView_staff.SelectedItems[0].SubItems[0].Text, out idNum);
                     controller.deleteStaff(idNum);
                 }
-                catch (Exception ex)
+                catch (System.Data.SqlClient.SqlException sqlEx)
                 {
-
+                    // it failed
+                    // tell the user and the logger
+                    string errorMessage = "Error: could not delete staff record: " + sqlEx.Message;
+                    MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    logger.Error(errorMessage);
                 }
             }
         }

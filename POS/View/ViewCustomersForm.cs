@@ -18,6 +18,9 @@ namespace POS.View
         // controller dependency injection
         CustomerController controller;
 
+        // get an instance of the logger for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public ViewCustomersForm()
         {
             InitializeComponent();
@@ -44,7 +47,21 @@ namespace POS.View
             CustomerOps.OnGetAllCustomers += new EventHandler<GetAllCustomersEventArgs>(customerEventHandler);
 
             // populate the list upon loading
-            populateView(CustomerOps.getAllCustomers()); 
+            try
+            {
+                populateView(CustomerOps.getAllCustomers());
+            }
+            catch (System.Data.SqlClient.SqlException sqlEx)
+            {
+                // it failed
+                // tell the user and the logger
+                string errorMessage = "Error: failed to retrieve data from database: " + sqlEx.Message;
+                MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(errorMessage);
+
+                // TODO: do we want to close the window at this point?
+                this.Close();
+            }
         }
 
         #region UI event handlers
@@ -65,9 +82,15 @@ namespace POS.View
                         controller.deleteCustomer(idNum);
                     }
                 }
-                catch (Exception ex)
+                catch (System.Data.SqlClient.SqlException sqlEx)
                 {
-
+                    // it failed
+                    // tell the user and the logger
+                    string errorMessage = "Error deleting customer: " + sqlEx.Message;
+                    MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    
+                    // nothing more we can do
+                    return;
                 }
             }
         }

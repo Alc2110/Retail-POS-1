@@ -14,6 +14,9 @@ namespace POS.View
 {
     public partial class ViewTransactionsForm : Form
     {
+        // get an instance of the logger for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public ViewTransactionsForm()
         {
             InitializeComponent();
@@ -32,7 +35,22 @@ namespace POS.View
             listView_transactions.GridLines = true;
 
             // populate the list upon loading
-            populateView(TransactionOps.getAllTransactions());
+            try
+            {
+                populateView(TransactionOps.getAllTransactions());
+            }
+            catch (System.Data.SqlClient.SqlException sqlEx)
+            {
+                // it failed
+                // tell the user and the logger
+                string errorMessage = "Error: could not retrieve data from database: " + sqlEx.Message;
+                logger.Error(sqlEx, errorMessage);
+                logger.Error("Stack trace: " + sqlEx.StackTrace);
+
+                // nothing more we can do at this point
+                // TODO: do we want to close the window at this point?
+                this.Close();
+            }
 
             // subscribe to Model events
             TransactionOps.OnGetAllTransactions += new EventHandler<GetAllTransactionsEventArgs>(transactionEventHandler);
