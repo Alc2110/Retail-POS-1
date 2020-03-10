@@ -24,7 +24,7 @@ namespace Model.ServiceLayer
         {
             // DAO
             ProductDAO dao = new ProductDAO();
-            dao.updateProduct(Convert.ToInt32(product.getProductID()), product.getProductIDNumber(), product.getDescription(), product.getQuantity(), product.getPrice());
+            dao.updateProduct(product);
 
             // fire the event
             getAllProducts();

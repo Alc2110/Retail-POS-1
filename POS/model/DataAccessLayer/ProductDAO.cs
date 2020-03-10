@@ -196,19 +196,20 @@ namespace Model.DataAccessLayer
 
         public void decrementQuantity(string productID)
         {
-            
+            // may not be needed
         }
 
         public void setQuantity(string productID, int quantity)
         {
-
+            // possibly useful
         }
 
-        public void updateProduct(int id, string productIdNumber, string description, int quantity, float price)
+        //public void updateProduct(int id, string productIdNumber, string description, int quantity, float price)
+        public void updateProduct(Product product)
         {
             string queryUpdateProduct = "UPDATE Products " +
                                         "SET ProductIDNumber = @idNumber, Description_ = @desc, Quantity = @quantity, Price = @price " +
-                                        "WHERE ProductID = " + id + ";";
+                                        "WHERE ProductID = " + product.getProductID() + ";";
 
             try
             {
@@ -219,22 +220,22 @@ namespace Model.DataAccessLayer
                     // paramterise
                     SqlParameter idNumParam = new SqlParameter();
                     idNumParam.ParameterName = "@idNumber";
-                    idNumParam.Value = productIdNumber;
+                    idNumParam.Value = product.getProductIDNumber();
                     cmd.Parameters.Add(idNumParam);
 
                     SqlParameter descParam = new SqlParameter();
                     descParam.ParameterName = "@desc";
-                    descParam.Value = description;
+                    descParam.Value = product.getDescription();
                     cmd.Parameters.Add(descParam);
 
                     SqlParameter quantParam = new SqlParameter();
                     quantParam.ParameterName = "@quantity";
-                    quantParam.Value = quantity;
+                    quantParam.Value = product.getQuantity();
                     cmd.Parameters.Add(quantParam);
 
                     SqlParameter priceParam = new SqlParameter();
                     priceParam.ParameterName = "@price";
-                    priceParam.Value = price;
+                    priceParam.Value = product.getPrice();
                     cmd.Parameters.Add(priceParam);
 
                     // attempt a connection
