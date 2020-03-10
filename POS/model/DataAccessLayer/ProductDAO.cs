@@ -45,9 +45,9 @@ namespace Model.DataAccessLayer
                     }
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                throw new Exception("Database error: " + ex.Message);
+                throw;
             }
 
             return products;
@@ -103,9 +103,9 @@ namespace Model.DataAccessLayer
                     return product;
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                throw new Exception("Database error: " + ex.Message);
+                throw;
             }
         }
 
@@ -137,9 +137,9 @@ namespace Model.DataAccessLayer
                     result = cmd.ExecuteNonQuery();
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
-                throw new Exception("Database error: " + ex.Message);
+                throw;
             }
 
             return result;

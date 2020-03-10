@@ -130,7 +130,7 @@ namespace Model.DataAccessLayer
                     }
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {     
                 throw;
             }
@@ -254,6 +254,7 @@ namespace Model.DataAccessLayer
             }
         }
 
+        // TODO: use this method instead of the other one, but this does not work 
         public int addTransaction(Transaction transaction)
         {
             throw new NotImplementedException();

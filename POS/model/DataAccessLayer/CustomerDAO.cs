@@ -97,7 +97,7 @@ namespace Model.DataAccessLayer
                     return customer;
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 throw;
             }
@@ -171,7 +171,7 @@ namespace Model.DataAccessLayer
                     }
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 throw; 
             }
@@ -201,7 +201,7 @@ namespace Model.DataAccessLayer
                     result = cmd.ExecuteNonQuery();
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 throw;
             }
@@ -266,7 +266,7 @@ namespace Model.DataAccessLayer
                     cmd.ExecuteNonQuery();
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 throw;
             }
@@ -336,7 +336,7 @@ namespace Model.DataAccessLayer
                     cmd.ExecuteNonQuery();
                 }
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 throw;
             }

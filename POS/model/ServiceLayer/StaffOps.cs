@@ -63,6 +63,13 @@ namespace Model.ServiceLayer
             dao.updateStaff(staff);
         }
 
+        public static void delete(Staff staff)
+        {
+            // DAO
+            StaffDAO dao = new StaffDAO();
+            dao.deleteStaff(staff);
+        }
+
         // event for getting all staff
         public static event EventHandler<GetAllStaffEventArgs> OnGetAllStaff = delegate { };
 
