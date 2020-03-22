@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -169,7 +170,7 @@
             // scriptingToolStripMenuItem
             // 
             this.scriptingToolStripMenuItem.Name = "scriptingToolStripMenuItem";
-            this.scriptingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.scriptingToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.scriptingToolStripMenuItem.Text = "Scripting";
             // 
             // iToolStripMenuItem
@@ -179,27 +180,27 @@
             this.customersToolStripMenuItem2,
             this.productsToolStripMenuItem2});
             this.iToolStripMenuItem.Name = "iToolStripMenuItem";
-            this.iToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.iToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.iToolStripMenuItem.Text = "Import";
             // 
             // staffToolStripMenuItem2
             // 
             this.staffToolStripMenuItem2.Name = "staffToolStripMenuItem2";
-            this.staffToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.staffToolStripMenuItem2.Size = new System.Drawing.Size(131, 22);
             this.staffToolStripMenuItem2.Text = "Staff";
             this.staffToolStripMenuItem2.Click += new System.EventHandler(this.staffToolStripMenuItem2_Click);
             // 
             // customersToolStripMenuItem2
             // 
             this.customersToolStripMenuItem2.Name = "customersToolStripMenuItem2";
-            this.customersToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.customersToolStripMenuItem2.Size = new System.Drawing.Size(131, 22);
             this.customersToolStripMenuItem2.Text = "Customers";
             this.customersToolStripMenuItem2.Click += new System.EventHandler(this.customersToolStripMenuItem2_Click);
             // 
             // productsToolStripMenuItem2
             // 
             this.productsToolStripMenuItem2.Name = "productsToolStripMenuItem2";
-            this.productsToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.productsToolStripMenuItem2.Size = new System.Drawing.Size(131, 22);
             this.productsToolStripMenuItem2.Text = "Products";
             this.productsToolStripMenuItem2.Click += new System.EventHandler(this.productsToolStripMenuItem2_Click);
             // 
@@ -211,7 +212,7 @@
             this.productsToolStripMenuItem1,
             this.transactionsToolStripMenuItem});
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.exportToolStripMenuItem.Text = "Export";
             // 
             // staffToolStripMenuItem1
@@ -526,6 +527,7 @@
             this.textBox_itemQuantity.Size = new System.Drawing.Size(135, 20);
             this.textBox_itemQuantity.TabIndex = 4;
             this.textBox_itemQuantity.TextChanged += new System.EventHandler(this.textBox_itemQuantity_TextChanged);
+            this.textBox_itemQuantity.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.textBox_itemQuantity_PreviewKeyDown);
             // 
             // textBox_itemProductID
             // 
@@ -534,6 +536,7 @@
             this.textBox_itemProductID.Size = new System.Drawing.Size(135, 20);
             this.textBox_itemProductID.TabIndex = 3;
             this.textBox_itemProductID.TextChanged += new System.EventHandler(this.textBox_itemProductID_TextChanged);
+            this.textBox_itemProductID.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.textBox_itemProductID_PreviewKeyDown);
             // 
             // label10
             // 
@@ -613,11 +616,14 @@
             // 
             this.button_findItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_findItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_findItem.Location = new System.Drawing.Point(12, 474);
+            this.button_findItem.Image = ((System.Drawing.Image)(resources.GetObject("button_findItem.Image")));
+            this.button_findItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_findItem.Location = new System.Drawing.Point(12, 473);
             this.button_findItem.Name = "button_findItem";
-            this.button_findItem.Size = new System.Drawing.Size(75, 49);
+            this.button_findItem.Size = new System.Drawing.Size(127, 49);
             this.button_findItem.TabIndex = 8;
             this.button_findItem.Text = "Find item";
+            this.button_findItem.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button_findItem.UseVisualStyleBackColor = true;
             this.button_findItem.Click += new System.EventHandler(this.button_findItem_Click);
             // 
@@ -625,11 +631,14 @@
             // 
             this.button_newItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_newItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_newItem.Location = new System.Drawing.Point(93, 474);
+            this.button_newItem.Image = ((System.Drawing.Image)(resources.GetObject("button_newItem.Image")));
+            this.button_newItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_newItem.Location = new System.Drawing.Point(145, 473);
             this.button_newItem.Name = "button_newItem";
-            this.button_newItem.Size = new System.Drawing.Size(75, 49);
+            this.button_newItem.Size = new System.Drawing.Size(127, 49);
             this.button_newItem.TabIndex = 9;
             this.button_newItem.Text = "New item";
+            this.button_newItem.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button_newItem.UseVisualStyleBackColor = true;
             this.button_newItem.Click += new System.EventHandler(this.button_newItem_Click);
             // 
@@ -637,7 +646,7 @@
             // 
             this.button_customerList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_customerList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.button_customerList.Location = new System.Drawing.Point(174, 474);
+            this.button_customerList.Location = new System.Drawing.Point(278, 473);
             this.button_customerList.Name = "button_customerList";
             this.button_customerList.Size = new System.Drawing.Size(75, 49);
             this.button_customerList.TabIndex = 10;
@@ -649,7 +658,7 @@
             // 
             this.button_Discount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Discount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_Discount.Location = new System.Drawing.Point(336, 474);
+            this.button_Discount.Location = new System.Drawing.Point(440, 473);
             this.button_Discount.Name = "button_Discount";
             this.button_Discount.Size = new System.Drawing.Size(75, 49);
             this.button_Discount.TabIndex = 11;
@@ -661,7 +670,7 @@
             // 
             this.button_clearSale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_clearSale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_clearSale.Location = new System.Drawing.Point(417, 474);
+            this.button_clearSale.Location = new System.Drawing.Point(521, 473);
             this.button_clearSale.Name = "button_clearSale";
             this.button_clearSale.Size = new System.Drawing.Size(75, 49);
             this.button_clearSale.TabIndex = 12;
@@ -673,7 +682,7 @@
             // 
             this.button_logOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_logOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_logOut.Location = new System.Drawing.Point(498, 474);
+            this.button_logOut.Location = new System.Drawing.Point(602, 473);
             this.button_logOut.Name = "button_logOut";
             this.button_logOut.Size = new System.Drawing.Size(75, 49);
             this.button_logOut.TabIndex = 13;
@@ -685,18 +694,21 @@
             // 
             this.button_checkout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_checkout.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.button_checkout.Location = new System.Drawing.Point(925, 474);
+            this.button_checkout.Image = ((System.Drawing.Image)(resources.GetObject("button_checkout.Image")));
+            this.button_checkout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button_checkout.Location = new System.Drawing.Point(914, 473);
             this.button_checkout.Name = "button_checkout";
-            this.button_checkout.Size = new System.Drawing.Size(162, 49);
+            this.button_checkout.Size = new System.Drawing.Size(173, 49);
             this.button_checkout.TabIndex = 14;
             this.button_checkout.Text = "Checkout";
+            this.button_checkout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.button_checkout.UseVisualStyleBackColor = true;
             this.button_checkout.Click += new System.EventHandler(this.button_checkout_Click);
             // 
             // button_newSaleMember
             // 
             this.button_newSaleMember.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_newSaleMember.Location = new System.Drawing.Point(844, 474);
+            this.button_newSaleMember.Location = new System.Drawing.Point(833, 473);
             this.button_newSaleMember.Name = "button_newSaleMember";
             this.button_newSaleMember.Size = new System.Drawing.Size(75, 49);
             this.button_newSaleMember.TabIndex = 15;
@@ -707,7 +719,7 @@
             // button_newSaleNonMember
             // 
             this.button_newSaleNonMember.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_newSaleNonMember.Location = new System.Drawing.Point(753, 474);
+            this.button_newSaleNonMember.Location = new System.Drawing.Point(742, 473);
             this.button_newSaleNonMember.Name = "button_newSaleNonMember";
             this.button_newSaleNonMember.Size = new System.Drawing.Size(85, 49);
             this.button_newSaleNonMember.TabIndex = 16;
@@ -719,7 +731,7 @@
             // 
             this.button_staffList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_staffList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.button_staffList.Location = new System.Drawing.Point(255, 474);
+            this.button_staffList.Location = new System.Drawing.Point(359, 473);
             this.button_staffList.Name = "button_staffList";
             this.button_staffList.Size = new System.Drawing.Size(75, 49);
             this.button_staffList.TabIndex = 17;

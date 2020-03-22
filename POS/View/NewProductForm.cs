@@ -60,7 +60,7 @@ namespace POS.View
                 {
                     // error adding new product
                     // tell the user and the logger
-                    string errorMessage = "Error adding new product: " + ex.Message;
+                    string errorMessage = "Error adding new product: " + sqlEx.Message;
                     logger.Error(sqlEx, errorMessage);
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
 

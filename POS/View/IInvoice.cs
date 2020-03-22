@@ -10,7 +10,7 @@ namespace POS.View
     public interface IInvoice
     {
         void addEntry(Transaction transaction);
-        void removeEntry();
+        void removeEntry(Transaction transaction);
         void save();
     }
 }

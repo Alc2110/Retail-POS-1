@@ -11,11 +11,13 @@ using POS.View;
 using Model.ServiceLayer;
 using Model.ObjectModel;
 using Controller;
+using System.Diagnostics;
 
 namespace POS
 {
     public partial class MainWindow : Form
     {
+        // TODO: implement State pattern
         public State currentState;
 
         // controller dependency injection
@@ -128,6 +130,9 @@ namespace POS
 
             richTextBox_itemPrice.Text = "0.00";
 
+            reportsToolStripMenuItem.Enabled = false;
+            scriptingToolStripMenuItem.Enabled = false;
+
             foreach (ListViewItem listItem in listView_sales.Items)
             {
                 listView_sales.Items.Remove(listItem);
@@ -173,8 +178,10 @@ namespace POS
                                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 logger.Warn(nullProductMessage);
 
+                // reset the product id text box
                 textBox_itemProductID.Text = string.Empty;
 
+                // nothing more to do
                 return;
             }
 
@@ -186,20 +193,24 @@ namespace POS
                 {
                     // item already exists
                     itemInList = true;
-
                     logger.Info("Item of this type is already in list");
 
-                    // just increment the total count, and update total item cost
+                    // calculate cost of new items being added
+                    float productPrice = retrievedProduct.getPrice();
+                    string sNumber = textBox_itemQuantity.Text;
+                    int iNumber = Int32.Parse(sNumber);
+
+                    // add this cost to the total cost
+                    string sOldCost = listItem.SubItems[4].Text;
+                    float iOldCost = float.Parse(sOldCost);
+                    float iNewCost = iOldCost + (productPrice * iNumber);
+                    listItem.SubItems[4].Text = iNewCost.ToString();
+
+                    // update number of items
                     string sQuantity = listItem.SubItems[2].Text;
                     int iQuantity = Int32.Parse(sQuantity);
-                    //listItem.SubItems[2].Text = (iQuantity += 1).ToString();
-                    listItem.SubItems[2].Text = (iQuantity += Int32.Parse(textBox_itemQuantity.Text)).ToString();
-                    
-                    string sCost = listItem.SubItems[4].Text;
-                    float fCost = float.Parse(sCost);
-                    string sPrice = listItem.SubItems[3].Text;
-                    float fPrice = float.Parse(sPrice);
-                    listItem.SubItems[4].Text = (fPrice + fCost).ToString();
+                    int iNewQuantity = iQuantity + iNumber;
+                    listItem.SubItems[2].Text = iNewQuantity.ToString();
 
                     deselectAllItems();
                     //listItem.Selected = true;
@@ -214,13 +225,18 @@ namespace POS
             {
                 // item not yet in list
                 logger.Info("Item of this type not yet in list. Adding item to list");
+
                 // add it to the list
                 string[] itemArr = new string[5];
                 itemArr[0] = retrievedProduct.getProductIDNumber();
                 itemArr[1] = retrievedProduct.getDescription();
                 //itemArr[2] = "1";// quantity
-                itemArr[2] = textBox_itemQuantity.Text;
-                itemArr[4] = retrievedProduct.getPrice().ToString();// total
+                string sQuantity = textBox_itemQuantity.Text;
+                int iQuantity = Int32.Parse(sQuantity);
+                //itemArr[2] = textBox_itemQuantity.Text;
+                itemArr[2] = sQuantity;
+                //itemArr[4] = retrievedProduct.getPrice().ToString();// total
+                itemArr[4] = (iQuantity * retrievedProduct.getPrice()).ToString();
                 itemArr[3] = retrievedProduct.getPrice().ToString();
                 ListViewItem item = new ListViewItem(itemArr);
                 listView_sales.Items.Add(item);
@@ -254,7 +270,9 @@ namespace POS
             }
 
             // clean up UI
+            textBox_itemProductID.Select();
             button_addItem.Enabled = false;
+            button_removeItem.Enabled = false;
             textBox_itemProductID.Text = string.Empty;
             textBox_itemQuantity.Text = string.Empty;
 
@@ -392,16 +410,19 @@ namespace POS
             // could not find customer
             if (retrievedCustomer==null)
             {
+                // tell the user and the logger
                 string nullCustomerMessage = "Could not find specified customer";
                 MessageBox.Show(nullCustomerMessage, "Retail POS",
                                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 logger.Warn(nullCustomerMessage);
 
+                // nothing more we can do
                 return;
             }
 
             // found the customer
             logger.Info("Found customer record");
+            button_findCustomer.Enabled = false;
             textBox_customerName.Text = retrievedCustomer.getName();
             textBox_customerPhone.Text = retrievedCustomer.getPhoneNumber();
             textBox_customerEmail.Text = retrievedCustomer.getEmail();
@@ -501,6 +522,7 @@ namespace POS
             button_clearSale.Enabled = true;
 
             // get customer data
+            textBox_itemProductID.Enabled = false;
             textBox_customerAccNo.Enabled = true;
             button_findCustomer.Enabled = true;
         }
@@ -574,7 +596,7 @@ namespace POS
                     textBox_itemProductID.Text = string.Empty;
                     // display quantity in quantity textbox, which is readonly
                     textBox_itemQuantity.ReadOnly = true;
-                    textBox_itemQuantity.Text = listView_sales.SelectedItems[0].SubItems[2].Text;
+                    //textBox_itemQuantity.Text = listView_sales.SelectedItems[0].SubItems[2].Text;
 
                     break;
 
@@ -614,9 +636,10 @@ namespace POS
         private void button_checkout_Click(object sender, EventArgs e)
         {
             // create invoice object
-            // implement PDF invoices for now
+            // implement Excel invoices for now
             // TODO: implement spreadsheet invoices, based on a choice
-            PDFInvoice invoice = new PDFInvoice();
+            // PDFInvoice invoice = new PDFInvoice();
+            View.ExcelInvoice invoice = new View.ExcelInvoice();
 
             // calculate total and ask user for confirmation
             float fTotal = 0;
@@ -656,6 +679,16 @@ namespace POS
                             invoice.customer = CustomerOps.getCustomer(customerID);
                             // retrieve the staff object for the invoice
                             invoice.salesperson = StaffOps.getStaff(staffID);
+
+                            // create the transaction in the invoice
+                            // retrieve the list of products
+                            foreach (KeyValuePair<string, int> product in saleItems)
+                            {
+                                Transaction trans = new Transaction();
+                                trans.setTimestamp(System.DateTime.Now.ToString("F"));
+
+                                invoice.transactions.Add(trans);
+                            }
                         }
                         catch (System.Data.SqlClient.SqlException sqlEx)
                         {
@@ -683,18 +716,21 @@ namespace POS
                             // create the transaction in the database
                             transController.addTransaction(currTransaction);
 
+                            // create the transaction in the invoice
+                            Transaction newTransaction = new Transaction();
+
                             // retrieve the staff object for the invoice
                             invoice.salesperson = StaffOps.getStaff(staffID);
                         }
-                        catch (Exception ex)
+                        catch (System.Data.SqlClient.SqlException sqlEx)
                         {
                             // it failed
                             // tell the user and the logger
-                            string transactionErrorMessage = "Error in transaction: " + ex.Message;
+                            string transactionErrorMessage = "Error in transaction: " + sqlEx.Message;
                             MessageBox.Show(transactionErrorMessage, "Retail POS",
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            logger.Error(ex, transactionErrorMessage);
-                            logger.Error("Stack trace: " + ex.StackTrace);
+                            logger.Error(sqlEx, transactionErrorMessage);
+                            logger.Error("Stack trace: " + sqlEx.StackTrace);
 
                             return;
                         }
@@ -708,13 +744,26 @@ namespace POS
 
                 // at this point, the checkout succeeded
                 // tell the user and the logger
-                string checkoutSuccessMessage = "Checkout successful"
+                string checkoutSuccessMessage = "Checkout successful";
                 MessageBox.Show(checkoutSuccessMessage, "Retail POS", MessageBoxButtons.OK);
                 logger.Info(checkoutSuccessMessage);
 
-                // now deal with the invoice
+                // now save the invoice
                 // TODO: perhaps display invoice on screen
-                invoice.save();
+                try
+                {
+                    invoice.generateSpreadsheet();
+                    invoice.save();
+                }
+                catch (Exception ex)
+                {
+                    // it failed
+                    // tell the user and the logger
+                    string saveInvoiceFailureMessage = "Error saving invoice: " + ex.Message;
+                    MessageBox.Show(saveInvoiceFailureMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    logger.Error(ex, saveInvoiceFailureMessage);
+                    logger.Error("Stack trace: " + ex.StackTrace);
+                }
 
                 // reset
                 setUI();
@@ -986,6 +1035,34 @@ namespace POS
                                                      System.Windows.Forms.MessageBoxIcon.Error);
                 logger.Error(ex, "Error importing " + importController.importType + " data: " + ex.Message);
                 logger.Error("Stack trace: " + ex.StackTrace);
+            }
+        }
+
+        private void textBox_itemProductID_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyData==Keys.Tab)
+            {
+                // make sure the text box is not empty, and in a sale state
+                if (((textBox_itemProductID.Text!=null) && !(textBox_itemProductID.Text.Equals(string.Empty))) && ((this.currentState==State.SALE_MEMBER) || (this.currentState==State.SALE_NON_MEMBER)))
+                {
+                    // trigger the add item button click event
+                    button_addItem.PerformClick();
+                    textBox_itemProductID.Select();
+                }
+            }
+        }
+
+        private void textBox_itemQuantity_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyData == Keys.Tab)
+            {
+                // make sure the text box is not empty, and in a sale state
+                if (((textBox_itemProductID.Text != null) && !(textBox_itemProductID.Text.Equals(string.Empty))) && ((this.currentState == State.SALE_MEMBER) || (this.currentState == State.SALE_NON_MEMBER)))
+                {
+                    // trigger the add item button click event
+                    button_addItem.PerformClick();
+                    textBox_itemProductID.Select();
+                }
             }
         }
     }

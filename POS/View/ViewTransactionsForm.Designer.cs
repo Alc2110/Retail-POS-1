@@ -58,6 +58,7 @@
             // 
             // button_viewInvoices
             // 
+            this.button_viewInvoices.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_viewInvoices.Location = new System.Drawing.Point(665, 415);
             this.button_viewInvoices.Name = "button_viewInvoices";
             this.button_viewInvoices.Size = new System.Drawing.Size(123, 23);
