@@ -128,6 +128,7 @@ namespace POS.View
         // spreadsheet objects
         protected ExcelPackage invoiceSpreadsheet;
         protected ExcelWorksheet invoiceWorksheet;
+        protected FileInfo fi;
 
         // data, metadata, headers
         protected string title = Configuration.STORE_NAME;
@@ -145,11 +146,14 @@ namespace POS.View
         public void generateSpreadsheet()
         {
             // create spreadsheet and worksheet
-            string invoiceFilePath = @"\invoices\Invoice " + System.DateTime.Now.ToString("F").Replace(':', '-') + ".xlsx";
-            FileInfo fi = new FileInfo(invoiceFilePath);
+            // create the file path
+            // get the path of the executing assembly
+            string assemblyPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string invoiceFilePath = assemblyPath + @"\invoices\Invoice " + System.DateTime.Now.ToString("F").Replace(':', '-') + ".xlsx";
+            fi = new FileInfo(invoiceFilePath);
             this.invoiceSpreadsheet = new ExcelPackage(fi);
             this.invoiceWorksheet = this.invoiceSpreadsheet.Workbook.Worksheets.Add("Invoice");
-
+            
             // write metadata
             this.invoiceWorksheet.Cells["A1:B1"].Merge = true;
             this.invoiceWorksheet.Cells["A1"].Value = this.title;
@@ -175,9 +179,41 @@ namespace POS.View
             colourHeader(this.invoiceWorksheet.Cells[Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, 1, Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, headers.Length]);
 
             // write data
+            int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
+            foreach (Transaction trans in this.transactions)
+            {
+                this.invoiceWorksheet.Cells[row, 1].Value = trans.getTimestamp();
+                if (trans.getCustomer()!=null)
+                {
+                    this.invoiceWorksheet.Cells[row, 2].Value = trans.getCustomer().getID().ToString();
+                    this.invoiceWorksheet.Cells[row, 3].Value = trans.getCustomer().getName();
+                }
+                this.invoiceWorksheet.Cells[row, 4].Value = trans.getStaff().getID();
+                this.invoiceWorksheet.Cells[row, 5].Value = trans.getStaff().getName();
+                this.invoiceWorksheet.Cells[row, 6].Value = trans.getProduct().getProductID();
+                this.invoiceWorksheet.Cells[row, 7].Value = trans.getProduct().getProductIDNumber();
+                this.invoiceWorksheet.Cells[row, 8].Value = trans.getProduct().getDescription();
+                this.invoiceWorksheet.Cells[row, 9].Value = trans.getProduct().getPrice();
+
+                // apply appropriate styling
+                if (row%2==0)
+                {
+                    this.invoiceWorksheet.Cells[row,1,row,9].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    this.invoiceWorksheet.Cells[row, 1, row, 9].Style.Fill.BackgroundColor.SetColor(dataColour1);
+                }
+                else
+                {
+                    this.invoiceWorksheet.Cells[row, 1, row, 9].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    this.invoiceWorksheet.Cells[row, 1, row, 9].Style.Fill.BackgroundColor.SetColor(dataColour2);
+                }
+
+                // next row
+                row++;
+            }
 
             // protect worksheet
             this.invoiceWorksheet.Protection.IsProtected = true;
+            this.invoiceWorksheet.Protection.AllowFormatColumns = true;
         }
 
         public override void save()
@@ -186,8 +222,9 @@ namespace POS.View
             try
             {
                 // try to save the spreadsheet file
-
-                this.invoiceSpreadsheet.Save();
+                // create the "invoices" directory if it does not exist
+                System.IO.Directory.CreateDirectory("invoices");
+                this.invoiceSpreadsheet.SaveAs(fi);
                 this.invoiceSpreadsheet.Dispose();
             }
             catch (Exception e)

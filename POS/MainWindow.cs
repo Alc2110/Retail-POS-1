@@ -640,6 +640,7 @@ namespace POS
             // TODO: implement spreadsheet invoices, based on a choice
             // PDFInvoice invoice = new PDFInvoice();
             View.ExcelInvoice invoice = new View.ExcelInvoice();
+            invoice.transactions = new List<Transaction>();
 
             // calculate total and ask user for confirmation
             float fTotal = 0;
@@ -685,7 +686,10 @@ namespace POS
                             foreach (KeyValuePair<string, int> product in saleItems)
                             {
                                 Transaction trans = new Transaction();
-                                trans.setTimestamp(System.DateTime.Now.ToString("F"));
+                                trans.setTimestamp(System.DateTime.Now.ToString("F")); // timestamp
+                                trans.setCustomer(CustomerOps.getCustomer(customerID)); // customer 
+                                trans.setStaff(StaffOps.getStaff(staffID)); // staff 
+                                trans.setProduct(ProductOps.getProduct(product.Key)); // product 
 
                                 invoice.transactions.Add(trans);
                             }
@@ -721,6 +725,19 @@ namespace POS
 
                             // retrieve the staff object for the invoice
                             invoice.salesperson = StaffOps.getStaff(staffID);
+
+                            // create the transaction in the invoice
+                            // retrieve the list of products
+                            foreach (KeyValuePair<string, int> product in saleItems)
+                            {
+                                Transaction trans = new Transaction();
+                                trans.setTimestamp(System.DateTime.Now.ToString("F")); // timestamp
+                                trans.setCustomer(null); // no customer data
+                                trans.setStaff(StaffOps.getStaff(staffID)); // staff 
+                                trans.setProduct(ProductOps.getProduct(product.Key)); // product
+
+                                invoice.transactions.Add(trans);
+                            }
                         }
                         catch (System.Data.SqlClient.SqlException sqlEx)
                         {
@@ -880,6 +897,7 @@ namespace POS
                 MessageBox.Show(nullProductMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 logger.Info(nullProductMessage);
 
+                // nothing more we can do
                 return;
             }
             else
