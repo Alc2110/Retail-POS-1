@@ -1,4 +1,4 @@
-# Requirements and use cases (< v0.9)
+# Requirements and use cases (< v1.0)
 ## Use cases
 ### Log in (COMPLETE)
 1. User supplies login credentials, via the login dialog box.
@@ -15,7 +15,7 @@
 2.2 Credentials do not match. Error box displayed. Login window displayed again.
 
 
-### Log out
+### Log out (DONE)
 1. User clicks logout button or File->logout.
 2. "Are you sure?" dialog displayed. Could be in the middle of a sale.
 3. Main window closed, login dialog box displayed.
@@ -41,7 +41,7 @@ Similar to create new staff profile, except any staff member can do this.
 
 ### Initiate new sale
 1. User clicks one of the new sale buttons.
-### Variation #1:
+### Variation #1 (DONE):
 1.1 Start at step 1. Customer is a member. "Find" button enabled.
 
 1.2 Customer account number textbox enabled. Account number entered. "Find" button clicked.
@@ -74,11 +74,12 @@ Similar to create new staff profile, except any staff member can do this.
 ### Checkout (DONE)
 1. Checkout clicked
 2. For all items in the list, transaction is performed in the database. If there is an error, inform the user, reset the UI. Otherwise, continue.
-3. Confirmation. 
+3. Confirmation.
+4. Save invoice. TODO: display invoice. 
 4. Reset the UI.
 
 
-### Look up item.
+### Look up item (DONE).
 1. "Price Lookup" button clicked.
 2. Database queried for item.
 3. If found, display price in message box. Else, display error message.
@@ -91,8 +92,6 @@ Similar to create new staff profile, except any staff member can do this.
 4. "Ok" button clicked.
 5. Confirmation.
 
-
 ### Look up transactions (Admin only) (DONE)
 
 
-### Generate report
