@@ -122,6 +122,15 @@ namespace POS
             button_priceLookup.Enabled = false;
             button_findCustomer.Enabled = false;
 
+            if (Configuration.USER_LEVEL == Configuration.Role.ADMIN)
+            {
+                transactionToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
+                transactionToolStripMenuItem.Enabled = false;
+            }
+
             button_newSaleMember.Enabled = true;
             button_newSaleNonMember.Enabled = true;
 
