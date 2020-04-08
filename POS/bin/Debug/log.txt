@@ -127,3 +127,11 @@ Starting Retail POS
 2020-04-07 21:35:08.1827|INFO|POS.MainWindow|Resetting the main window
 2020-04-07 21:35:08.1827|INFO|POS.MainWindow|Current state: READY
 2020-04-07 21:35:08.1827|INFO|POS.MainWindow|Current user level: NORMAL
+2020-04-08 20:50:18.6963|INFO|POS.LoginForm|Initialising login form
+2020-04-08 20:50:28.2719|INFO|POS.LoginForm|Attempting connection with database
+2020-04-08 20:50:31.0586|INFO|POS.LoginForm|Admin user
+2020-04-08 20:50:32.3920|INFO|POS.LoginForm|Login successful
+2020-04-08 20:50:32.9931|INFO|POS.MainWindow|Initialising main window
+2020-04-08 20:50:32.9931|INFO|POS.MainWindow|Resetting the main window
+2020-04-08 20:50:32.9931|INFO|POS.MainWindow|Current state: READY
+2020-04-08 20:50:32.9931|INFO|POS.MainWindow|Current user level: ADMIN

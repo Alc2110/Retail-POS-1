@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Configuration;
 // https://www.tutorialsteacher.com/csharp/csharp-event
+
 namespace POS
 {
     static class Program
@@ -20,6 +22,10 @@ namespace POS
             // configure the logger
             Configuration.Logger.ConfigureLogger();
 
+            // read database connection string from configuration file
+            Configuration.CONNECTION_STRING = ConfigurationManager.AppSettings["connString"];
+
+            // show the login form
             LoginForm loginForm = new LoginForm();
             Application.Run(loginForm);
         }
