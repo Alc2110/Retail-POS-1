@@ -1,0 +1,17 @@
+2020-04-08 21:08:45.8613|INFO|POS.LoginForm|
+Starting Retail POS
+2020-04-08 21:08:45.9543|INFO|POS.LoginForm|Initialising login form
+2020-04-08 21:08:51.3694|INFO|POS.LoginForm|Attempting connection with database
+2020-04-08 21:08:51.7727|INFO|POS.LoginForm|Admin user
+2020-04-08 21:08:52.5325|INFO|POS.LoginForm|Login successful
+2020-04-08 21:08:52.5995|INFO|POS.MainWindow|Initialising main window
+2020-04-08 21:08:52.5995|INFO|POS.MainWindow|Current state: READY
+2020-04-08 21:08:52.5995|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-08 21:12:45.4094|INFO|POS.LoginForm|Initialising login form
+2020-04-08 21:12:50.3643|INFO|POS.LoginForm|Attempting connection with database
+2020-04-08 21:12:50.8914|INFO|POS.LoginForm|Admin user
+2020-04-08 21:12:51.4970|INFO|POS.LoginForm|Login successful
+2020-04-08 21:12:51.6276|INFO|POS.MainWindow|Initialising main window
+2020-04-08 21:12:51.6316|INFO|POS.MainWindow|Resetting the main window
+2020-04-08 21:12:51.6316|INFO|POS.MainWindow|Current state: READY
+2020-04-08 21:12:51.6316|INFO|POS.MainWindow|Current user level: ADMIN
