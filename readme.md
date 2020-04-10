@@ -4,6 +4,9 @@ A toy application for a Retail Point of Sale (POS) system. Targets the .NET Fram
 **Current version: v0.1**
 
 ## Installation and Setup
+### Client
+
+### Server
 
 ## Usage
 Use cases are provided in the `docs` directory. User manual to be part of a future release.

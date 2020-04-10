@@ -41,11 +41,16 @@ namespace POS
             {
                 try
                 {
+                    // try it
+                    // tell the logger
                     logger.Info("Attempting connection with database");
+                    logger.Info("Connection string: " + Configuration.CONNECTION_STRING);
                     conn.Open();
                 }
                 catch (SqlException ex)
                 {
+                    // it failed
+                    // tell the user and the logger
                     conn.Close();
                     string errorMessage = "Error connecting to database: " + ex.Message;
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
