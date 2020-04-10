@@ -135,3 +135,27 @@ Starting Retail POS
 2020-04-08 20:50:32.9931|INFO|POS.MainWindow|Resetting the main window
 2020-04-08 20:50:32.9931|INFO|POS.MainWindow|Current state: READY
 2020-04-08 20:50:32.9931|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-10 13:14:49.6613|INFO|POS.LoginForm|Initialising login form
+2020-04-10 13:15:03.5312|INFO|POS.LoginForm|Attempting connection with database
+2020-04-10 13:15:04.5704|INFO|POS.LoginForm|Admin user
+2020-04-10 13:15:06.8273|INFO|POS.LoginForm|Login successful
+2020-04-10 13:15:07.2895|INFO|POS.MainWindow|Initialising main window
+2020-04-10 13:15:07.2895|INFO|POS.MainWindow|Resetting the main window
+2020-04-10 13:15:07.2895|INFO|POS.MainWindow|Current state: READY
+2020-04-10 13:15:07.2895|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-10 13:20:42.9024|INFO|POS.LoginForm|Initialising login form
+2020-04-10 13:21:00.9933|INFO|POS.LoginForm|Attempting connection with database
+2020-04-10 13:21:01.9778|INFO|POS.LoginForm|Admin user
+2020-04-10 13:21:04.0017|INFO|POS.LoginForm|Login successful
+2020-04-10 13:21:04.4838|INFO|POS.MainWindow|Initialising main window
+2020-04-10 13:21:04.4838|INFO|POS.MainWindow|Resetting the main window
+2020-04-10 13:21:04.4838|INFO|POS.MainWindow|Current state: READY
+2020-04-10 13:21:04.4838|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-10 13:25:31.4033|INFO|POS.LoginForm|Initialising login form
+2020-04-10 13:25:49.1595|INFO|POS.LoginForm|Attempting connection with database
+2020-04-10 13:25:49.6536|INFO|POS.LoginForm|Admin user
+2020-04-10 13:25:50.8764|INFO|POS.LoginForm|Login successful
+2020-04-10 13:25:51.4191|INFO|POS.MainWindow|Initialising main window
+2020-04-10 13:25:51.4191|INFO|POS.MainWindow|Resetting the main window
+2020-04-10 13:25:51.4191|INFO|POS.MainWindow|Current state: READY
+2020-04-10 13:25:51.4191|INFO|POS.MainWindow|Current user level: ADMIN

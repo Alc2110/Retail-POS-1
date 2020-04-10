@@ -25,6 +25,9 @@ namespace POS
             // read database connection string from configuration file
             Configuration.CONNECTION_STRING = ConfigurationManager.AppSettings["connString"];
 
+            // read store name from configuration file
+            Configuration.STORE_NAME = ConfigurationManager.AppSettings["storeName"];
+
             // show the login form
             LoginForm loginForm = new LoginForm();
             Application.Run(loginForm);

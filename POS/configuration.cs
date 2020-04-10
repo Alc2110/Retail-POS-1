@@ -21,7 +21,9 @@ namespace POS
 
         //public static string CONNECTION_STRING = "Server=192.168.56.1;Database=Retail_POS;Trusted_Connection=Yes";
 
-        public static string STORE_NAME = "Retail POS";
+        public static string STORE_NAME;
+
+        public static string VERSION = "0.1";
 
         public static class SpreadsheetConstants
         {

@@ -60,3 +60,4 @@ C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\de\PdfSharp.Charting.re
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\EPPlus.dll
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\Reports.dll
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\EPPlus.xml
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\obj\Debug\POS.View.AboutBox.resources
