@@ -24,6 +24,7 @@ namespace POS
 
             // read database connection string from configuration file
             Configuration.CONNECTION_STRING = ConfigurationManager.AppSettings["connString"];
+            //Configuration.CONNECTION_STRING = "Server=192.168.1.102;Database=Retail_POS;Trusted_Connection=Yes"
 
             // read store name from configuration file
             Configuration.STORE_NAME = ConfigurationManager.AppSettings["storeName"];
