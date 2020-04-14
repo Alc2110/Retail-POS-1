@@ -34,7 +34,7 @@ namespace POS
             tryLogin();
         }
 
-        private void tryLogin()
+        private async void tryLogin()
         {
             // attempt connection
             using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
@@ -45,7 +45,7 @@ namespace POS
                     // tell the logger
                     logger.Info("Attempting connection with database");
                     logger.Info("Connection string: " + Configuration.CONNECTION_STRING);
-                    conn.Open();
+                    await conn.OpenAsync();
                 }
                 catch (SqlException ex)
                 {

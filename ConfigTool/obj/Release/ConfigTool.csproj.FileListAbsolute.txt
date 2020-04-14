@@ -1,0 +1,10 @@
+C:\Users\alexc\Documents\GitHub\Retail-POS\ConfigTool\bin\Release\ConfigTool.exe.config
+C:\Users\alexc\Documents\GitHub\Retail-POS\ConfigTool\bin\Release\ConfigTool.exe
+C:\Users\alexc\Documents\GitHub\Retail-POS\ConfigTool\bin\Release\ConfigTool.pdb
+C:\Users\alexc\Documents\GitHub\Retail-POS\ConfigTool\obj\Release\ConfigTool.ConfigForm.resources
+C:\Users\alexc\Documents\GitHub\Retail-POS\ConfigTool\obj\Release\ConfigTool.Properties.Resources.resources
+C:\Users\alexc\Documents\GitHub\Retail-POS\ConfigTool\obj\Release\ConfigTool.csproj.GenerateResource.cache
+C:\Users\alexc\Documents\GitHub\Retail-POS\ConfigTool\obj\Release\ConfigTool.csproj.CoreCompileInputs.cache
+C:\Users\alexc\Documents\GitHub\Retail-POS\ConfigTool\obj\Release\ConfigTool.exe
+C:\Users\alexc\Documents\GitHub\Retail-POS\ConfigTool\obj\Release\ConfigTool.pdb
+C:\Users\alexc\Documents\GitHub\Retail-POS\ConfigTool\obj\Release\ConfigTool.csprojAssemblyReference.cache
