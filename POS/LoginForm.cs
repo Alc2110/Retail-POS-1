@@ -59,7 +59,7 @@ namespace POS
                     return;
                 }
 
-                if (authenticated(conn))
+                if (await authenticated(conn))
                 {
                     // authentication successful
                     // feedback for user
@@ -81,11 +81,12 @@ namespace POS
                     // feedback for user
                     string authFailMessage = "Incorrect credentials";
                     MessageBox.Show(authFailMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    conn.Close();
                 }
             }
         }
 
-        private bool authenticated(SqlConnection conn)
+        private async Task<bool> authenticated(SqlConnection conn)
         {
             // salting and hashing
             Security.Hasher loginHasher = new Security.Hasher(textBox_username.Text, textBox_password.Text);
@@ -97,7 +98,7 @@ namespace POS
             " SELECT * FROM Staff" +
             " WHERE FullName = @varFullName;";
             SqlCommand userNameCommand = new SqlCommand(userNameQuery, conn);
-            SqlDataReader userNameDataReader = userNameCommand.ExecuteReader();
+            SqlDataReader userNameDataReader = await userNameCommand.ExecuteReaderAsync();
             if (!userNameDataReader.HasRows)
             {
                 // empty, no such username exists

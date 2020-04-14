@@ -17,3 +17,67 @@
 2020-04-14 19:37:06.3193|INFO|POS.MainWindow|Resetting the main window
 2020-04-14 19:37:06.3193|INFO|POS.MainWindow|Current state: READY
 2020-04-14 19:37:06.3193|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-14 20:12:48.2489|INFO|POS.LoginForm|Initialising login form
+2020-04-14 20:13:02.6299|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 20:13:02.6299|INFO|POS.LoginForm|Connection string: Server=192.168.1.1021;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 20:13:06.0165|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 20:13:06.0165|INFO|POS.LoginForm|Connection string: Server=192.168.1.1021;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 20:13:13.0191|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 20:13:13.0191|INFO|POS.LoginForm|Connection string: Server=192.168.1.1021;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 20:13:24.2575|ERROR|POS.LoginForm|Error connecting to database: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+2020-04-14 20:13:27.1063|ERROR|POS.LoginForm|Error connecting to database: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+2020-04-14 20:13:28.3457|ERROR|POS.LoginForm|Error connecting to database: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+2020-04-14 20:13:32.8473|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 20:13:32.8473|INFO|POS.LoginForm|Connection string: Server=192.168.1.1021;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 20:13:38.2947|INFO|POS.LoginForm|Exiting application
+2020-04-14 20:17:49.1787|INFO|POS.LoginForm|Initialising login form
+2020-04-14 20:18:04.4478|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 20:18:04.4478|INFO|POS.LoginForm|Connection string: Server=192.168.1.1021;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 20:18:20.8485|ERROR|POS.LoginForm|Error connecting to database: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+2020-04-14 20:18:22.9922|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 20:18:22.9922|INFO|POS.LoginForm|Connection string: Server=192.168.1.1021;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 20:18:24.8316|ERROR|POS.LoginForm|Error connecting to database: A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server)
+2020-04-14 20:18:25.6395|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 20:18:25.6395|INFO|POS.LoginForm|Connection string: Server=192.168.1.1021;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 20:18:38.3406|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 20:18:38.3406|INFO|POS.LoginForm|Connection string: Server=192.168.1.1021;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 20:20:33.5166|INFO|POS.LoginForm|Initialising login form
+2020-04-14 20:20:45.5064|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 20:20:45.5064|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 20:20:50.2901|INFO|POS.LoginForm|Admin user
+2020-04-14 20:20:52.2449|INFO|POS.LoginForm|Login successful
+2020-04-14 20:20:54.0524|INFO|POS.MainWindow|Initialising main window
+2020-04-14 20:20:54.0524|INFO|POS.MainWindow|Resetting the main window
+2020-04-14 20:20:54.0524|INFO|POS.MainWindow|Current state: READY
+2020-04-14 20:20:54.0524|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-14 23:24:43.8770|INFO|POS.LoginForm|Initialising login form
+2020-04-14 23:24:53.2951|INFO|POS.LoginForm|Exiting application
+2020-04-14 23:27:38.4621|INFO|POS.LoginForm|Initialising login form
+2020-04-14 23:27:49.0132|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 23:27:49.0132|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 23:27:50.0833|INFO|POS.LoginForm|Admin user
+2020-04-14 23:27:51.9737|INFO|POS.LoginForm|Login successful
+2020-04-14 23:27:52.6758|INFO|POS.MainWindow|Initialising main window
+2020-04-14 23:27:52.6788|INFO|POS.MainWindow|Resetting the main window
+2020-04-14 23:27:52.6788|INFO|POS.MainWindow|Current state: READY
+2020-04-14 23:27:52.6788|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-14 23:27:55.1790|INFO|POS.LoginForm|Initialising login form
+2020-04-14 23:28:00.8495|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 23:28:00.8515|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 23:28:00.8725|INFO|POS.LoginForm|Admin user
+2020-04-14 23:28:02.3035|INFO|POS.LoginForm|Login successful
+2020-04-14 23:28:02.4025|INFO|POS.MainWindow|Initialising main window
+2020-04-14 23:28:02.4025|INFO|POS.MainWindow|Resetting the main window
+2020-04-14 23:28:02.4025|INFO|POS.MainWindow|Current state: READY
+2020-04-14 23:28:02.4025|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-14 23:28:14.7784|INFO|POS.LoginForm|Initialising login form
+2020-04-14 23:28:20.3088|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 23:28:20.3088|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 23:28:22.2022|INFO|POS.LoginForm|Admin user
+2020-04-14 23:28:25.7837|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 23:28:25.7837|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 23:28:25.7987|INFO|POS.LoginForm|Admin user
+2020-04-14 23:28:28.1895|INFO|POS.LoginForm|Attempting connection with database
+2020-04-14 23:28:28.1895|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-14 23:28:28.1986|INFO|POS.LoginForm|Admin user
+2020-04-14 23:28:32.3732|INFO|POS.LoginForm|Exiting application
