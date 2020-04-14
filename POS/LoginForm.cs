@@ -74,6 +74,7 @@ namespace POS
                     MainWindow mainForm = new MainWindow();
                     mainForm.Show();
                     this.Hide();
+                    conn.Close();
                 }
                 else
                 {

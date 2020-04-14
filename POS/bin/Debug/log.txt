@@ -81,3 +81,12 @@
 2020-04-14 23:28:28.1895|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
 2020-04-14 23:28:28.1986|INFO|POS.LoginForm|Admin user
 2020-04-14 23:28:32.3732|INFO|POS.LoginForm|Exiting application
+2020-04-15 08:53:07.4442|INFO|POS.LoginForm|Initialising login form
+2020-04-15 08:53:20.2790|INFO|POS.LoginForm|Attempting connection with database
+2020-04-15 08:53:20.2790|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-15 08:53:26.2715|INFO|POS.LoginForm|Admin user
+2020-04-15 08:53:31.1376|INFO|POS.LoginForm|Login successful
+2020-04-15 08:53:33.3682|INFO|POS.MainWindow|Initialising main window
+2020-04-15 08:53:33.3682|INFO|POS.MainWindow|Resetting the main window
+2020-04-15 08:53:33.3682|INFO|POS.MainWindow|Current state: READY
+2020-04-15 08:53:33.3682|INFO|POS.MainWindow|Current user level: ADMIN
