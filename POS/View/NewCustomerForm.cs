@@ -84,6 +84,9 @@ namespace POS.View
                 logger.Info(successMessage);
                 MessageBox.Show(successMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                // fire the event
+                Model.ServiceLayer.CustomerOps.getAllCustomers();
+
                 // clean up the UI
                 textBox_fullName.Text = string.Empty;
                 textBox_phoneNumber.Text = string.Empty;

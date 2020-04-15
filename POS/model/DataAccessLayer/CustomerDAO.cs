@@ -34,11 +34,11 @@ namespace Model.DataAccessLayer
                     cmd.Parameters.Add(idParam);
 
                     // try a connection
-                    conn.Open();
+                    conn.OpenAsync();
 
                     // execute the query
-                    SqlDataReader reader = cmd.ExecuteReader();
-
+                    Task<SqlDataReader> readerTask = cmd.ExecuteReaderAsync();
+                    SqlDataReader reader = readerTask.Result;
                     // check if results exist
                     if (reader.HasRows)
                     {
@@ -120,7 +120,8 @@ namespace Model.DataAccessLayer
                     conn.Open();
 
                     // execute the query
-                    SqlDataReader reader = cmd.ExecuteReader();
+                    Task<SqlDataReader> readerTask = cmd.ExecuteReaderAsync();
+                    SqlDataReader reader = readerTask.Result;
                     while (reader.Read())
                     {
                         Customer customer = new Customer();
@@ -181,13 +182,13 @@ namespace Model.DataAccessLayer
 
         // this works
         // TODO: change this to require an ID only
-        public int deleteCustomer(Customer customer)
+        public void deleteCustomer(Customer customer)
         {
             // CustomerID in the database is the PK
             int id = customer.getID();
 
             string queryDeleteCustomer = "DELETE FROM Customers WHERE CustomerID = " + id + ";";
-            int result = 0;
+  
             try
             {
                 using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
@@ -195,10 +196,10 @@ namespace Model.DataAccessLayer
                     SqlCommand cmd = new SqlCommand(queryDeleteCustomer, conn);
 
                     // try a connection
-                    conn.Open();
+                    conn.OpenAsync();
 
                     // execute the query
-                    result = cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQueryAsync();
                 }
             }
             catch (SqlException ex)
@@ -206,11 +207,11 @@ namespace Model.DataAccessLayer
                 throw;
             }
 
-            return result;
+            return;
         }
 
         // this works
-        public void addCustomer(Customer customer)
+        public async void addCustomer(Customer customer)
         {
             // CustomerID in the database is PK and AI
 
@@ -260,10 +261,10 @@ namespace Model.DataAccessLayer
                     cmd.Parameters.Add(postcodeParam);
 
                     // try a connection
-                    conn.Open();
+                    await conn.OpenAsync();
 
                     // execute the query
-                    cmd.ExecuteNonQuery();
+                    await cmd.ExecuteNonQueryAsync();
                 }
             }
             catch (SqlException ex)
@@ -273,7 +274,7 @@ namespace Model.DataAccessLayer
         }
 
         // this works
-        public void updateCustomer(Customer customer)
+        public async void updateCustomer(Customer customer)
         {
             // CustomerID in the database is PK and AI
  
@@ -330,10 +331,10 @@ namespace Model.DataAccessLayer
                     cmd.Parameters.Add(postcodeParam);
 
                     // try a connection
-                    conn.Open();
+                    await conn.OpenAsync();
 
                     // execute the query
-                    cmd.ExecuteNonQuery();
+                    await cmd.ExecuteNonQueryAsync();
                 }
             }
             catch (SqlException ex)

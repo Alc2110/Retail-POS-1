@@ -107,7 +107,7 @@ namespace Model.ServiceLayer
         {
             // DAO
             CustomerDAO dao = new CustomerDAO();
-            List<Customer> allCustomers = (List<Customer>)dao.getAllCustomers();
+            List<Customer> allCustomers = (List<Customer>)(dao.getAllCustomers());
 
             // fire the event
             OnGetAllCustomers(null, new GetAllCustomersEventArgs(allCustomers));
