@@ -34,10 +34,11 @@ namespace Model.DataAccessLayer
                     SqlCommand cmd = new SqlCommand(getAllTransactionsQuery, conn);
 
                     // try a connection
-                    conn.Open();
+                    conn.OpenAsync();
 
                     // execute the query
-                    SqlDataReader reader = cmd.ExecuteReader();
+                    Task<SqlDataReader> readerTask = cmd.ExecuteReaderAsync();
+                    SqlDataReader reader = readerTask.Result;
                     while (reader.Read())
                     {
                         Transaction transaction = new Transaction();
@@ -144,7 +145,7 @@ namespace Model.DataAccessLayer
             throw new NotImplementedException();
         }
 
-        public void addTransaction(ValueTuple<int,int,Dictionary<string,int>> items)
+        public async void addTransaction(ValueTuple<int,int,Dictionary<string,int>> items)
         {
             // extract staff and customer information
             int staffID = items.Item1;
@@ -155,7 +156,7 @@ namespace Model.DataAccessLayer
                 using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
                 {
                     // try a connection
-                    conn.Open();
+                    await conn.OpenAsync();
 
                     // create command object
                     SqlCommand cmd = conn.CreateCommand();
@@ -255,7 +256,7 @@ namespace Model.DataAccessLayer
         }
 
         // TODO: use this method instead of the other one, but this does not work 
-        public int addTransaction(Transaction transaction)
+        public void addTransaction(Transaction transaction)
         {
             throw new NotImplementedException();
             /*

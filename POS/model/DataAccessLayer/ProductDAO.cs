@@ -25,10 +25,11 @@ namespace Model.DataAccessLayer
                     SqlCommand cmd = new SqlCommand(queryGetAllProducts, conn);
 
                     // try a connection
-                    conn.Open();
+                    conn.OpenAsync();
 
                     // execute the query
-                    SqlDataReader reader = cmd.ExecuteReader();
+                    Task<SqlDataReader> readerTask = cmd.ExecuteReaderAsync();
+                    SqlDataReader reader = readerTask.Result;
                     while (reader.Read())
                     {
                         Product product = new Product();
@@ -73,11 +74,11 @@ namespace Model.DataAccessLayer
                     cmd.Parameters.Add(idParam);
 
                     // attempt a connection
-                    conn.Open();
+                    conn.OpenAsync();
 
                     // execute the query
-                    SqlDataReader reader = cmd.ExecuteReader();
-
+                    Task<SqlDataReader> readerTask = cmd.ExecuteReaderAsync();
+                    SqlDataReader reader = readerTask.Result;
                     // check if results exist
                     if (reader.HasRows)
                     {
@@ -110,7 +111,7 @@ namespace Model.DataAccessLayer
         }
 
         // this works
-        public int deleteProduct(Product product)
+        public async void deleteProduct(Product product)
         {
             string queryDeleteProduct = "DELETE FROM Products " +
                                         "WHERE ProductID" +
@@ -131,10 +132,10 @@ namespace Model.DataAccessLayer
                     cmd.Parameters.Add(idParam);
 
                     // attempt a connection
-                    conn.Open();
+                    await conn.OpenAsync();
 
                     // execute the query
-                    result = cmd.ExecuteNonQuery();
+                    result = await cmd.ExecuteNonQueryAsync();
                 }
             }
             catch (SqlException ex)
@@ -142,15 +143,14 @@ namespace Model.DataAccessLayer
                 throw;
             }
 
-            return result;
+            return;
         }
 
         // this works
-        public int addProduct(Product product)
+        public async void addProduct(Product product)
         {
             string queryAddProduct = "INSERT INTO Products (ProductIDNumber,Description_,Quantity,Price) " +
                                      "VALUES (@idNumber, @description, @quantity, @price);";
-            int result = 0;
 
             try
             {
@@ -180,10 +180,10 @@ namespace Model.DataAccessLayer
                     cmd.Parameters.Add(priceParam);
 
                     // attempt a connection
-                    conn.Open();
+                    await conn.OpenAsync();
 
                     // execute the query
-                    result = cmd.ExecuteNonQuery();
+                    await cmd.ExecuteNonQueryAsync();
                 }
             }
             catch (SqlException ex)
@@ -191,7 +191,7 @@ namespace Model.DataAccessLayer
                 throw;
             }
 
-            return result;
+            return;
         }
 
         public void decrementQuantity(string productID)
@@ -205,7 +205,7 @@ namespace Model.DataAccessLayer
         }
 
         //public void updateProduct(int id, string productIdNumber, string description, int quantity, float price)
-        public void updateProduct(Product product)
+        public async void updateProduct(Product product)
         {
             string queryUpdateProduct = "UPDATE Products " +
                                         "SET ProductIDNumber = @idNumber, Description_ = @desc, Quantity = @quantity, Price = @price " +
@@ -239,10 +239,10 @@ namespace Model.DataAccessLayer
                     cmd.Parameters.Add(priceParam);
 
                     // attempt a connection
-                    conn.Open();
+                    await conn.OpenAsync();
 
                     // execute the query
-                    cmd.ExecuteNonQuery();
+                    await cmd.ExecuteNonQueryAsync();
                 }
             }
             catch (SqlException ex)

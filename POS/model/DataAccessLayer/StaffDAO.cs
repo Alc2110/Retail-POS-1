@@ -32,10 +32,11 @@ namespace Model.DataAccessLayer
                     cmd.Parameters.Add(idParam);
 
                     // try a connection
-                    conn.Open();
+                    conn.OpenAsync();
 
                     // execute the query
-                    SqlDataReader reader = cmd.ExecuteReader();
+                    Task<SqlDataReader> readerTask = cmd.ExecuteReaderAsync();
+                    SqlDataReader reader = readerTask.Result;
                     while (reader.Read())
                     {
                         staff.setName(reader.GetString(1));
@@ -78,10 +79,11 @@ namespace Model.DataAccessLayer
                     SqlCommand cmd = new SqlCommand(queryGetAllStaff, conn);
 
                     // try a connection
-                    conn.Open();
+                    conn.OpenAsync();
 
                     // execute the query
-                    SqlDataReader reader = cmd.ExecuteReader();
+                    Task<SqlDataReader> readerTask = cmd.ExecuteReaderAsync();
+                    SqlDataReader reader = readerTask.Result;
                     while (reader.Read())
                     {
                         Staff staff = new Staff();
@@ -114,13 +116,13 @@ namespace Model.DataAccessLayer
         }
 
         // this works
-        public int deleteStaff(Staff staff)
+        public async void deleteStaff(Staff staff)
         {
             // StaffID in the datbase is the PK
             int id = staff.getID();
 
             string queryDeleteStaff = "DELETE FROM Staff WHERE StaffID = " + id + ";";
-            int result = 0;
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
@@ -128,10 +130,10 @@ namespace Model.DataAccessLayer
                     SqlCommand cmd = new SqlCommand(queryDeleteStaff, conn);
 
                     // try a connection
-                    conn.Open();
+                    await conn.OpenAsync();
 
                     // execute the query
-                    result = cmd.ExecuteNonQuery();
+                    await cmd.ExecuteNonQueryAsync();
                 }
             }
             catch (SqlException ex)
@@ -139,15 +141,15 @@ namespace Model.DataAccessLayer
                 throw;
             }
 
-            return result;
+            return;
         }
 
-        public int addStaff(Staff staff)
+        public async void addStaff(Staff staff)
         {
             // StaffID in the database is PK and AI
             string queryAddStaff = "INSERT INTO Staff (FullName, PasswordHash, Privelege) " +
                                    "VALUES (@name, @password, @privelege);";
-            int result = 0;
+ 
             try
             {
                 using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
@@ -183,10 +185,10 @@ namespace Model.DataAccessLayer
                     cmd.Parameters.Add(privParam);
 
                     // try a connection
-                    conn.Open();
+                    await conn.OpenAsync();
 
                     // execute the query
-                    result = cmd.ExecuteNonQuery();
+                    await cmd.ExecuteNonQueryAsync();
                 }
             }
             catch (SqlException ex)
@@ -194,10 +196,10 @@ namespace Model.DataAccessLayer
                 throw;
             }
 
-            return result;
+            return;
         }
 
-        public void updateStaff(Staff staff)
+        public async void updateStaff(Staff staff)
         {
             // StaffID in the database is PK and AI
 
@@ -245,10 +247,10 @@ namespace Model.DataAccessLayer
                     cmd.Parameters.Add(privParam);
 
                     // try a connection
-                    conn.Open();
+                    await conn.OpenAsync();
 
                     // execute the query
-                    cmd.ExecuteNonQuery();
+                    await cmd.ExecuteNonQueryAsync();
                 }
             }
             catch (SqlException ex)

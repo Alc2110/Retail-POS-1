@@ -203,3 +203,47 @@
 2020-04-15 20:09:54.5318|INFO|POS.View.NewStaffForm|Successfully added new staff member record
 2020-04-15 20:10:02.6463|INFO|POS.View.NewStaffForm|Closing new staff form
 2020-04-15 20:10:26.3884|INFO|POS.View.NewProductForm|Successfully added new product
+2020-04-16 19:17:40.3303|INFO|POS.LoginForm|Initialising login form
+2020-04-16 19:17:56.1481|INFO|POS.LoginForm|Attempting connection with database
+2020-04-16 19:17:56.1481|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-16 19:17:57.9145|INFO|POS.LoginForm|Admin user
+2020-04-16 19:17:59.3488|INFO|POS.LoginForm|Login successful
+2020-04-16 19:17:59.6074|INFO|POS.MainWindow|Initialising main window
+2020-04-16 19:17:59.6074|INFO|POS.MainWindow|Resetting the main window
+2020-04-16 19:17:59.6074|INFO|POS.MainWindow|Current state: READY
+2020-04-16 19:17:59.6074|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-16 19:20:18.0488|INFO|POS.LoginForm|Initialising login form
+2020-04-16 19:20:30.4185|INFO|POS.LoginForm|Attempting connection with database
+2020-04-16 19:20:30.4185|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-16 19:20:30.6116|INFO|POS.LoginForm|Admin user
+2020-04-16 19:20:31.6992|INFO|POS.LoginForm|Login successful
+2020-04-16 19:20:31.8222|INFO|POS.MainWindow|Initialising main window
+2020-04-16 19:20:31.8222|INFO|POS.MainWindow|Resetting the main window
+2020-04-16 19:20:31.8222|INFO|POS.MainWindow|Current state: READY
+2020-04-16 19:20:31.8222|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-16 19:20:56.3179|INFO|POS.View.NewCustomerForm|Successfully added new customer
+2020-04-16 19:25:01.0073|INFO|POS.LoginForm|Initialising login form
+2020-04-16 19:25:13.1880|INFO|POS.LoginForm|Attempting connection with database
+2020-04-16 19:25:13.1880|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-16 19:25:13.3340|INFO|POS.LoginForm|Admin user
+2020-04-16 19:25:14.4392|INFO|POS.LoginForm|Login successful
+2020-04-16 19:25:14.5462|INFO|POS.MainWindow|Initialising main window
+2020-04-16 19:25:14.5462|INFO|POS.MainWindow|Resetting the main window
+2020-04-16 19:25:14.5462|INFO|POS.MainWindow|Current state: READY
+2020-04-16 19:25:14.5462|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-16 19:25:40.5941|INFO|POS.View.NewCustomerForm|Successfully added new customer
+2020-04-16 19:25:56.3030|INFO|POS.View.NewStaffForm|Successfully added new staff member record
+2020-04-16 19:25:58.6701|INFO|POS.View.NewStaffForm|Closing new staff form
+2020-04-16 19:26:12.4696|INFO|POS.View.NewProductForm|Successfully added new product
+2020-04-16 19:26:29.7772|INFO|POS.View.NewProductForm|Successfully added new product
+2020-04-16 19:27:38.5412|INFO|POS.LoginForm|Initialising login form
+2020-04-16 19:27:46.0599|INFO|POS.LoginForm|Attempting connection with database
+2020-04-16 19:27:46.0599|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-16 19:27:46.2649|INFO|POS.LoginForm|Admin user
+2020-04-16 19:27:47.2053|INFO|POS.LoginForm|Login successful
+2020-04-16 19:27:47.3464|INFO|POS.MainWindow|Initialising main window
+2020-04-16 19:27:47.3484|INFO|POS.MainWindow|Resetting the main window
+2020-04-16 19:27:47.3484|INFO|POS.MainWindow|Current state: READY
+2020-04-16 19:27:47.3484|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-16 19:27:51.8591|INFO|POS.LoginForm|Initialising login form
+2020-04-16 19:27:53.0135|INFO|POS.LoginForm|Exiting application

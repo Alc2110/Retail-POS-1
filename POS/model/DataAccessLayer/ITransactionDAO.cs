@@ -11,6 +11,6 @@ namespace Model.DataAccessLayer
     {
         IList<Transaction> getAllTransactions();
         void deleteTransaction(Transaction transaction);
-        int addTransaction(Transaction transaction);
+        void addTransaction(Transaction transaction);
     }
 }

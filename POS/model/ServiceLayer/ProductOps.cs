@@ -42,7 +42,7 @@ namespace Model.ServiceLayer
         {
             // DAO
             ProductDAO dao = new ProductDAO();
-            
+            // TODO: implement this
         }
 
         public static List<Product> getAllProducts()
