@@ -79,14 +79,6 @@
   <ItemGroup>
     <Compile Include="HasherTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="createTransactionTest.cs" />
-    <Compile Include="deleteCustomerTest.cs" />
-    <Compile Include="addCustomerTest.cs" />
-    <Compile Include="addProductTest.cs" />
-    <Compile Include="deleteProductTest.cs" />
-    <Compile Include="getProductTest.cs" />
-    <Compile Include="deleteStaffTest.cs" />
-    <Compile Include="updateCustomerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
