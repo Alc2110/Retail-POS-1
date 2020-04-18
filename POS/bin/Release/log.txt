@@ -1,0 +1,17 @@
+2020-04-18 22:02:38.5948|INFO|POS.LoginForm|Initialising login form
+2020-04-18 22:02:46.0266|INFO|POS.LoginForm|Attempting connection with database
+2020-04-18 22:02:46.0266|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-18 22:02:52.1671|INFO|POS.LoginForm|Admin user
+2020-04-18 22:02:53.9311|INFO|POS.LoginForm|Login successful
+2020-04-18 22:02:56.2472|INFO|POS.MainWindow|Initialising main window
+2020-04-18 22:02:56.3002|INFO|POS.MainWindow|Resetting the main window
+2020-04-18 22:02:56.3002|INFO|POS.MainWindow|Current state: READY
+2020-04-18 22:02:56.3002|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-18 22:06:01.0665|INFO|POS.LoginForm|Initialising login form
+2020-04-18 22:06:06.7519|INFO|POS.LoginForm|Attempting connection with database
+2020-04-18 22:06:06.7519|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-18 22:06:08.2223|INFO|POS.LoginForm|Admin user
+2020-04-18 22:06:13.7037|INFO|POS.LoginForm|Attempting connection with database
+2020-04-18 22:06:13.7037|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-18 22:06:15.2611|INFO|POS.LoginForm|Username does not exist
+2020-04-18 22:06:16.0863|INFO|POS.LoginForm|Exiting application

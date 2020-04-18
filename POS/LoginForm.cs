@@ -59,35 +59,49 @@ namespace POS
                     return;
                 }
 
-                if (await authenticated(conn))
+                switch (await authenticated(conn))
                 {
-                    // authentication successful
-                    // feedback for user
-                    string authSuccessMessage = "Login successful";
-                    MessageBox.Show(authSuccessMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    logger.Info(authSuccessMessage);
+                    case AuthResult.SUCCESS:
+                        // authentication successful
+                        // tell the user and the logger
+                        string authSuccessMessage = "Login successful";
+                        MessageBox.Show(authSuccessMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        logger.Info(authSuccessMessage);
 
-                    // config
-                    Configuration.STAFF_ID = staffID;
+                        // config
+                        Configuration.STAFF_ID = staffID;
 
-                    // show main form and close this one
-                    MainWindow mainForm = new MainWindow();
-                    mainForm.Show();
-                    this.Hide();
-                    conn.Close();
-                }
-                else
-                {
-                    // authentication failed
-                    // feedback for user
-                    string authFailMessage = "Incorrect credentials";
-                    MessageBox.Show(authFailMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    conn.Close();
+                        // show main form and close this one
+                        MainWindow mainForm = new MainWindow();
+                        mainForm.Show();
+                        this.Hide();
+                        conn.Close();
+
+                        break;
+
+                    case AuthResult.NO_USERNAME:
+                        // no such username exists
+                        // tell the user and the logger
+                        string noUsernameMessage = "Username does not exist";
+                        MessageBox.Show(noUsernameMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        logger.Info(noUsernameMessage);
+                        conn.Close();
+
+                        break;
+
+                    case AuthResult.DENIED:
+                        // authentication failed
+                        // feedback for user
+                        string authFailMessage = "Incorrect password";
+                        MessageBox.Show(authFailMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        conn.Close();
+
+                        break;
                 }
             }
         }
 
-        private async Task<bool> authenticated(SqlConnection conn)
+        private async Task<AuthResult> authenticated(SqlConnection conn)
         {
             // salting and hashing
             Security.Hasher loginHasher = new Security.Hasher(textBox_username.Text, textBox_password.Text);
@@ -103,12 +117,10 @@ namespace POS
             if (!userNameDataReader.HasRows)
             {
                 // empty, no such username exists
-                logger.Info("Username does not exist");
-                conn.Close();
-
-                return false;
+                return AuthResult.NO_USERNAME;
             }
 
+            // at this point, the username provided exists in the database
             // retrieve salted hash from database and compare
             // while there, might as well grab the user privelege level
             while (userNameDataReader.Read())
@@ -141,13 +153,14 @@ namespace POS
             if (retrievedHash.Equals(hash))
             {
                 // success
+                // grab the staff ID
                 Configuration.STAFF_ID = staffID;
                 
-                return true;
+                return AuthResult.SUCCESS;
             }
 
             // access denied
-            return false;
+            return AuthResult.DENIED;
         }
 
         private void button_cancel_Click(object sender, EventArgs e)
@@ -155,5 +168,12 @@ namespace POS
             logger.Info("Exiting application");
             Application.Exit();
         }
+    }
+
+    enum AuthResult
+    {
+        SUCCESS,
+        NO_USERNAME,
+        DENIED
     }
 }
