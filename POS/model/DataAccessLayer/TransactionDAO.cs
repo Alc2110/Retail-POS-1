@@ -13,6 +13,10 @@ namespace Model.DataAccessLayer
 {
     public class TransactionDAO : ITransactionDAO
     {
+        /// <summary>
+        /// Retrieve all transactions in the database.
+        /// </summary>
+        /// <returns></returns>
         public IList<Transaction> getAllTransactions()
         {
             IList<Transaction> transList = new List<Transaction>();
@@ -26,13 +30,13 @@ namespace Model.DataAccessLayer
                                               " INNER JOIN Products ON Transactions.ProductID = Products.ProductID)" +
                                               " INNER JOIN Staff ON Transactions.StaffID = Staff.StaffID);";
 
-            try
+            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
-                {
-                    // define the command object
-                    SqlCommand cmd = new SqlCommand(getAllTransactionsQuery, conn);
+                // prepare the command
+                SqlCommand cmd = new SqlCommand(getAllTransactionsQuery, conn);
 
+                try
+                {
                     // try a connection
                     conn.OpenAsync();
 
@@ -130,10 +134,15 @@ namespace Model.DataAccessLayer
                         transList.Add(transaction);
                     }
                 }
-            }
-            catch (SqlException ex)
-            {     
-                throw;
+                catch (SqlException sqlEx)
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (conn != null)
+                        conn.Close();
+                }
             }
 
             return transList;
@@ -145,15 +154,19 @@ namespace Model.DataAccessLayer
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Add a transaction record to the database.
+        /// </summary>
+        /// <param name="items">Items</param>
         public async void addTransaction(ValueTuple<int,int,Dictionary<string,int>> items)
         {
             // extract staff and customer information
             int staffID = items.Item1;
             int customerID = items.Item2;
 
-            try
+            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+                try
                 {
                     // try a connection
                     await conn.OpenAsync();
@@ -225,7 +238,7 @@ namespace Model.DataAccessLayer
                                     cmd.Parameters.AddWithValue("@productID", productID);
                                     cmd.Parameters.AddWithValue("@staffID", staffID);
                                     cmd.Parameters.AddWithValue("@quantity", (productInStock - productQuantity));
-                                    */
+                                     */
                                     cmd.CommandText = "INSERT INTO Transactions (Timestamp_, StaffID, ProductID)" +
                                                       "VALUES (SYSDATETIME(),@staffID,@productID);";
                                     cmd.ExecuteNonQuery();
@@ -248,10 +261,15 @@ namespace Model.DataAccessLayer
                         }
                     }
                 }
-            }
-            catch (SqlException SqlEx)
-            {
-                throw;
+                catch (SqlException sqlEx)
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (conn != null)
+                        conn.Close();
+                }
             }
         }
 

@@ -119,7 +119,7 @@ namespace Model.ServiceLayer
         public static event EventHandler<GetAllCustomersEventArgs> OnGetAllCustomers = delegate { };     
     }
 
-    public class GetAllCustomersEventArgs
+    public class GetAllCustomersEventArgs : EventArgs
     {
         private List<Customer> customerList;
 

@@ -15,3 +15,77 @@
 2020-04-18 22:06:13.7037|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
 2020-04-18 22:06:15.2611|INFO|POS.LoginForm|Username does not exist
 2020-04-18 22:06:16.0863|INFO|POS.LoginForm|Exiting application
+2020-04-19 12:25:10.5183|INFO|POS.LoginForm|Initialising login form
+2020-04-19 12:25:19.5531|INFO|POS.LoginForm|Attempting connection with database
+2020-04-19 12:25:19.5531|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-19 12:25:21.1749|INFO|POS.LoginForm|Admin user
+2020-04-19 12:25:34.6816|INFO|POS.LoginForm|Login successful
+2020-04-19 12:25:34.9921|INFO|POS.MainWindow|Initialising main window
+2020-04-19 12:25:34.9921|INFO|POS.MainWindow|Resetting the main window
+2020-04-19 12:25:34.9921|INFO|POS.MainWindow|Current state: READY
+2020-04-19 12:25:34.9921|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-27 21:57:03.1338|INFO|POS.LoginForm|Initialising login form
+2020-04-27 21:57:11.1704|INFO|POS.LoginForm|Attempting connection with database
+2020-04-27 21:57:11.1704|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-27 21:57:23.6958|INFO|POS.LoginForm|Admin user
+2020-04-27 21:57:25.5673|INFO|POS.LoginForm|Login successful
+2020-04-27 21:57:26.1744|INFO|POS.MainWindow|Initialising main window
+2020-04-27 21:57:26.2134|INFO|POS.MainWindow|Resetting the main window
+2020-04-27 21:57:26.2134|INFO|POS.MainWindow|Current state: READY
+2020-04-27 21:57:26.2134|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-27 22:26:11.3772|INFO|POS.LoginForm|Initialising login form
+2020-04-27 22:26:18.9668|INFO|POS.LoginForm|Attempting connection with database
+2020-04-27 22:26:18.9668|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-27 22:26:21.8727|INFO|POS.LoginForm|Admin user
+2020-04-27 22:26:23.6582|INFO|POS.LoginForm|Login successful
+2020-04-27 22:26:24.0583|INFO|POS.MainWindow|Initialising main window
+2020-04-27 22:26:24.0583|INFO|POS.MainWindow|Resetting the main window
+2020-04-27 22:26:24.0583|INFO|POS.MainWindow|Current state: READY
+2020-04-27 22:26:24.0583|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-27 22:27:29.1241|INFO|POS.LoginForm|Initialising login form
+2020-04-27 22:27:40.9095|INFO|POS.LoginForm|Attempting connection with database
+2020-04-27 22:27:40.9095|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-27 22:27:43.1601|INFO|POS.LoginForm|Admin user
+2020-04-27 22:27:44.7356|INFO|POS.LoginForm|Login successful
+2020-04-27 22:27:44.9316|INFO|POS.MainWindow|Initialising main window
+2020-04-27 22:27:44.9346|INFO|POS.MainWindow|Resetting the main window
+2020-04-27 22:27:44.9346|INFO|POS.MainWindow|Current state: READY
+2020-04-27 22:27:44.9346|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-27 22:29:04.0765|INFO|POS.LoginForm|Initialising login form
+2020-04-27 22:29:23.4241|INFO|POS.LoginForm|Attempting connection with database
+2020-04-27 22:29:23.4241|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-27 22:29:24.3655|INFO|POS.LoginForm|Admin user
+2020-04-27 22:29:26.3937|INFO|POS.LoginForm|Login successful
+2020-04-27 22:29:26.7068|INFO|POS.MainWindow|Initialising main window
+2020-04-27 22:29:26.7068|INFO|POS.MainWindow|Resetting the main window
+2020-04-27 22:29:26.7068|INFO|POS.MainWindow|Current state: READY
+2020-04-27 22:29:26.7068|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-27 22:30:10.5146|INFO|POS.View.NewCustomerForm|Successfully added new customer
+2020-04-27 22:30:34.0027|INFO|POS.View.NewStaffForm|Successfully added new staff member record
+2020-04-27 22:49:47.9324|INFO|POS.LoginForm|Initialising login form
+2020-04-27 22:51:28.8673|INFO|POS.LoginForm|Attempting connection with database
+2020-04-27 22:51:28.8673|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-27 22:51:31.0995|INFO|POS.LoginForm|Admin user
+2020-04-27 22:51:32.3749|INFO|POS.LoginForm|Login successful
+2020-04-27 22:51:32.6339|INFO|POS.MainWindow|Initialising main window
+2020-04-27 22:51:32.6369|INFO|POS.MainWindow|Resetting the main window
+2020-04-27 22:51:32.6369|INFO|POS.MainWindow|Current state: READY
+2020-04-27 22:51:32.6369|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-28 19:25:58.4270|INFO|POS.LoginForm|Initialising login form
+2020-04-28 19:26:48.1183|INFO|POS.LoginForm|Attempting connection with database
+2020-04-28 19:26:48.1213|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-28 19:26:50.8892|INFO|POS.LoginForm|Admin user
+2020-04-28 19:26:53.4640|INFO|POS.LoginForm|Login successful
+2020-04-28 19:26:54.1373|INFO|POS.MainWindow|Initialising main window
+2020-04-28 19:26:54.1373|INFO|POS.MainWindow|Resetting the main window
+2020-04-28 19:26:54.1373|INFO|POS.MainWindow|Current state: READY
+2020-04-28 19:26:54.1373|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-28 20:39:42.1156|INFO|POS.LoginForm|Initialising login form
+2020-04-28 20:39:48.9300|INFO|POS.LoginForm|Attempting connection with database
+2020-04-28 20:39:48.9300|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-28 20:39:52.8177|INFO|POS.LoginForm|Admin user
+2020-04-28 20:39:54.8142|INFO|POS.LoginForm|Login successful
+2020-04-28 20:39:55.1863|INFO|POS.MainWindow|Initialising main window
+2020-04-28 20:39:55.1863|INFO|POS.MainWindow|Resetting the main window
+2020-04-28 20:39:55.1863|INFO|POS.MainWindow|Current state: READY
+2020-04-28 20:39:55.1863|INFO|POS.MainWindow|Current user level: ADMIN

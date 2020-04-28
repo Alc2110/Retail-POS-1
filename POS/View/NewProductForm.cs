@@ -69,7 +69,7 @@ namespace POS.View
                 }
 
                 // success
-                // inform the user
+                // inform the user and the logger
                 string successMessage = "Successfully added new product";
                 MessageBox.Show(successMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 logger.Info(successMessage);

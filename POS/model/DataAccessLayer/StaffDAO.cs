@@ -11,6 +11,11 @@ namespace Model.DataAccessLayer
 {
     public class StaffDAO : IStaffDAO
     {
+        /// <summary>
+        /// Retreive staff record from the database.
+        /// </summary>
+        /// <param name="id">Staff id</param>
+        /// <returns>Staff object</returns>
         public Staff getStaff(int id)
         {
             Staff staff = new Staff();
@@ -18,19 +23,19 @@ namespace Model.DataAccessLayer
 
             string queryGetStaff = "SELECT * FROM Staff WHERE StaffID = @id";
 
-            try
+            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+                // define the command object
+                SqlCommand cmd = new SqlCommand(queryGetStaff, conn);
+
+                // parameterise
+                SqlParameter idParam = new SqlParameter();
+                idParam.ParameterName = "@id";
+                idParam.Value = id;
+                cmd.Parameters.Add(idParam);
+
+                try
                 {
-                    // define the command object
-                    SqlCommand cmd = new SqlCommand(queryGetStaff, conn);
-
-                    // parameterise
-                    SqlParameter idParam = new SqlParameter();
-                    idParam.ParameterName = "@id";
-                    idParam.Value = id;
-                    cmd.Parameters.Add(idParam);
-
                     // try a connection
                     conn.OpenAsync();
 
@@ -46,38 +51,51 @@ namespace Model.DataAccessLayer
                         {
                             case "Admin":
                                 staff.setPrivelege(Staff.Privelege.Admin);
+
                                 break;
+
                             case "Normal":
                                 staff.setPrivelege(Staff.Privelege.Normal);
+
                                 break;
+
                             default:
                                 // this shouldn't happen
                                 throw new Exception("Invalid data in database");
                         }
                     }
                 }
-            }
-            catch (SqlException ex)
-            {
-                throw;
+                catch (SqlException sqlEx)
+                {
+                    throw;
+                }
+                finally
+                {
+                    if(conn != null)
+                        conn.Close();
+                }
             }
 
             return staff;
         }
 
+        /// <summary>
+        /// Returns a list of all staff records in the database.
+        /// </summary>
+        /// <returns>IList of Staff objects.</returns>
         public IList<Staff> getAllStaff()
         {
             IList<Staff> staffList = new List<Staff>();
 
             string queryGetAllStaff = "SELECT * FROM Staff;";
 
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
-                {
-                    // define the command object
-                    SqlCommand cmd = new SqlCommand(queryGetAllStaff, conn);
+             using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+             {
+                // define the command object
+                SqlCommand cmd = new SqlCommand(queryGetAllStaff, conn);
 
+                try
+                {
                     // try a connection
                     conn.OpenAsync();
 
@@ -94,10 +112,14 @@ namespace Model.DataAccessLayer
                         {
                             case "Admin":
                                 staff.setPrivelege(Staff.Privelege.Admin);
+
                                 break;
+
                             case "Normal":
                                 staff.setPrivelege(Staff.Privelege.Normal);
+
                                 break;
+
                             default:
                                 // this shouldn't happen
                                 throw new Exception("Invalid data in database");
@@ -106,16 +128,25 @@ namespace Model.DataAccessLayer
                         staffList.Add(staff);
                     }
                 }
-            }
-            catch (SqlException ex)
-            {
-                throw;
-            }
+                catch (SqlException sqlEx)
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (conn != null)
+                        conn.Close();
+                }
+             }
 
             return staffList;
         }
 
         // this works
+        /// <summary>
+        /// Delete a staff record in the database.
+        /// </summary>
+        /// <param name="staff"></param>
         public async void deleteStaff(Staff staff)
         {
             // StaffID in the datbase is the PK
@@ -123,139 +154,171 @@ namespace Model.DataAccessLayer
 
             string queryDeleteStaff = "DELETE FROM Staff WHERE StaffID = " + id + ";";
 
-            try
+            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
-                {
-                    SqlCommand cmd = new SqlCommand(queryDeleteStaff, conn);
+                SqlCommand cmd = new SqlCommand(queryDeleteStaff, conn);
 
+                try
+                {
                     // try a connection
                     await conn.OpenAsync();
 
                     // execute the query
                     await cmd.ExecuteNonQueryAsync();
                 }
+                catch (SqlException sqlEx)
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (conn != null)
+                        conn.Close();
+                }
             }
-            catch (SqlException ex)
-            {
-                throw;
-            }
-
+            
             return;
         }
 
+        /// <summary>
+        /// Add a staff record to the database.
+        /// </summary>
+        /// <param name="staff">Staff object.</param>
         public async void addStaff(Staff staff)
         {
             // StaffID in the database is PK and AI
             string queryAddStaff = "INSERT INTO Staff (FullName, PasswordHash, Privelege) " +
                                    "VALUES (@name, @password, @privelege);";
  
-            try
+            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+                // prepare the command
+                SqlCommand cmd = new SqlCommand(queryAddStaff, conn);
+
+                // parameterise
+                SqlParameter nameParam = new SqlParameter();
+                nameParam.ParameterName = "@name";
+                nameParam.Value = staff.getName();
+                cmd.Parameters.Add(nameParam);
+
+                SqlParameter passParam = new SqlParameter();
+                passParam.ParameterName = "@password";
+                passParam.Value = staff.getPasswordHash();
+                cmd.Parameters.Add(passParam);
+
+                SqlParameter privParam = new SqlParameter();
+                privParam.ParameterName = "@privelege";
+                Staff.Privelege privelege = staff.getPrivelege();
+                switch (privelege)
                 {
-                    SqlCommand cmd = new SqlCommand(queryAddStaff, conn);
-
-                    // parameterise
-                    SqlParameter nameParam = new SqlParameter();
-                    nameParam.ParameterName = "@name";
-                    nameParam.Value = staff.getName();
-                    cmd.Parameters.Add(nameParam);
-
-                    SqlParameter passParam = new SqlParameter();
-                    passParam.ParameterName = "@password";
-                    passParam.Value = staff.getPasswordHash();
-                    cmd.Parameters.Add(passParam);
-
-                    SqlParameter privParam = new SqlParameter();
-                    privParam.ParameterName = "@privelege";
-                    Staff.Privelege privelege = staff.getPrivelege();
-                    switch (privelege)
-                    {
-                        case Staff.Privelege.Admin:
+                    case Staff.Privelege.Admin:
                             privParam.Value = "Admin";
+
                             break;
-                        case Staff.Privelege.Normal:
+
+                    case Staff.Privelege.Normal:
                             privParam.Value = "Normal";
+
                             break;
-                        default:
+
+                    default:
                             // this shouldn't happen
                             throw new Exception("Invalid staff data");
-                    }
-                    cmd.Parameters.Add(privParam);
+                }
 
+                cmd.Parameters.Add(privParam);
+
+                try
+                {
                     // try a connection
                     await conn.OpenAsync();
 
                     // execute the query
                     await cmd.ExecuteNonQueryAsync();
                 }
-            }
-            catch (SqlException ex)
-            {
-                throw;
+                catch (SqlException sqlEx)
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (conn != null)
+                        conn.Close();
+                }
             }
 
             return;
         }
 
+        /// <summary>
+        /// Update a staff record in the database.
+        /// </summary>
+        /// <param name="staff">Staff object.</param>
         public async void updateStaff(Staff staff)
         {
             // StaffID in the database is PK and AI
-
-
             string queryUpdateCustomer = "UPDATE Staff " +
                                          "SET FullName = @name, Passwordhash = @passHash, Privelege = @privelege " +
                                          "WHERE StaffID = @id;";
 
-            try
+            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
-                using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+                SqlCommand cmd = new SqlCommand(queryUpdateCustomer, conn);
+
+                // parameterise
+                SqlParameter idParam = new SqlParameter();
+                idParam.ParameterName = "@id";
+                idParam.Value = staff.getID();
+                cmd.Parameters.Add(idParam);
+
+                SqlParameter nameParam = new SqlParameter();
+                nameParam.ParameterName = "@name";
+                nameParam.Value = staff.getName();
+                cmd.Parameters.Add(nameParam);
+
+                SqlParameter passParam = new SqlParameter();
+                passParam.ParameterName = "@passHash";
+                passParam.Value = staff.getPasswordHash();
+                cmd.Parameters.Add(passParam);
+
+                SqlParameter privParam = new SqlParameter();
+                privParam.ParameterName = "@privelege";
+                switch (staff.getPrivelege())
                 {
-                    SqlCommand cmd = new SqlCommand(queryUpdateCustomer, conn);
+                    case Staff.Privelege.Admin:
+                        privParam.Value = "Admin";
 
-                    // parameterise
-                    SqlParameter idParam = new SqlParameter();
-                    idParam.ParameterName = "@id";
-                    idParam.Value = staff.getID();
-                    cmd.Parameters.Add(idParam);
+                        break;
 
-                    SqlParameter nameParam = new SqlParameter();
-                    nameParam.ParameterName = "@name";
-                    nameParam.Value = staff.getName();
-                    cmd.Parameters.Add(nameParam);
+                    case Staff.Privelege.Normal:
+                        privParam.Value = "Normal";
 
-                    SqlParameter passParam = new SqlParameter();
-                    passParam.ParameterName = "@passHash";
-                    passParam.Value = staff.getPasswordHash();
-                    cmd.Parameters.Add(passParam);
+                        break;
 
-                    SqlParameter privParam = new SqlParameter();
-                    privParam.ParameterName = "@privelege";
-                    switch (staff.getPrivelege())
-                    {
-                        case Staff.Privelege.Admin:
-                            privParam.Value = "Admin";
-                            break;
-                        case Staff.Privelege.Normal:
-                            privParam.Value = "Normal";
-                            break;
-                        default:
-                            // should never happen
-                            throw new Exception("Invalid staff data");
-                    }
-                    cmd.Parameters.Add(privParam);
+                    default:
+                        // should never happen
+                        throw new Exception("Invalid staff data");
+                }
 
+                cmd.Parameters.Add(privParam);
+
+                try
+                {
                     // try a connection
                     await conn.OpenAsync();
 
                     // execute the query
                     await cmd.ExecuteNonQueryAsync();
                 }
-            }
-            catch (SqlException ex)
-            {
-                throw;
+                catch (SqlException sqlEx)
+                {
+                    throw;
+                }
+                finally
+                {
+                    if (conn != null)
+                        conn.Close();
+                }
             }
         }
     }
