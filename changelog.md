@@ -1,9 +1,15 @@
 # Retail POS - Changelog
 All notable changes to this project will be documented in this file. Note that release dates are given in dd/mm/yyyy format.
 
-## [Unreleased]
+## [0.1.1] - 30/04/2020
 ### Added
 - improved dialogs associated with login process
+- better import spreadsheet validation
+- version number in titlebar
+### Fixed
+- process still running after application is closed
+- crashing after adding a new product to the database
+- button naming inconsistencies in various forms
 
 ## [0.1] - 16/04/2020
 ### Added
