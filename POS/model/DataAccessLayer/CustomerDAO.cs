@@ -14,17 +14,28 @@ namespace Model.DataAccessLayer
     public class CustomerDAO : ICustomerDAO
     {
         /// <summary>
+        /// Returns a customer record from the database.
+        /// </summary>
+        /// <param name="id">Customer id</param>
+        /// <returns>Customer object</returns>
+        public Customer getCustomer(int id)
+        {
+            Task<Customer> task = Task.Run<Customer>(async () => await retrieveCustomer(id));
+
+            return task.Result;
+        }
+
+        /// <summary>
         /// Retrieve a customer record from the database.
         /// </summary>
         /// <param name="id">Customer id.</param>
         /// <returns>Customer object</returns>
-        public Customer getCustomer(int id)
+        private async Task<Customer> retrieveCustomer(int id)
         {
             Customer customer = new Customer();
 
             string queryGetCustomer = "SELECT * From Customers " +
                                       "WHERE CustomerID = @id;";
-
 
             using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
@@ -37,109 +48,18 @@ namespace Model.DataAccessLayer
                 idParam.Value = id;
                 cmd.Parameters.Add(idParam);
 
-                try
+                // try a connection
+                await conn.OpenAsync();
+
+                // execute the query
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+ 
+                // check if results exist
+                if (reader.HasRows)
                 {
-                    // try a connection
-                    conn.OpenAsync();
-
-                    // execute the query
-                    Task<SqlDataReader> readerTask = cmd.ExecuteReaderAsync();
-                    SqlDataReader reader = readerTask.Result;
-                    // check if results exist
-                    if (reader.HasRows)
-                    {
-                        // results exist
-                        while (reader.Read())
-                        {
-                            customer.setID(reader.GetInt32(0));
-                            customer.setName(reader.GetString(1));
-                            customer.setAddress(reader.GetString(2));
-                            customer.setPhoneNumber(reader.GetString(3));
-                            customer.setEmail(reader.GetString(4));
-                            customer.setCity(reader.GetString(5));
-
-                            switch (reader.GetString(6))
-                            {
-                                case "NSW":
-                                    customer.setState(Customer.States.NSW);
-                                    break;
-                                case "Qld":
-                                    customer.setState(Customer.States.Qld);
-                                    break;
-                                case "Tas":
-                                    customer.setState(Customer.States.Tas);
-                                    break;
-                                case "ACT":
-                                    customer.setState(Customer.States.ACT);
-                                    break;
-                                case "Vic":
-                                    customer.setState(Customer.States.Vic);
-                                    break;
-                                case "SA":
-                                    customer.setState(Customer.States.SA);
-                                    break;
-                                case "WA":
-                                    customer.setState(Customer.States.WA);
-                                    break;
-                                case "NT":
-                                    customer.setState(Customer.States.NT);
-                                    break;
-                                case "Other":
-                                    customer.setState(Customer.States.Other);
-                                    break;
-                                default:
-                                    // this shouldn't happen
-                                    throw new Exception("Invalid data in database");
-                            }
-
-                            customer.setPostcode(reader.GetInt32(7));
-                        }
-                    }
-                    else
-                    {
-                        //return null;
-                    }
-                }
-                catch (SqlException sqlEx)
-                {
-                    throw;
-                }
-                finally
-                {
-                    if (conn != null)
-                        conn.Close();
-                }
-
-                return customer;
-            }
-        }
-
-        // this works
-        /// <summary>
-        /// Returns a list of all customer records in the database.
-        /// </summary>
-        /// <returns>IList of customer objects.</returns>
-        public IList<Customer> getAllCustomers()
-        {
-            IList<Customer> customers = new List<Customer>();
-
-            string queryGetAllCustomers = "SELECT * From Customers;";
-
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
-            {
-                SqlCommand cmd = new SqlCommand(queryGetAllCustomers, conn);
-
-                try
-                {
-                    // try a connection
-                    conn.Open();
-
-                    // execute the query
-                    Task<SqlDataReader> readerTask = cmd.ExecuteReaderAsync();
-                    SqlDataReader reader = readerTask.Result;
+                    // results exist
                     while (reader.Read())
                     {
-                        Customer customer = new Customer();
                         customer.setID(reader.GetInt32(0));
                         customer.setName(reader.GetString(1));
                         customer.setAddress(reader.GetString(2));
@@ -178,22 +98,99 @@ namespace Model.DataAccessLayer
                                 break;
                             default:
                                 // this shouldn't happen
+                                // TODO: handle this properly
                                 throw new Exception("Invalid data in database");
                         }
 
                         customer.setPostcode(reader.GetInt32(7));
-
-                        customers.Add(customer);
                     }
                 }
-                catch (SqlException sqlEx)
+                else
                 {
-                    throw;
+                    customer = null;
                 }
-                finally
+
+                return customer;
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of all customer records in the database.
+        /// </summary>
+        /// <returns>List of customer objects.</returns>
+        public List<Customer> getAllCustomers()
+        {
+            Task<List<Customer>> task = Task.Run<List<Customer>>(async () => await retrieveAllCustomers());
+
+            return task.Result;
+        }
+
+        // this works
+        /// <summary>
+        /// Retrieves a list of all customer records in the database.
+        /// </summary>
+        /// <returns>Task List of customer objects.</returns>
+        private async Task<List<Customer>> retrieveAllCustomers()
+        {
+            List<Customer> customers = new List<Customer>();
+
+            string queryGetAllCustomers = "SELECT * From Customers;";
+
+            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            {
+                SqlCommand cmd = new SqlCommand(queryGetAllCustomers, conn);
+
+                // try a connection
+                await conn.OpenAsync();
+
+                // execute the query
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                while (reader.Read())
                 {
-                    if (conn != null)
-                        conn.Close();
+                    Customer customer = new Customer();
+                    customer.setID(reader.GetInt32(0));
+                    customer.setName(reader.GetString(1));
+                    customer.setAddress(reader.GetString(2));
+                    customer.setPhoneNumber(reader.GetString(3));
+                    customer.setEmail(reader.GetString(4));
+                    customer.setCity(reader.GetString(5));
+
+                    switch (reader.GetString(6))
+                    {
+                        case "NSW":
+                            customer.setState(Customer.States.NSW);
+                            break;
+                        case "Qld":
+                            customer.setState(Customer.States.Qld);
+                            break;
+                        case "Tas":
+                            customer.setState(Customer.States.Tas);
+                            break;
+                        case "ACT":
+                            customer.setState(Customer.States.ACT);
+                            break;
+                        case "Vic":
+                            customer.setState(Customer.States.Vic);
+                            break;
+                        case "SA":
+                            customer.setState(Customer.States.SA);
+                            break;
+                        case "WA":
+                            customer.setState(Customer.States.WA);
+                            break;
+                        case "NT":
+                            customer.setState(Customer.States.NT);
+                            break;
+                        case "Other":
+                            customer.setState(Customer.States.Other);
+                            break;
+                        default:
+                            // this shouldn't happen
+                            throw new Exception("Invalid data in database");
+                    }
+                    customer.setPostcode(reader.GetInt32(7));
+
+                    customers.Add(customer);
                 }
             }
 
@@ -206,34 +203,22 @@ namespace Model.DataAccessLayer
         /// Delete a customer record from the database.
         /// </summary>
         /// <param name="customer">Customer object</param>
-        public void deleteCustomer(Customer customer)
+        public async void deleteCustomer(Customer customer)
         {
             // CustomerID in the database is the PK
             int id = customer.getID();
             // TODO: parameterise this!
             string queryDeleteCustomer = "DELETE FROM Customers WHERE CustomerID = " + id + ";";
-  
+
             using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
                 SqlCommand cmd = new SqlCommand(queryDeleteCustomer, conn);
 
-                try
-                {
-                    // try a connection
-                    conn.OpenAsync();
+                // try a connection
+                await conn.OpenAsync();
 
-                    // execute the query
-                    cmd.ExecuteNonQueryAsync();
-                }
-                catch (SqlException sqlEx)
-                {
-                    throw;
-                }
-                finally
-                {
-                    if (conn != null)
-                        conn.Close();
-                }
+                // execute the query
+                await cmd.ExecuteNonQueryAsync();
             }
             
             return;
@@ -290,23 +275,11 @@ namespace Model.DataAccessLayer
                 postcodeParam.Value = customer.getPostcode();
                 cmd.Parameters.Add(postcodeParam);
 
-                try
-                {
-                    // try a connection
-                    await conn.OpenAsync();
+                // try a connection
+                await conn.OpenAsync();
 
-                    // execute the query
-                    await cmd.ExecuteNonQueryAsync();
-                }
-                catch (SqlException sqlEx)
-                {
-                    throw;
-                }
-                finally
-                {
-                    if (conn != null)
-                        conn.Close();
-                }
+                // execute the query
+                await cmd.ExecuteNonQueryAsync();
             }
         }
 
@@ -367,23 +340,11 @@ namespace Model.DataAccessLayer
                 postcodeParam.Value = customer.getPostcode();
                 cmd.Parameters.Add(postcodeParam);
 
-                try
-                {
-                    // try a connection
-                    await conn.OpenAsync();
+                // try a connection
+                await conn.OpenAsync();
 
-                    // execute the query
-                    await cmd.ExecuteNonQueryAsync();
-                }
-                catch (SqlException sqlEx)
-                {
-                    throw;
-                }
-                finally
-                {
-                    if (conn != null)
-                        conn.Close();
-                }
+                // execute the query
+                await cmd.ExecuteNonQueryAsync();
             }
         }
     }

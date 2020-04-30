@@ -26,6 +26,7 @@ namespace POS.View
                     return new TransactionSpreadsheetExport(exportType);
                 default:
                     // this shouldn't be allowed to happen!
+                    // TODO: handle it properly
                     throw new Exception("Invalid spreadsheet export type requested");
             }
         }
@@ -34,6 +35,9 @@ namespace POS.View
     // TODO: continue factoring out common code
     public abstract class SpreadsheetExport
     {
+        // create an instance of the logger for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public string exportType;
         protected string[] headers;
 
@@ -135,11 +139,16 @@ namespace POS.View
                     this.spreadsheet.SaveAs(fi);
                 }
             }
+            // TODO: find out the proper exception types to catch here
             catch (Exception ex)
             {
                 // it failed
-                // pass it up
-                throw;
+                // tell the user and the logger
+                string exportSpreadsheetFailedMessage = "Exporting spreadsheet failed: " + ex.Message;
+                System.Windows.Forms.MessageBox.Show(exportSpreadsheetFailedMessage, "Retail POS", System.Windows.Forms.MessageBoxButtons.OK,
+                    System.Windows.Forms.MessageBoxIcon.Error);
+                logger.Error(ex, exportSpreadsheetFailedMessage);
+                logger.Error("Stack trace: " + ex.StackTrace);
             }
         }
 
@@ -275,6 +284,7 @@ namespace POS.View
             {
                 Staff staff = this.staffList[i];
                 this.worksheet.Cells[row, 1].Value = staff.getID().ToString();
+                this.worksheet.Cells[row, 1].Style.Numberformat.Format = "0"; 
                 this.worksheet.Cells[row, 2].Value = staff.getName();
                 this.worksheet.Cells[row, 3].Value = staff.getPasswordHash();
                 this.worksheet.Cells[row, 4].Value = staff.getPrivelege().ToString();

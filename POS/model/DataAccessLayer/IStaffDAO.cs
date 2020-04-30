@@ -9,7 +9,7 @@ namespace Model.DataAccessLayer
 {
     public interface IStaffDAO
     {
-        IList<Staff> getAllStaff();
+        List<Staff> getAllStaff();
         void deleteStaff(Staff staff);
         void addStaff(Staff staff);
         void updateStaff(Staff staff);

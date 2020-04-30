@@ -9,7 +9,7 @@ namespace Model.DataAccessLayer
 {
     public interface ICustomerDAO
     {
-        IList<Customer> getAllCustomers();
+        List<Customer> getAllCustomers();
         void deleteCustomer(Customer customer);
         void addCustomer(Customer customer);
         void updateCustomer(Customer customer);

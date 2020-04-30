@@ -15,10 +15,21 @@ namespace Model.DataAccessLayer
         /// <summary>
         /// Return a list of all products in the database.
         /// </summary>
-        /// <returns>IList of Product objects</returns>
-        public IList<Product> getAllProducts()
+        /// <returns>List of products</returns>
+        public List<Product> getAllProducts()
         {
-            IList<Product> products = new List<Product>();
+            Task<List<Product>> task = Task.Run<List<Product>>(async () => await retrieveAllProducts());
+
+            return task.Result;
+        }
+
+        /// <summary>
+        /// Retrieve a list of all products in the database.
+        /// </summary>
+        /// <returns>Task<List> of Product objects</returns>
+        private async Task<List<Product>> retrieveAllProducts()
+        {
+            List<Product> products = new List<Product>();
 
             string queryGetAllProducts = "SELECT * FROM Products;";
 
@@ -26,40 +37,24 @@ namespace Model.DataAccessLayer
             {
                 SqlCommand cmd = new SqlCommand(queryGetAllProducts, conn);
 
-                try
-                {
-                    //lock (conn)
-                    //{
-                        // try a connection
-                        conn.OpenAsync();
+                // try a connection
+                await conn.OpenAsync();
 
-                        // execute the query
-                        Task<SqlDataReader> readerTask = cmd.ExecuteReaderAsync();
-                        SqlDataReader reader = readerTask.Result;
-                        while (reader.Read())
-                        {
-                            Product product = new Product();
-                            product.setProductID(reader.GetInt32(0));
-                            product.setProductIDNumber(reader.GetString(1));
-                            product.setDescription(reader.GetString(2));
-                            product.setQuantity(reader.GetInt32(3));
-                            // a SQL float is a .NET double
-                            double dprice = reader.GetDouble(4);
-                            float fprice = Convert.ToSingle(dprice);
-                            product.setPrice(fprice);
+                // execute the query
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                while (reader.Read())
+                {
+                    Product product = new Product();
+                    product.setProductID(reader.GetInt32(0));
+                    product.setProductIDNumber(reader.GetString(1));
+                    product.setDescription(reader.GetString(2));
+                    product.setQuantity(reader.GetInt32(3));
+                    // a SQL float is a .NET double
+                    double dprice = reader.GetDouble(4);
+                    float fprice = Convert.ToSingle(dprice);
+                    product.setPrice(fprice);
 
-                            products.Add(product);
-                        }
-                    //}
-                }
-                catch (SqlException ex)
-                {
-                    throw;
-                }
-                finally
-                {
-                    if (conn != null)
-                        conn.Close();
+                    products.Add(product);
                 }
             }
   
@@ -67,11 +62,22 @@ namespace Model.DataAccessLayer
         }
 
         /// <summary>
+        /// Return a product object from the database, based on its barcode number.
+        /// </summary>
+        /// <returns>Product object</returns>
+        public Product getProduct(string idNumber)
+        {
+            Task<Product> task = Task.Run<Product>(async () => await retrieveProduct(idNumber));
+
+            return task.Result;
+        }
+
+        /// <summary>
         /// Retrieve a product from the database, based on its barcode number.
         /// </summary>
         /// <param name="idNumber">barcode number string</param>
-        /// <returns>Product object</returns>
-        public Product getProduct(string idNumber)
+        /// <returns>Task<Product></returns>
+        private async Task<Product> retrieveProduct(string idNumber)
         {
             Product product = new Product();
 
@@ -89,45 +95,31 @@ namespace Model.DataAccessLayer
                 idParam.Value = idNumber;
                 cmd.Parameters.Add(idParam);
 
-                try
-                {
-                    // attempt a connection
-                    conn.OpenAsync();
+                // attempt a connection
+                await conn.OpenAsync();
 
-                    // execute the query
-                    Task<SqlDataReader> readerTask = cmd.ExecuteReaderAsync();
-                    SqlDataReader reader = readerTask.Result;
-                    // check if results exist
-                    if (reader.HasRows)
+                // execute the query
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+
+                // check if results exist
+                if (reader.HasRows)
+                {
+                    // results exist
+                    while (reader.Read())
                     {
-                        // results exist
-                        while (reader.Read())
-                        {
-                            product.setProductID(reader.GetInt32(0));
-                            product.setProductIDNumber(reader.GetString(1));
-                            product.setDescription(reader.GetString(2));
-                            product.setQuantity(reader.GetInt32(3));
-                            // an SQL float is a .NET double
-                            double dprice = reader.GetDouble(4);
-                            float fprice = Convert.ToSingle(dprice);
-                            product.setPrice(fprice);
-                        }
-                    }
-                    else
-                    {
-                        return null;
+                        product.setProductID(reader.GetInt32(0));
+                        product.setProductIDNumber(reader.GetString(1));
+                        product.setDescription(reader.GetString(2));
+                        product.setQuantity(reader.GetInt32(3));
+                        // an SQL float is a .NET double
+                        double dprice = reader.GetDouble(4);
+                        float fprice = Convert.ToSingle(dprice);
+                        product.setPrice(fprice);
                     }
                 }
-                catch (SqlException sqlEx)
+                else
                 {
-                    throw;
-                }
-                finally
-                {
-                    if (conn!=null)
-                    {
-                        conn.Close();
-                    }
+                    product = null;
                 }
 
                 return product;
@@ -156,24 +148,11 @@ namespace Model.DataAccessLayer
                 idParam.Value = product.getProductID();
                 cmd.Parameters.Add(idParam);
 
-                try
-                {
-                    // attempt a connection
-                    await conn.OpenAsync();
+                // attempt a connection
+                await conn.OpenAsync();
 
-
-                    // execute the query
-                    await cmd.ExecuteNonQueryAsync();
-                }
-                catch (SqlException sqlEx)
-                {
-                    throw;
-                }
-                finally
-                {
-                    if (conn != null)
-                        conn.Close();
-                }
+                // execute the query
+                await cmd.ExecuteNonQueryAsync(); 
             }
          
             return;
@@ -191,66 +170,37 @@ namespace Model.DataAccessLayer
 
             using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
-                    SqlCommand cmd = new SqlCommand(queryAddProduct, conn);
+                SqlCommand cmd = new SqlCommand(queryAddProduct, conn);
 
-                try
-                {
-                    // parameterise
-                    SqlParameter idNumberParam = new SqlParameter();
-                    idNumberParam.ParameterName = "@idNumber";
-                    idNumberParam.Value = product.getProductIDNumber();
-                    cmd.Parameters.Add(idNumberParam);
+                // parameterise
+                SqlParameter idNumberParam = new SqlParameter();
+                idNumberParam.ParameterName = "@idNumber";
+                idNumberParam.Value = product.getProductIDNumber();
+                cmd.Parameters.Add(idNumberParam);
 
-                    SqlParameter descParam = new SqlParameter();
-                    descParam.ParameterName = "@description";
-                    descParam.Value = product.getDescription();
-                    cmd.Parameters.Add(descParam);
+                SqlParameter descParam = new SqlParameter();
+                descParam.ParameterName = "@description";
+                descParam.Value = product.getDescription();
+                cmd.Parameters.Add(descParam);
 
-                    SqlParameter quantityParam = new SqlParameter();
-                    quantityParam.ParameterName = "@quantity";
-                    quantityParam.Value = product.getQuantity();
-                    cmd.Parameters.Add(quantityParam);
+                SqlParameter quantityParam = new SqlParameter();
+                quantityParam.ParameterName = "@quantity";
+                quantityParam.Value = product.getQuantity();
+                cmd.Parameters.Add(quantityParam);
 
-                    SqlParameter priceParam = new SqlParameter();
-                    priceParam.ParameterName = "@price";
-                    priceParam.Value = product.getPrice();
-                    cmd.Parameters.Add(priceParam);
+                SqlParameter priceParam = new SqlParameter();
+                priceParam.ParameterName = "@price";
+                priceParam.Value = product.getPrice();
+                cmd.Parameters.Add(priceParam);
 
-                    // attempt a connection
-                    await conn.OpenAsync();
+                // attempt a connection
+                await conn.OpenAsync();
 
-                    // execute the query
-                    await cmd.ExecuteNonQueryAsync();
-                }
-                catch (SqlException ex)
-                {
-                    throw;
-                }
-                finally
-                {
-                    /*
-                    if (conn != null)
-                    {
-                        conn.Close();
-                        conn.Dispose();
-                    }
-                    */
-                }
+                // execute the query
+                await cmd.ExecuteNonQueryAsync();
             }
 
             return;
-        }
-
-        public void decrementQuantity(string productID)
-        {
-            // may not be needed
-            throw new NotImplementedException();
-        }
-
-        public void setQuantity(string productID, int quantity)
-        {
-            // possibly useful
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -288,25 +238,12 @@ namespace Model.DataAccessLayer
                 priceParam.Value = product.getPrice();
                 cmd.Parameters.Add(priceParam);
 
-                try
-                {
-                    // attempt a connection
-                    await conn.OpenAsync();
+                // attempt a connection
+                await conn.OpenAsync();
 
-                    // execute the query
-                    await cmd.ExecuteNonQueryAsync();
-                }
-                catch (SqlException sqlEx)
-                {
-                    throw;
-                }
-                finally
-                {
-                    if (conn != null)
-                        conn.Close();
-                }
+                // execute the query
+                await cmd.ExecuteNonQueryAsync();
             }
-
         }
     }
 }

@@ -43,3 +43,15 @@
 2020-04-27 22:46:33.3554|INFO|POS.MainWindow|Resetting the main window
 2020-04-27 22:46:33.3554|INFO|POS.MainWindow|Current state: READY
 2020-04-27 22:46:33.3554|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-29 19:32:40.7867|INFO|POS.LoginForm|Initialising login form
+2020-04-29 19:32:47.0992|INFO|POS.LoginForm|Attempting connection with database
+2020-04-29 19:32:47.0992|INFO|POS.LoginForm|Connection string: Server=192.168.1.102;Database=Retail_POS;User Id=sa;Password=sqlserver
+2020-04-29 19:32:47.7724|INFO|POS.LoginForm|Admin user
+2020-04-29 19:32:48.3638|INFO|POS.LoginForm|Login successful
+2020-04-29 19:32:48.6058|INFO|POS.MainWindow|Initialising main window
+2020-04-29 19:32:48.6058|INFO|POS.MainWindow|Resetting the main window
+2020-04-29 19:32:48.6058|INFO|POS.MainWindow|Current state: READY
+2020-04-29 19:32:48.6058|INFO|POS.MainWindow|Current user level: ADMIN
+2020-04-29 19:32:52.0782|INFO|POS.MainWindow|Initiating nom-member sale
+2020-04-29 19:32:54.4593|INFO|POS.MainWindow|Retrieving product from database, for product ID: 9325193001001
+2020-04-29 19:32:54.4593|INFO|POS.MainWindow|Item of this type not yet in list. Adding item to list

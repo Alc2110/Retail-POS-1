@@ -9,7 +9,7 @@ namespace Model.DataAccessLayer
 {
     public interface ITransactionDAO
     {
-        IList<Transaction> getAllTransactions();
+        List<Transaction> getAllTransactions();
         void deleteTransaction(Transaction transaction);
         void addTransaction(Transaction transaction);
     }

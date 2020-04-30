@@ -12,6 +12,7 @@ using Model.ServiceLayer;
 using Model.ObjectModel;
 using Controller;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace POS
 {
@@ -52,6 +53,8 @@ namespace POS
 
             // controller dependency injection
             transController = TransactionController.getInstance();
+
+            
         }
 
         public enum State
@@ -174,7 +177,18 @@ namespace POS
         {
             // retrieve product record from database, for this ID 
             string productID = textBox_itemProductID.Text;
-            Product retrievedProduct = ProductOps.getProduct(productID);
+            Product retrievedProduct = new Product();
+            try
+            {
+                retrievedProduct = ProductOps.getProduct(productID);
+            }
+            catch (System.Data.SqlClient.SqlException sqlEx)
+            {
+                // something went wrong
+                // tell the user and the logger
+                string retrieveProductErrorMessage = "Failed to retrieve product from database: " + sqlEx.Message;
+                System.Windows.Forms.MessageBox.Show(retrieveProductErrorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             logger.Info("Retrieving product from database, for product ID: " + productID);
 
@@ -336,28 +350,13 @@ namespace POS
         // main form is closed
         private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // clicking the "close" button of the window registers as a DialogResult.Cancel
-            if (this.DialogResult==DialogResult.Cancel)
+            if ((currentState == State.SALE_MEMBER) || (currentState == State.SALE_NON_MEMBER))
             {
-                // ask the user for confirmation first if a sale is taking place
-                if ((currentState == State.SALE_MEMBER) || (currentState == State.SALE_NON_MEMBER))
-                {
-                    DialogResult closeConfirmation = MessageBox.Show("A sale is taking place. Do you really want to close the application?", "Retail POS", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-                    if (closeConfirmation == DialogResult.Yes)
-                    {
-                        this.Close();
-                        Application.Exit();
-                    }
-                    else if (closeConfirmation == DialogResult.No)
-                    {
-                        return;
-                    }
-                }
-                else
-                {
-                    this.Close();
-                    Application.Exit();
-                }
+                var result = MessageBox.Show("A sale is taking place. Do you really want to close the application?",
+                                                "Close", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+
+                if (result != System.Windows.Forms.DialogResult.Yes)
+                    e.Cancel = true;
             }
         }
 
@@ -414,7 +413,20 @@ namespace POS
             // get customer data
             string customerAccNumber = textBox_customerAccNo.Text;
             logger.Info("Attempting to find customer with account number: " + customerAccNumber);
-            Customer retrievedCustomer = CustomerOps.getCustomer(Int32.Parse(customerAccNumber));
+            Customer retrievedCustomer = new Customer();
+            try
+            {
+                retrievedCustomer = CustomerOps.getCustomer(Int32.Parse(customerAccNumber));
+            }
+            catch (System.Data.SqlClient.SqlException sqlEx)
+            {
+                // something went wrong 
+                // tell the user and the logger
+                string errorRetrievingCustomerMessage = "Failed to retrieve customer: " + sqlEx.Message;
+                System.Windows.Forms.MessageBox.Show(errorRetrievingCustomerMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(sqlEx, errorRetrievingCustomerMessage);
+                logger.Error("Stack trace: " + sqlEx.StackTrace);
+            }
 
             // could not find customer
             if (retrievedCustomer==null)
@@ -879,7 +891,7 @@ namespace POS
         private void button_priceLookup_Click(object sender, EventArgs e)
         {
             string productIDnumber = textBox_itemProductID.Text;
-            Product retrievedProduct = null;
+            Product retrievedProduct = new Product();
             try
             {
                 // ask the model for the product information
@@ -897,7 +909,7 @@ namespace POS
                 // nothing more we can do
                 return;
             }
-
+            
             if (retrievedProduct==null)
             {
                 // could not retrieve product
@@ -922,8 +934,9 @@ namespace POS
             textBox_itemProductID.Text = string.Empty;
         }
 
+        // TODO: format number cells as numbers in the spreadsheet
         // "export" menu item click events
-        // create a factory
+        // create an "export factory"
         SpreadsheetExportFactory spreadsheetExportFactory = new SpreadsheetExportFactory();
         private void staffToolStripMenuItem1_Click(object sender, EventArgs e)
         {
@@ -1057,12 +1070,23 @@ namespace POS
             {
                 // it failed
                 // tell the user and the logger
-                System.Windows.Forms.MessageBox.Show("Error importing " + importController.importType + " data: " + ex.Message, "Retail POS",
+                string importDataErrorMessage = "Error importing " + importController.importType + " data: " + ex.Message;
+                System.Windows.Forms.MessageBox.Show(importDataErrorMessage, "Retail POS",
                                                      System.Windows.Forms.MessageBoxButtons.OK,
                                                      System.Windows.Forms.MessageBoxIcon.Error);
-                logger.Error(ex, "Error importing " + importController.importType + " data: " + ex.Message);
+                logger.Error(ex, importDataErrorMessage);
                 logger.Error("Stack trace: " + ex.StackTrace);
+
+                return;
             }
+
+            // at this point, it succeeded
+            // tell the user and the logger
+            string importDataSuccessMessage = "Successfully imported data";
+            System.Windows.Forms.MessageBox.Show(importDataSuccessMessage, "Retail POS",
+                                                 System.Windows.Forms.MessageBoxButtons.OK,
+                                                 System.Windows.Forms.MessageBoxIcon.Information);
+            logger.Debug(importDataSuccessMessage);
         }
 
         private void textBox_itemProductID_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)

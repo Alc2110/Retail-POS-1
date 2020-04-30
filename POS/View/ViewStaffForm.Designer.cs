@@ -39,6 +39,7 @@
             this.listView_staff.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.listView_staff.HideSelection = false;
             this.listView_staff.Location = new System.Drawing.Point(12, 12);
             this.listView_staff.Name = "listView_staff";
             this.listView_staff.Size = new System.Drawing.Size(681, 426);
@@ -75,7 +76,7 @@
             this.button_close.Name = "button_close";
             this.button_close.Size = new System.Drawing.Size(98, 23);
             this.button_close.TabIndex = 3;
-            this.button_close.Text = "Cancel";
+            this.button_close.Text = "Close";
             this.button_close.UseVisualStyleBackColor = true;
             this.button_close.Click += new System.EventHandler(this.button_close_Click);
             // 

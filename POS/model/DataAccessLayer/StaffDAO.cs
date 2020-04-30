@@ -12,11 +12,23 @@ namespace Model.DataAccessLayer
     public class StaffDAO : IStaffDAO
     {
         /// <summary>
+        /// Return staff record from the database.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Staff object</returns>
+        public Staff getStaff(int id)
+        {
+            Task<Staff> task = Task.Run<Staff>(async () => await retrieveStaff(id));
+
+            return task.Result;
+        }
+
+        /// <summary>
         /// Retreive staff record from the database.
         /// </summary>
         /// <param name="id">Staff id</param>
-        /// <returns>Staff object</returns>
-        public Staff getStaff(int id)
+        /// <returns>Task Staff object</returns>
+        private async Task<Staff> retrieveStaff(int id)
         {
             Staff staff = new Staff();
             staff.setID(id);
@@ -34,14 +46,13 @@ namespace Model.DataAccessLayer
                 idParam.Value = id;
                 cmd.Parameters.Add(idParam);
 
-                try
-                {
-                    // try a connection
-                    conn.OpenAsync();
+                // try a connection
+                await conn.OpenAsync();
 
-                    // execute the query
-                    Task<SqlDataReader> readerTask = cmd.ExecuteReaderAsync();
-                    SqlDataReader reader = readerTask.Result;
+                // execute the query
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                if (reader.HasRows)
+                {
                     while (reader.Read())
                     {
                         staff.setName(reader.GetString(1));
@@ -61,18 +72,14 @@ namespace Model.DataAccessLayer
 
                             default:
                                 // this shouldn't happen
+                                // TODO: deal with it properly
                                 throw new Exception("Invalid data in database");
                         }
                     }
                 }
-                catch (SqlException sqlEx)
+                else
                 {
-                    throw;
-                }
-                finally
-                {
-                    if(conn != null)
-                        conn.Close();
+                    staff = null;
                 }
             }
 
@@ -82,26 +89,36 @@ namespace Model.DataAccessLayer
         /// <summary>
         /// Returns a list of all staff records in the database.
         /// </summary>
-        /// <returns>IList of Staff objects.</returns>
-        public IList<Staff> getAllStaff()
+        /// <returns>List of Staff objects</returns>
+        public List<Staff> getAllStaff()
         {
-            IList<Staff> staffList = new List<Staff>();
+            Task<List<Staff>> task = Task.Run<List<Staff>>(async () => await retriveAllStaff());
+
+            return task.Result;
+        }
+
+        /// <summary>
+        /// Retrieves a list of all staff records in the database.
+        /// </summary>
+        /// <returns>Task List of Staff objects.</returns>
+        private async Task<List<Staff>> retriveAllStaff()
+        {
+            List<Staff> staffList = new List<Staff>();
 
             string queryGetAllStaff = "SELECT * FROM Staff;";
 
-             using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
-             {
+            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            {
                 // define the command object
                 SqlCommand cmd = new SqlCommand(queryGetAllStaff, conn);
 
-                try
-                {
-                    // try a connection
-                    conn.OpenAsync();
+                // try a connection
+                await conn.OpenAsync();
 
-                    // execute the query
-                    Task<SqlDataReader> readerTask = cmd.ExecuteReaderAsync();
-                    SqlDataReader reader = readerTask.Result;
+                // execute the query
+                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                if (reader.HasRows)
+                {
                     while (reader.Read())
                     {
                         Staff staff = new Staff();
@@ -122,22 +139,18 @@ namespace Model.DataAccessLayer
 
                             default:
                                 // this shouldn't happen
+                                // TODO: deal with it properly
                                 throw new Exception("Invalid data in database");
                         }
 
                         staffList.Add(staff);
                     }
                 }
-                catch (SqlException sqlEx)
+                else
                 {
-                    throw;
+                    staffList = null;
                 }
-                finally
-                {
-                    if (conn != null)
-                        conn.Close();
-                }
-             }
+            }
 
             return staffList;
         }
@@ -158,23 +171,11 @@ namespace Model.DataAccessLayer
             {
                 SqlCommand cmd = new SqlCommand(queryDeleteStaff, conn);
 
-                try
-                {
-                    // try a connection
-                    await conn.OpenAsync();
+                // try a connection
+                await conn.OpenAsync();
 
-                    // execute the query
-                    await cmd.ExecuteNonQueryAsync();
-                }
-                catch (SqlException sqlEx)
-                {
-                    throw;
-                }
-                finally
-                {
-                    if (conn != null)
-                        conn.Close();
-                }
+                // execute the query
+                await cmd.ExecuteNonQueryAsync();
             }
             
             return;
@@ -189,7 +190,7 @@ namespace Model.DataAccessLayer
             // StaffID in the database is PK and AI
             string queryAddStaff = "INSERT INTO Staff (FullName, PasswordHash, Privelege) " +
                                    "VALUES (@name, @password, @privelege);";
- 
+
             using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
                 // prepare the command
@@ -212,39 +213,27 @@ namespace Model.DataAccessLayer
                 switch (privelege)
                 {
                     case Staff.Privelege.Admin:
-                            privParam.Value = "Admin";
+                        privParam.Value = "Admin";
 
-                            break;
+                        break;
 
                     case Staff.Privelege.Normal:
-                            privParam.Value = "Normal";
+                        privParam.Value = "Normal";
 
-                            break;
+                        break;
 
                     default:
-                            // this shouldn't happen
-                            throw new Exception("Invalid staff data");
+                        // this shouldn't happen
+                        throw new Exception("Invalid staff data");
                 }
 
                 cmd.Parameters.Add(privParam);
 
-                try
-                {
-                    // try a connection
-                    await conn.OpenAsync();
+                // try a connection
+                await conn.OpenAsync();
 
-                    // execute the query
-                    await cmd.ExecuteNonQueryAsync();
-                }
-                catch (SqlException sqlEx)
-                {
-                    throw;
-                }
-                finally
-                {
-                    if (conn != null)
-                        conn.Close();
-                }
+                // execute the query
+                await cmd.ExecuteNonQueryAsync();
             }
 
             return;
@@ -302,23 +291,11 @@ namespace Model.DataAccessLayer
 
                 cmd.Parameters.Add(privParam);
 
-                try
-                {
-                    // try a connection
-                    await conn.OpenAsync();
+                // try a connection
+                await conn.OpenAsync();
 
-                    // execute the query
-                    await cmd.ExecuteNonQueryAsync();
-                }
-                catch (SqlException sqlEx)
-                {
-                    throw;
-                }
-                finally
-                {
-                    if (conn != null)
-                        conn.Close();
-                }
+                // execute the query
+                await cmd.ExecuteNonQueryAsync();
             }
         }
     }

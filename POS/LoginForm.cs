@@ -23,7 +23,6 @@ namespace POS
 
         public LoginForm()
         {
-            
             logger.Info("Initialising login form");
 
             InitializeComponent();
@@ -31,6 +30,7 @@ namespace POS
 
         private void button_OK_Click(object sender, EventArgs e)
         {
+            button_OK.Enabled = false;
             tryLogin();
         }
 
@@ -73,9 +73,13 @@ namespace POS
 
                         // show main form and close this one
                         MainWindow mainForm = new MainWindow();
-                        mainForm.Show();
                         this.Hide();
                         conn.Close();
+                        mainForm.ShowDialog();
+
+                        logger.Info("Exiting application");
+                        Application.ExitThread();
+                        Environment.Exit(Environment.ExitCode);
 
                         break;
 
@@ -87,6 +91,8 @@ namespace POS
                         logger.Info(noUsernameMessage);
                         conn.Close();
 
+                        button_OK.Enabled = true;
+
                         break;
 
                     case AuthResult.DENIED:
@@ -95,6 +101,8 @@ namespace POS
                         string authFailMessage = "Incorrect password";
                         MessageBox.Show(authFailMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         conn.Close();
+
+                        button_OK.Enabled = true;
 
                         break;
                 }
@@ -166,7 +174,8 @@ namespace POS
         private void button_cancel_Click(object sender, EventArgs e)
         {
             logger.Info("Exiting application");
-            Application.Exit();
+            Application.ExitThread();
+            Environment.Exit(Environment.ExitCode);
         }
     }
 

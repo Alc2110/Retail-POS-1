@@ -10,6 +10,7 @@ namespace POS
 {
     static class Program
     {
+        // TODO: fix process still running when the application is closed
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -32,6 +33,9 @@ namespace POS
             // show the login form
             LoginForm loginForm = new LoginForm();
             Application.Run(loginForm);
+
+            Application.ExitThread();
+            Environment.Exit(Environment.ExitCode);
         }
     }
 }
