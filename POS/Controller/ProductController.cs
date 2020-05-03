@@ -10,22 +10,10 @@ namespace Controller
 {
     public class ProductController
     {
-        private static ProductController instance;
-
-        private ProductController()
+        // default ctor
+        public ProductController()
         { }
 
-        public static ProductController getInstance()
-        {
-            if (instance==null)
-            {
-                instance = new ProductController();
-            }
-
-            return instance;
-        }
-
-        //public void addProduct(long id, string idNumber, string description, int quantity, float price)
         public void addProduct(string idNumber, string description, int quantity, float price)
         {
             Product newProduct = new Product();
@@ -34,10 +22,17 @@ namespace Controller
             newProduct.setQuantity(quantity);
             newProduct.setPrice(price);
 
-            ProductOps.addProduct(newProduct);
+            POS.Configuration.productOps.addProduct(newProduct);
         }
 
-        public void deleteProduct(long id)
-        { }
+        public void updateProduct(Product toUpdate)
+        {
+            POS.Configuration.productOps.updateProduct(toUpdate);
+        }
+
+        public void deleteProduct(string idNumber)
+        {
+            POS.Configuration.productOps.deleteProduct(idNumber);
+        }
     }
 }

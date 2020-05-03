@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.Sql;
 using System.Data.SqlClient;
-/*https://www.mssqltips.com/sqlservertip/5771/querying-sql-server-tables-from-net/*/
+
 namespace POS
 {
     public partial class LoginForm : Form

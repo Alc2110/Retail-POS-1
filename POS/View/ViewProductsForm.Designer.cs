@@ -40,6 +40,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listView_products.GridLines = true;
+            this.listView_products.HideSelection = false;
             this.listView_products.Location = new System.Drawing.Point(12, 12);
             this.listView_products.Name = "listView_products";
             this.listView_products.Size = new System.Drawing.Size(681, 426);
@@ -91,6 +92,7 @@
             this.Controls.Add(this.listView_products);
             this.Name = "ViewProductsForm";
             this.Text = "Products";
+            this.Load += new System.EventHandler(this.ViewProductsForm_Load);
             this.ResumeLayout(false);
 
         }

@@ -21,9 +21,14 @@ namespace POS.View
         // get an instance of the logger for this class
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        // delegate for handling events fired by the model
+        private delegate void populateStaffViewDelegate(object sender, GetAllStaffEventArgs args);
+
         public ViewStaffForm()
         {
             InitializeComponent();
+
+            logger.Info("Initialising view staff form");
 
             // prepare the listView
             listView_staff.Columns.Add("ID");
@@ -37,29 +42,7 @@ namespace POS.View
             button_deleteSelectedStaff.Enabled = false;
 
             // controller dependency injection
-            controller = StaffController.getInstance();
-
-            // subscribe to model events
-            StaffOps.OnGetAllStaff += new EventHandler<GetAllStaffEventArgs>(staffEventHandler);
-
-            // populate the list view upon loading
-            try
-            {
-                populateView(StaffOps.getAllStaff());
-            }
-            catch (System.Data.SqlClient.SqlException sqlEx)
-            {
-                // it failed
-                // tell the user and the logger
-                string errorMessage = "Error: could not retrieve data from database: " + sqlEx.Message;
-                logger.Error(errorMessage);
-                MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                // nothing more we can do
-                // TODO: do we want to close the window at this point?
-                this.Close();
-            }
-
+            controller = new StaffController();
         }
 
         #region UI event handlers
@@ -71,33 +54,55 @@ namespace POS.View
 
         private void button_close_Click(object sender, EventArgs e)
         {
+            logger.Info("Closing view staff form");
+
             this.Close();
         }
 
-        private void button_deleteSelectedStaff_Click(object sender, EventArgs e)
+        private async void button_deleteSelectedStaff_Click(object sender, EventArgs e)
         {
             if (controller != null)
             {
                 try
                 {
+                    // prepare the data
                     int idNum;
                     Int32.TryParse(listView_staff.SelectedItems[0].SubItems[0].Text, out idNum);
-                    controller.deleteStaff(idNum);
+
+                    // log it
+                    logger.Info("Deleting staff record: ");
+                    logger.Info("ID: " + idNum);
+
+                    await Task.Run(() =>
+                    {
+                        // run this task in a separate thread
+                        controller.deleteStaff(idNum);
+                    });
                 }
-                catch (System.Data.SqlClient.SqlException sqlEx)
+                catch (Exception ex)
                 {
                     // it failed
                     // tell the user and the logger
-                    string errorMessage = "Error: could not delete staff record: " + sqlEx.Message;
+                    string errorMessage = "Error deleting data from database: " + ex.Message;
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    logger.Error(errorMessage);
+                    logger.Error(ex, errorMessage);
+                    logger.Error("Stack Trace: " + ex.StackTrace);
+
+                    // nothing more we can do
+                    return;
                 }
+
+                // at this point, it succeeded
+                // tell the user and the logger
+                string successMessage = "Successfully deleted customer record";
+                MessageBox.Show(successMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                logger.Info(successMessage);
             }
         }
 
         private void listView_staff_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView_staff.SelectedItems.Count>0)
+            if (listView_staff.SelectedItems.Count>1)
             {
                 // only allowed to select one item at a time
                 foreach (ListViewItem selectedItem in listView_staff.SelectedItems)
@@ -117,13 +122,25 @@ namespace POS.View
         }
         #endregion
 
-        private void staffEventHandler(object sender, GetAllStaffEventArgs e)
+        private void staffEventHandler(object sender, GetAllStaffEventArgs args)
         {
-            populateView(e.getList());
+            if (listView_staff.InvokeRequired)
+            {
+                listView_staff.Invoke(new populateStaffViewDelegate(populateView), new object[] { sender, args });
+            }
+            else
+            {
+                populateView(sender, args);
+            }
         }
 
-        private void populateView(List<Staff> staffList)
+        private void populateView(object sender, GetAllStaffEventArgs args)
         {
+            List<Staff> staffList = args.getList();
+
+            // tell the listView it is being updated
+            listView_staff.BeginUpdate();
+
             // clear the listView
             foreach (ListViewItem staffListViewItem in listView_staff.Items)
             {
@@ -141,6 +158,34 @@ namespace POS.View
 
                 ListViewItem staffListViewItem = new ListViewItem(itemArr);
                 listView_staff.Items.Add(staffListViewItem);
+            }
+
+            // tell the listView it is ready
+            listView_staff.EndUpdate();
+        }
+
+        private async void ViewStaffForm_Load(object sender, EventArgs e)
+        {
+            // subscribe to model events
+            POS.Configuration.staffOps.GetAllStaff += new EventHandler<GetAllStaffEventArgs>(staffEventHandler);
+
+            // populate the list view upon loading
+            try
+            {
+                // run this task in a separate thread
+                await Task.Run(() =>
+                {
+                    POS.Configuration.staffOps.getAllStaff();
+                });
+            }
+            catch (Exception ex)
+            {
+                // it failed
+                // tell the user and the logger
+                string errorMessage = "Error retrieving data from the database: " + ex.Message;
+                logger.Error(ex, errorMessage);
+                logger.Error("Stack Trace: " + ex.StackTrace);
+                MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

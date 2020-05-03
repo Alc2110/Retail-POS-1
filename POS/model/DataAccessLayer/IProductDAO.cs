@@ -10,7 +10,7 @@ namespace Model.DataAccessLayer
     public interface IProductDAO
     {
         List<Product> getAllProducts();
-        void deleteProduct(Product product);
+        void deleteProduct(string idNumber);
         void addProduct(Product product);
         void updateProduct(Product product);
     }

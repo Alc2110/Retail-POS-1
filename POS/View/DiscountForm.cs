@@ -15,9 +15,14 @@ namespace POS.View
         public string itemID;
         public float itemTotalPrice;
 
+        // get an instance of the logger for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public DiscountForm(string itemID, float totalPrice)
         {
             InitializeComponent();
+
+            logger.Info("Initialising discount form");
 
             this.itemID = itemID;
             this.itemTotalPrice = totalPrice;
@@ -36,6 +41,8 @@ namespace POS.View
 
         private void button_cancel_Click(object sender, EventArgs e)
         {
+            logger.Info("Closing discount form");
+
             this.Close();
         }
 
@@ -77,6 +84,8 @@ namespace POS.View
             }
 
             // fire the event
+            logger.Info("Applying discount: ");
+            logger.Info("Product ID: " + itemID + ", New price: " + newPrice);
             OnApplyDiscount(null, new DiscountEventArgs(itemID, newPrice));
 
             button_OK.Enabled = true;
@@ -130,6 +139,9 @@ namespace POS.View
         // event for applying discount
         public event EventHandler<DiscountEventArgs> OnApplyDiscount = delegate { };
 
+        /// <summary>
+        /// Event arguments class
+        /// </summary>
         public class DiscountEventArgs : EventArgs
         {
             private string itemIDnumber;

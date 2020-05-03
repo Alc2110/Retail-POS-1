@@ -17,9 +17,14 @@ namespace POS.View
         // get an instance of the logger for this class
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        // delegate for handling events fired by the model
+        private delegate void populateTransactionsViewDelegate(object sender, GetAllTransactionsEventArgs args);
+
         public ViewTransactionsForm()
         {
             InitializeComponent();
+
+            logger.Info("Initialising view transactions form");
 
             // prepare the listView
             listView_transactions.Columns.Add("Transaction ID");
@@ -33,43 +38,36 @@ namespace POS.View
             listView_transactions.Columns.Add("Product price");
             listView_transactions.View = System.Windows.Forms.View.Details;
             listView_transactions.GridLines = true;
-
-            // populate the list upon loading
-            try
-            {
-                populateView(TransactionOps.getAllTransactions());
-            }
-            catch (System.Data.SqlClient.SqlException sqlEx)
-            {
-                // it failed
-                // tell the user and the logger
-                string errorMessage = "Error: could not retrieve data from database: " + sqlEx.Message;
-                logger.Error(sqlEx, errorMessage);
-                logger.Error("Stack trace: " + sqlEx.StackTrace);
-
-                // nothing more we can do at this point
-                // TODO: do we want to close the window at this point?
-                this.Close();
-            }
-
-            // subscribe to Model events
-            TransactionOps.OnGetAllTransactions += new EventHandler<GetAllTransactionsEventArgs>(transactionEventHandler);
         }
 
         #region UI event handlers
         private void button_close_Click(object sender, EventArgs e)
         {
+            logger.Info("Closing view transactions form");
+
             this.Close();
         }
         #endregion
 
-        private void transactionEventHandler(object sender, GetAllTransactionsEventArgs e)
+        private void transactionEventHandler(object sender, GetAllTransactionsEventArgs args)
         {
-            populateView(e.getList());
+            if (listView_transactions.InvokeRequired)
+            {
+                listView_transactions.Invoke(new populateTransactionsViewDelegate(populateView), new object[] { sender, args });
+            }
+            else
+            {
+                populateView(sender, args);
+            }
         }
 
-        private void populateView(List<Transaction> transactions)
+        private void populateView(object sender, GetAllTransactionsEventArgs args)
         {
+            List<Transaction> transactions = args.getList();
+
+            // tell the listView it is being updated
+            listView_transactions.BeginUpdate();
+
             // clear the list
             foreach (ListViewItem item in listView_transactions.Items)
             {
@@ -99,6 +97,33 @@ namespace POS.View
                 
                 ListViewItem transactionItem = new ListViewItem(itemArr);
                 listView_transactions.Items.Add(transactionItem);
+            }
+
+            // tell the listView it is ready
+            listView_transactions.EndUpdate();
+        }
+
+        private async void ViewTransactionsForm_Load(object sender, EventArgs e)
+        {
+            // subscribe to Model events
+            POS.Configuration.transactionOps.GetAllTransactions += new EventHandler<GetAllTransactionsEventArgs>(transactionEventHandler);
+
+            // populate the list upon loading
+            try
+            {
+                // run this operation in a separate thread
+                await Task.Run(() =>
+                {
+                    POS.Configuration.transactionOps.getAllTransactions();
+                });
+            }
+            catch (Exception ex)
+            {
+                // it failed
+                // tell the user and the logger
+                string errorMessage = "Error: could not retrieve data from database: " + ex.Message;
+                logger.Error(ex, errorMessage);
+                logger.Error("Stack trace: " + ex.StackTrace);
             }
         }
     }

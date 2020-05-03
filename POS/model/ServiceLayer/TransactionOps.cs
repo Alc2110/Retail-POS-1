@@ -8,9 +8,9 @@ using Model.DataAccessLayer;
 
 namespace Model.ServiceLayer
 {
-    public static class TransactionOps
+    public class TransactionOps
     {
-        public static void addTransaction(ValueTuple<int,int,Dictionary<string,int>> items)
+        public void addTransaction(ValueTuple<int,int,Dictionary<string,int>> items)
         {
             // DAO
             TransactionDAO dao = new TransactionDAO();
@@ -20,23 +20,30 @@ namespace Model.ServiceLayer
             getAllTransactions();
         }
 
-        public static List<Transaction> getAllTransactions()
+        public List<Transaction> getAllTransactions()
         {
             // DAO
             // retrieve from database
             TransactionDAO dao = new TransactionDAO();
-            List<Transaction> transactionsList = (List<Transaction>)dao.getAllTransactions();
+            List<Transaction> transactionsList = dao.getAllTransactions();
 
             // fire the event
-            OnGetAllTransactions(null, new GetAllTransactionsEventArgs(transactionsList));
+            GetAllTransactions(this, new GetAllTransactionsEventArgs(transactionsList));
 
             return transactionsList;
         }
 
         // event for getting all transactions
-        public static event EventHandler<GetAllTransactionsEventArgs> OnGetAllTransactions = delegate { };
+        public event EventHandler<GetAllTransactionsEventArgs> GetAllTransactions;
+        protected virtual void OnGetAllTransactions (GetAllTransactionsEventArgs args)
+        {
+            GetAllTransactions?.Invoke(this, args);
+        }
     }
 
+    /// <summary>
+    /// Event arguments class.
+    /// </summary>
     public class GetAllTransactionsEventArgs : EventArgs
     {
         private List<Transaction> list;

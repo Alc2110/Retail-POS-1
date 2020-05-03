@@ -7,12 +7,18 @@ namespace POS
 {
     public static class Configuration
     {
+        // models
+        public static Model.ServiceLayer.CustomerOps customerOps;
+        public static Model.ServiceLayer.ProductOps productOps;
+        public static Model.ServiceLayer.StaffOps staffOps;
+        public static Model.ServiceLayer.TransactionOps transactionOps;
+
+        // current user information
         public enum Role
         {
             NORMAL,
             ADMIN
         }
-
         public static int STAFF_ID;
         public static Role USER_LEVEL;
 
@@ -20,7 +26,7 @@ namespace POS
 
         public static string STORE_NAME;
 
-        public static string VERSION = "0.1";
+        public static string VERSION = "0.1.1";
 
         public static class SpreadsheetConstants
         {
@@ -28,6 +34,9 @@ namespace POS
             public static int SPREADSHEET_HEADER_ROW = SPREADHSEET_ROW_OFFSET - 1;
         }
 
+        /// <summary>
+        /// Once instance of the logger used by any class.
+        /// </summary>
         public static class Logger
         {
             public static void ConfigureLogger()

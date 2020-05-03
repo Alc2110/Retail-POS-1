@@ -8,9 +8,9 @@ using Model.DataAccessLayer;
 
 namespace Model.ServiceLayer
 {
-    public static class ProductOps
+    public class ProductOps
     {
-        public static void addProduct(Product newProduct)
+        public void addProduct(Product newProduct)
         {
             // DAO
             ProductDAO dao = new ProductDAO();
@@ -20,7 +20,17 @@ namespace Model.ServiceLayer
             getAllProducts();
         }
 
-        public static void updateProduct(Product product)
+        public void deleteProduct(string idNumber)
+        {
+            // DAO
+            ProductDAO dao = new ProductDAO();
+            dao.deleteProduct(idNumber);
+
+            // fire the event
+            getAllProducts();
+        }
+
+        public void updateProduct(Product product)
         {
             // DAO
             ProductDAO dao = new ProductDAO();
@@ -30,7 +40,7 @@ namespace Model.ServiceLayer
             getAllProducts();
         }
 
-        public static Product getProduct(string idNumber)
+        public Product getProduct(string idNumber)
         {
             // DAO
             // retrieve from database
@@ -38,14 +48,7 @@ namespace Model.ServiceLayer
             return dao.getProduct(idNumber);
         }
 
-        public static void decrementQuantity(string idNumber)
-        {
-            // DAO
-            ProductDAO dao = new ProductDAO();
-            // TODO: implement this
-        }
-
-        public static List<Product> getAllProducts()
+        public List<Product> getAllProducts()
         {
             // DAO
             // retrieve from database
@@ -53,15 +56,22 @@ namespace Model.ServiceLayer
             List<Product> products = (List<Product>)dao.getAllProducts();
 
             // fire the event
-            OnGetAllProducts(null, new GetAllProductsEventArgs(products));
+            GetAllProducts(this, new GetAllProductsEventArgs(products));
 
             return products;
         }
 
         // event for getting all products
-        public static event EventHandler<GetAllProductsEventArgs> OnGetAllProducts = delegate { };
+        public event EventHandler<GetAllProductsEventArgs> GetAllProducts;
+        protected virtual void OnGetAllProducts (GetAllProductsEventArgs args)
+        {
+            GetAllProducts?.Invoke(this, args);
+        }
     }
 
+    /// <summary>
+    /// Event arguments class
+    /// </summary>
     public class GetAllProductsEventArgs : EventArgs
     {
         private List<Product> list;

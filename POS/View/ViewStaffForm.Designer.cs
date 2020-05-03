@@ -91,6 +91,7 @@
             this.Controls.Add(this.listView_staff);
             this.Name = "ViewStaffForm";
             this.Text = "Staff";
+            this.Load += new System.EventHandler(this.ViewStaffForm_Load);
             this.ResumeLayout(false);
 
         }

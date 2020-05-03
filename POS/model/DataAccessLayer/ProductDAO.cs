@@ -13,21 +13,10 @@ namespace Model.DataAccessLayer
     public class ProductDAO : IProductDAO
     {
         /// <summary>
-        /// Return a list of all products in the database.
-        /// </summary>
-        /// <returns>List of products</returns>
-        public List<Product> getAllProducts()
-        {
-            Task<List<Product>> task = Task.Run<List<Product>>(async () => await retrieveAllProducts());
-
-            return task.Result;
-        }
-
-        /// <summary>
         /// Retrieve a list of all products in the database.
         /// </summary>
         /// <returns>Task<List> of Product objects</returns>
-        private async Task<List<Product>> retrieveAllProducts()
+        public List<Product> getAllProducts()
         {
             List<Product> products = new List<Product>();
 
@@ -38,10 +27,11 @@ namespace Model.DataAccessLayer
                 SqlCommand cmd = new SqlCommand(queryGetAllProducts, conn);
 
                 // try a connection
-                await conn.OpenAsync();
+                conn.Open();
+                
 
                 // execute the query
-                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
                     Product product = new Product();
@@ -62,22 +52,11 @@ namespace Model.DataAccessLayer
         }
 
         /// <summary>
-        /// Return a product object from the database, based on its barcode number.
-        /// </summary>
-        /// <returns>Product object</returns>
-        public Product getProduct(string idNumber)
-        {
-            Task<Product> task = Task.Run<Product>(async () => await retrieveProduct(idNumber));
-
-            return task.Result;
-        }
-
-        /// <summary>
         /// Retrieve a product from the database, based on its barcode number.
         /// </summary>
         /// <param name="idNumber">barcode number string</param>
         /// <returns>Task<Product></returns>
-        private async Task<Product> retrieveProduct(string idNumber)
+        public Product getProduct(string idNumber)
         {
             Product product = new Product();
 
@@ -95,11 +74,16 @@ namespace Model.DataAccessLayer
                 idParam.Value = idNumber;
                 cmd.Parameters.Add(idParam);
 
-                // attempt a connection
-                await conn.OpenAsync();
+                SqlDataReader reader;
+               
+                    // attempt a connection
+                    conn.Open();
 
-                // execute the query
-                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                    // execute the query
+                    reader = cmd.ExecuteReader();
+                
+                  
+ 
 
                 // check if results exist
                 if (reader.HasRows)
@@ -131,12 +115,12 @@ namespace Model.DataAccessLayer
         /// Delete a product from the database.
         /// </summary>
         /// <param name="product">Product object</param>
-        public async void deleteProduct(Product product)
+        public void deleteProduct(string idNumber)
         {
             string queryDeleteProduct = "DELETE FROM Products " +
-                                        "WHERE ProductID" +
+                                        "WHERE ProductIDNumber" +
                                         "" +
-                                        " = @id;";
+                                        " = @idNumber;";
       
             using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
@@ -144,15 +128,16 @@ namespace Model.DataAccessLayer
 
                 // parameterise
                 SqlParameter idParam = new SqlParameter();
-                idParam.ParameterName = "@id";
-                idParam.Value = product.getProductID();
+                idParam.ParameterName = "@idNumber";
+                idParam.Value = idNumber;
                 cmd.Parameters.Add(idParam);
 
-                // attempt a connection
-                await conn.OpenAsync();
+                    // attempt a connection
+                    conn.Open();
 
-                // execute the query
-                await cmd.ExecuteNonQueryAsync(); 
+                    // execute the query
+                    cmd.ExecuteNonQuery();
+                
             }
          
             return;
@@ -163,7 +148,7 @@ namespace Model.DataAccessLayer
         /// Add a product to the database.
         /// </summary>
         /// <param name="product">Product object</param>
-        public async void addProduct(Product product)
+        public void addProduct(Product product)
         {
             string queryAddProduct = "INSERT INTO Products (ProductIDNumber,Description_,Quantity,Price) " +
                                      "VALUES (@idNumber, @description, @quantity, @price);";
@@ -193,11 +178,12 @@ namespace Model.DataAccessLayer
                 priceParam.Value = product.getPrice();
                 cmd.Parameters.Add(priceParam);
 
-                // attempt a connection
-                await conn.OpenAsync();
+                    // attempt a connection
+                    conn.Open();
 
-                // execute the query
-                await cmd.ExecuteNonQueryAsync();
+                    // execute the query
+                    cmd.ExecuteNonQuery();
+                
             }
 
             return;
@@ -207,7 +193,7 @@ namespace Model.DataAccessLayer
         /// Update a product record in the database.
         /// </summary>
         /// <param name="product">Product object</param>
-        public async void updateProduct(Product product)
+        public void updateProduct(Product product)
         {
             string queryUpdateProduct = "UPDATE Products " +
                                         "SET ProductIDNumber = @idNumber, Description_ = @desc, Quantity = @quantity, Price = @price " +
@@ -238,11 +224,13 @@ namespace Model.DataAccessLayer
                 priceParam.Value = product.getPrice();
                 cmd.Parameters.Add(priceParam);
 
-                // attempt a connection
-                await conn.OpenAsync();
 
-                // execute the query
-                await cmd.ExecuteNonQueryAsync();
+                    // attempt a connection
+                    conn.Open();
+
+                    // execute the query
+                    cmd.ExecuteNonQuery();
+               
             }
         }
     }

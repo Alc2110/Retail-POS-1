@@ -46,8 +46,18 @@ namespace Model.DataAccessLayer
                 // prepare the command
                 SqlCommand cmd = new SqlCommand(getAllTransactionsQuery, conn);
 
-                // try a connection
-                await conn.OpenAsync();
+                try
+                {
+                    // try a connection
+                    await conn.OpenAsync();
+                }
+                catch (Exception ae)
+                {
+                    var caught = ae.InnerException;
+                    if (caught is SqlException)
+                        throw caught;
+                    return null;
+                }
 
                 // execute the query
                 SqlDataReader reader = await cmd.ExecuteReaderAsync();
@@ -165,8 +175,18 @@ namespace Model.DataAccessLayer
 
             using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
-                // try a connection
-                await conn.OpenAsync();
+                try
+                {
+                    // try a connection
+                    await conn.OpenAsync();
+                }
+                catch (Exception ae)
+                {
+                    var caught = ae.InnerException;
+                    if (caught is SqlException)
+                        throw caught;
+                    return;
+                }
 
                 // create command object
                 SqlCommand cmd = conn.CreateCommand();

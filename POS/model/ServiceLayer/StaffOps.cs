@@ -8,31 +8,10 @@ using Model.ObjectModel;
 
 namespace Model.ServiceLayer
 {
-    public static class StaffOps
+    public class StaffOps
     {
-        public static void addStaff(string FullName, string PasswordHash, string role)
+        public void addStaff(Staff newStaff)
         {
-            // object
-            Staff newStaff = new Staff();
-            newStaff.setName(FullName);
-            newStaff.setPasswordHash(PasswordHash);
-            switch (role)
-            {
-                case "Admin":
-                    newStaff.setPrivelege(Staff.Privelege.Admin);
-
-                    break;
-
-                case "Normal":
-                    newStaff.setPrivelege(Staff.Privelege.Normal);
-
-                    break;
-                     
-                default:
-                    // this shouldn't happen
-                    throw new Exception("Invalid data input");
-            }
-
             // DAO
             StaffDAO dao = new StaffDAO();
             dao.addStaff(newStaff);
@@ -41,14 +20,7 @@ namespace Model.ServiceLayer
             getAllStaff();
         }
 
-        public static void addStaff(Staff staff)
-        {
-            // DAO
-            StaffDAO dao = new StaffDAO();
-            dao.addStaff(staff);
-        }
-
-        public static Staff getStaff(int id)
+        public Staff getStaff(int id)
         {
             // DAO
             // retrieve from database
@@ -56,34 +28,45 @@ namespace Model.ServiceLayer
             return dao.getStaff(id);
         }
 
-        public static void updateStaff(Staff staff)
+        public void updateStaff(Staff staff)
         {
             // DAO
             StaffDAO dao = new StaffDAO();
             dao.updateStaff(staff);
+
+            // fire the event
+            getAllStaff();
         }
 
-        public static void delete(Staff staff)
+        public void delete(int id)
         {
             // DAO
             StaffDAO dao = new StaffDAO();
-            dao.deleteStaff(staff);
+            dao.deleteStaff(id);
+
+            // fire the event
+            getAllStaff();
         }
 
-        // event for getting all staff
-        public static event EventHandler<GetAllStaffEventArgs> OnGetAllStaff = delegate { };
-
-        public static List<Staff> getAllStaff()
+        public List<Staff> getAllStaff()
         {
             // DAO
             // retrieve from database
             StaffDAO dao = new StaffDAO();
-            List<Staff> staffList = (List<Staff>)dao.getAllStaff();
+            List<Staff> staffList = dao.getAllStaff();
 
             // fire the event
-            OnGetAllStaff(null, new GetAllStaffEventArgs(staffList));
+            //GetAllStaff(null, new GetAllStaffEventArgs(staffList));
+            GetAllStaff(this, new GetAllStaffEventArgs(staffList));
 
             return staffList;
+        }
+
+        // event for getting all staff
+        public event EventHandler<GetAllStaffEventArgs> GetAllStaff;
+        protected virtual void OnGetAllStaff(GetAllStaffEventArgs args)
+        {
+            GetAllStaff?.Invoke(this, args);
         }
     }
 

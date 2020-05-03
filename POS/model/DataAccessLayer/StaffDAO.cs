@@ -12,23 +12,11 @@ namespace Model.DataAccessLayer
     public class StaffDAO : IStaffDAO
     {
         /// <summary>
-        /// Return staff record from the database.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Staff object</returns>
-        public Staff getStaff(int id)
-        {
-            Task<Staff> task = Task.Run<Staff>(async () => await retrieveStaff(id));
-
-            return task.Result;
-        }
-
-        /// <summary>
         /// Retreive staff record from the database.
         /// </summary>
         /// <param name="id">Staff id</param>
         /// <returns>Task Staff object</returns>
-        private async Task<Staff> retrieveStaff(int id)
+        public Staff getStaff(int id)
         {
             Staff staff = new Staff();
             staff.setID(id);
@@ -46,11 +34,15 @@ namespace Model.DataAccessLayer
                 idParam.Value = id;
                 cmd.Parameters.Add(idParam);
 
-                // try a connection
-                await conn.OpenAsync();
+                SqlDataReader reader;
 
-                // execute the query
-                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                    // try a connection
+                    conn.Open();
+
+                    // execute the query
+                    reader = cmd.ExecuteReader();
+   
+
                 if (reader.HasRows)
                 {
                     while (reader.Read())
@@ -87,21 +79,10 @@ namespace Model.DataAccessLayer
         }
 
         /// <summary>
-        /// Returns a list of all staff records in the database.
-        /// </summary>
-        /// <returns>List of Staff objects</returns>
-        public List<Staff> getAllStaff()
-        {
-            Task<List<Staff>> task = Task.Run<List<Staff>>(async () => await retriveAllStaff());
-
-            return task.Result;
-        }
-
-        /// <summary>
         /// Retrieves a list of all staff records in the database.
         /// </summary>
         /// <returns>Task List of Staff objects.</returns>
-        private async Task<List<Staff>> retriveAllStaff()
+        public List<Staff> getAllStaff()
         {
             List<Staff> staffList = new List<Staff>();
 
@@ -112,11 +93,15 @@ namespace Model.DataAccessLayer
                 // define the command object
                 SqlCommand cmd = new SqlCommand(queryGetAllStaff, conn);
 
-                // try a connection
-                await conn.OpenAsync();
+                SqlDataReader reader;
+                
+                    // try a connection
+                    conn.Open();
 
-                // execute the query
-                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                    // execute the query
+                    reader = cmd.ExecuteReader();
+                
+
                 if (reader.HasRows)
                 {
                     while (reader.Read())
@@ -160,22 +145,22 @@ namespace Model.DataAccessLayer
         /// Delete a staff record in the database.
         /// </summary>
         /// <param name="staff"></param>
-        public async void deleteStaff(Staff staff)
+        public void deleteStaff(int id)
         {
             // StaffID in the datbase is the PK
-            int id = staff.getID();
-
+            // TODO: parameterise this
             string queryDeleteStaff = "DELETE FROM Staff WHERE StaffID = " + id + ";";
 
             using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
                 SqlCommand cmd = new SqlCommand(queryDeleteStaff, conn);
 
-                // try a connection
-                await conn.OpenAsync();
+                    // try a connection
+                    conn.Open();
 
-                // execute the query
-                await cmd.ExecuteNonQueryAsync();
+                    // execute the query
+                    cmd.ExecuteNonQuery();
+                
             }
             
             return;
@@ -185,7 +170,7 @@ namespace Model.DataAccessLayer
         /// Add a staff record to the database.
         /// </summary>
         /// <param name="staff">Staff object.</param>
-        public async void addStaff(Staff staff)
+        public void addStaff(Staff staff)
         {
             // StaffID in the database is PK and AI
             string queryAddStaff = "INSERT INTO Staff (FullName, PasswordHash, Privelege) " +
@@ -229,11 +214,13 @@ namespace Model.DataAccessLayer
 
                 cmd.Parameters.Add(privParam);
 
-                // try a connection
-                await conn.OpenAsync();
+               
+                    // try a connection
+                    conn.Open();
 
-                // execute the query
-                await cmd.ExecuteNonQueryAsync();
+                    // execute the query
+                    cmd.ExecuteNonQuery();
+               
             }
 
             return;
@@ -243,7 +230,7 @@ namespace Model.DataAccessLayer
         /// Update a staff record in the database.
         /// </summary>
         /// <param name="staff">Staff object.</param>
-        public async void updateStaff(Staff staff)
+        public void updateStaff(Staff staff)
         {
             // StaffID in the database is PK and AI
             string queryUpdateCustomer = "UPDATE Staff " +
@@ -291,11 +278,13 @@ namespace Model.DataAccessLayer
 
                 cmd.Parameters.Add(privParam);
 
-                // try a connection
-                await conn.OpenAsync();
+               
+                    // try a connection
+                    conn.Open();
 
-                // execute the query
-                await cmd.ExecuteNonQueryAsync();
+                    // execute the query
+                    cmd.ExecuteNonQuery();
+               
             }
         }
     }

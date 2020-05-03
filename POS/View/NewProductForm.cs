@@ -23,8 +23,10 @@ namespace POS.View
         {
             InitializeComponent();
 
+            logger.Info("Initialising new product form");
+
             // controller dependency injection
-            controller = ProductController.getInstance();
+            controller = new ProductController();
 
             // cannot add anything yet
             button_add.Enabled = false;
@@ -39,29 +41,44 @@ namespace POS.View
         #region UI event handlers
         private void button_close_Click(object sender, EventArgs e)
         {
+            logger.Info("Closing new product form");
+
             this.Close();
         }
 
-        private void button_add_Click(object sender, EventArgs e)
+        private async void button_add_Click(object sender, EventArgs e)
         {
             if (controller != null)
             {
                 try
                 {
-                    //int id;
-                    //Int32.TryParse(textBox_ID.Text, out id);
+                    // prepare the data
                     float price;
                     float.TryParse(textBox_price.Text, out price);
                     int quantity;
                     Int32.TryParse(textBox_quantity.Text, out quantity);
-                    controller.addProduct(textBox_ID.Text, textBox_description.Text, quantity, price);
+                    string id = textBox_ID.Text;
+                    string description = textBox_description.Text;
+
+                    // log it
+                    logger.Info("Adding new product record: ");
+                    logger.Info("ID: " + id);
+                    logger.Info("Description: " + description);
+                    logger.Info("Quantity: " + quantity);
+                    logger.Info("Price: " + price);
+
+                    // run this task in a separate thread
+                    await Task.Run(() =>
+                    {
+                        controller.addProduct(id, description, quantity, price);
+                    });
                 }
-                catch (System.Data.SqlClient.SqlException sqlEx)
+                catch (Exception ex)
                 {
                     // error adding new product
                     // tell the user and the logger
-                    string errorMessage = "Error adding new product: " + sqlEx.Message;
-                    logger.Error(sqlEx, errorMessage);
+                    string errorMessage = "Error adding new product: " + ex.Message;
+                    logger.Error(ex, errorMessage);
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     // nothing more we can do

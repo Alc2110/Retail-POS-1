@@ -23,6 +23,8 @@ namespace POS.View
         {
             InitializeComponent();
 
+            logger.Info("Initialising new customer form");
+
             // prepare the comboBox
             comboBox_state.Items.Add("NSW");
             comboBox_state.Items.Add("SA");
@@ -38,7 +40,7 @@ namespace POS.View
             button_add.Enabled = false;
 
             // controller dependency injection
-            controller = CustomerController.getInstance();
+            controller = new CustomerController();
 
             // event handlers
             textBox_city.TextChanged += checkEntries;
@@ -52,26 +54,49 @@ namespace POS.View
         #region UI event handlers
         private void button_cancel_Click(object sender, EventArgs e)
         {
+            logger.Info("Closing new customer form");
+
             this.Close();
         }
 
-        private void button_add_Click(object sender, EventArgs e)
+        private async void button_add_Click(object sender, EventArgs e)
         {
             if (controller!=null)
             {
                 try
                 {
+                    // prepare the data
                     int postCode;
                     Int32.TryParse(textBox_postcode.Text, out postCode);
-                    controller.addCustomer(textBox_fullName.Text, textBox_streetAddress.Text, textBox_phoneNumber.Text, textBox_email.Text, textBox_city.Text, comboBox_state.SelectedItem.ToString(),
-                        postCode);
+                    string fullName = textBox_fullName.Text;
+                    string streetAddress = textBox_streetAddress.Text;
+                    string phoneNumber = textBox_phoneNumber.Text;
+                    string email = textBox_email.Text;
+                    string city = textBox_city.Text;
+                    string state = comboBox_state.SelectedItem.ToString();
+
+                    // log it
+                    logger.Info("Adding customer record: ");
+                    logger.Info("Full Name: " + fullName);
+                    logger.Info("Street address: " + streetAddress);
+                    logger.Info("Phone number: " + phoneNumber);
+                    logger.Info("Email: " + email);
+                    logger.Info("City: " + city);
+                    logger.Info("State: " + state);
+
+                    // run this operation on a different thread
+                    await Task.Run(() =>
+                    {
+                        controller.addCustomer(fullName, streetAddress, phoneNumber, email, city, state, postCode);
+                    });
                 }
-                catch (System.Data.SqlClient.SqlException ex)
+                catch (Exception ex)
                 {
                     // error
                     // inform the user and the logger
                     string errorMessage = "Error adding new customer: " + ex.Message;
                     logger.Error(ex, errorMessage);
+                    logger.Error("Stack Trace: " + ex.StackTrace);
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     // nothing more we can do
@@ -83,9 +108,6 @@ namespace POS.View
                 string successMessage = "Successfully added new customer";
                 logger.Info(successMessage);
                 MessageBox.Show(successMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // fire the event
-                Model.ServiceLayer.CustomerOps.getAllCustomers();
 
                 // clean up the UI
                 textBox_fullName.Text = string.Empty;

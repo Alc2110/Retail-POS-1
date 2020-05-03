@@ -11,6 +11,9 @@ using System.IO;
 namespace POS.Controller
 {
     // TODO: continue factoring out common code
+    /// <summary>
+    /// Generates a controller for importing any type of records.
+    /// </summary>
     public class SpreadsheetImportFactory
     {
         public SpreadsheetImport getImportSpreadsheetController(string importType)
@@ -30,6 +33,9 @@ namespace POS.Controller
         }
     }
 
+    /// <summary>
+    /// Base class for a spreadsheet import controller.
+    /// </summary>
     public abstract class SpreadsheetImport
     {
         public string importType;
@@ -43,10 +49,12 @@ namespace POS.Controller
         // ctor
         public SpreadsheetImport(string importType)
         {
-
         }
 
         // spreadsheet handling methods
+        /// <summary>
+        /// Open a spreadsheet file and load it.
+        /// </summary>
         public void openSpreadsheet()
         {
             try
@@ -113,13 +121,12 @@ namespace POS.Controller
     {
         public CustomerSpreadsheetImport(string importType) : base(importType)
         {
-
         }
 
         public override void importUpdate()
         {
             // ask the model for all customers in database
-            List<Customer> databaseCustomers = CustomerOps.getAllCustomers();
+            List<Customer> databaseCustomers = POS.Configuration.customerOps.getAllCustomers();
 
             // check for any Customer records in the spreadsheet that do not exist in the database (import)
             List<Customer> spreadsheetCustomers = new List<Customer>();
@@ -180,18 +187,20 @@ namespace POS.Controller
 
             foreach (Customer spreadsheetCustomerRecord in spreadsheetCustomers)
             {
-                if (!databaseCustomers.Any(c => c.getID()==spreadsheetCustomerRecord.getID()))
+                if (!databaseCustomers.Exists(c => c.getID()==spreadsheetCustomerRecord.getID()))
                 {
                     // no customer exists in database with this ID
                     // insert the record
-                    CustomerOps.addCustomer(spreadsheetCustomerRecord);
+                    //CustomerOps.addCustomer(spreadsheetCustomerRecord);
+                    POS.Configuration.customerOps.addCustomer(spreadsheetCustomerRecord);
 
                     break;
                 }
 
                 // customer record already exists
                 // update it
-                CustomerOps.updateCustomer(spreadsheetCustomerRecord);
+                //CustomerOps.updateCustomer(spreadsheetCustomerRecord);
+                POS.Configuration.customerOps.addCustomer(spreadsheetCustomerRecord);
             }
         }
     }
@@ -200,13 +209,12 @@ namespace POS.Controller
     {
         public StaffSpreadsheetImport(string importType) : base(importType)
         {
-
         }
 
-        public override void importUpdate()
+        public async override void importUpdate()
         {
             // ask model for all staff records in database
-            List<Staff> databaseStaff = StaffOps.getAllStaff();
+            List<Staff> databaseStaff = POS.Configuration.staffOps.getAllStaff();
 
             // check for any Staff records in the spreadsheet that do not exist in the database (import)
             List<Staff> spreadsheetStaff = new List<Staff>();
@@ -249,14 +257,22 @@ namespace POS.Controller
                 {
                     // no staff record exists in database with this ID
                     // insert the record
-                    StaffOps.addStaff(spreadsheetStaffRecord);
+                    // run this operation in a separate thread
+                    await Task.Run(() =>
+                   {
+                       POS.Configuration.staffOps.addStaff(spreadsheetStaffRecord);
+                   });
 
                     break;
                 }
 
                 // staff record already exists
                 // update it
-                StaffOps.updateStaff(spreadsheetStaffRecord);
+                // run this operation in a separate thread
+                await Task.Run(() =>
+                {
+                    POS.Configuration.staffOps.updateStaff(spreadsheetStaffRecord);
+                });
             }
         }
     }
@@ -271,7 +287,7 @@ namespace POS.Controller
         public override void importUpdate()
         {
             // ask the model for all product records in database
-            List<Product> databaseProducts = ProductOps.getAllProducts();
+            List<Product> databaseProducts = POS.Configuration.productOps.getAllProducts();
 
             // check for any Product records in the spreadsheet that do not exist in the database (import)
             List<Product> spreadsheetProducts = new List<Product>();
@@ -304,14 +320,14 @@ namespace POS.Controller
                 {
                     // no product exists in the database with this ID
                     // insert the record
-                    ProductOps.addProduct(spreadsheetProductRecord);
+                    
 
                     break;
                 }
 
                 // product record already exists
                 // update it
-                ProductOps.updateProduct(spreadsheetProductRecord);
+                
             }
         }
     }

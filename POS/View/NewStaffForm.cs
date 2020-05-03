@@ -24,12 +24,15 @@ namespace POS.View
         {
             InitializeComponent();
 
+            // log it
+            logger.Info("Initialising new staff form");
+
             // prepare the comboBox
             comboBox_privelege.Items.Add("Admin");
             comboBox_privelege.Items.Add("Normal");
 
             // controller dependency injection
-            controller = StaffController.getInstance();
+            controller = new StaffController();
 
             // cannot add anything yet
             button_addStaff.Enabled = false;
@@ -48,7 +51,7 @@ namespace POS.View
             this.Close();
         }
 
-        private void button_addStaff_Click(object sender, EventArgs e)
+        private async void button_addStaff_Click(object sender, EventArgs e)
         {
             if (controller != null)
             {
@@ -56,6 +59,7 @@ namespace POS.View
                 {
                     if (!(textBox_password.Text.Equals(textBox_repeatPassword.Text)))
                     {
+                        // cannot add, passwords don't match
                         MessageBox.Show("Passwords do not match. Please try again", "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         logger.Info("Passwords do not match");
 
@@ -67,9 +71,25 @@ namespace POS.View
                     else
                     {
                         // can add
-                        // hash the password
-                        Hasher hasher = new Hasher(textBox_fullName.Text,textBox_password.Text);
-                        controller.addStaff(textBox_fullName.Text,hasher.computeHash(),comboBox_privelege.Text);
+                        // hash the password, prepare the data
+                        string fullName = textBox_fullName.Text;
+                        string password = textBox_password.Text;
+                        string privelege = comboBox_privelege.Text;
+                        Hasher hasher = new Hasher(fullName, password);
+                        string passwordHash = hasher.computeHash();
+
+                        // log it
+                        logger.Info("Adding staff record: ");
+                        logger.Info("Full name: " + fullName);
+                        logger.Info("Password: " + password);
+                        logger.Info("Hashed and salted password: " + passwordHash);
+                        logger.Info("Privelege: " + privelege);
+
+                        await Task.Run(() =>
+                        {
+                            // run this task in a separate thread
+                            controller.addStaff(fullName, passwordHash, privelege);
+                        });
                     }
                 }
                 catch (Exception ex)

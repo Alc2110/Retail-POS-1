@@ -120,12 +120,8 @@
     <Compile Include="View\DiscountForm.Designer.cs">
       <DependentUpon>DiscountForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\ICustomersView.cs" />
     <Compile Include="View\IInvoice.cs" />
     <Compile Include="View\Invoice.cs" />
-    <Compile Include="View\IProductsView.cs" />
-    <Compile Include="View\IStaffView.cs" />
-    <Compile Include="View\ITransactionsView.cs" />
     <Compile Include="View\NewCustomerForm.cs">
       <SubType>Form</SubType>
     </Compile>

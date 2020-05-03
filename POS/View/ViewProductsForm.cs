@@ -21,9 +21,14 @@ namespace POS.View
         // get an instance of the logger for this class
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
+        // delegate for handling events fired by the model
+        private delegate void populateProductsViewDelegate(object sender, GetAllProductsEventArgs args);
+
         public ViewProductsForm()
         {
             InitializeComponent();
+
+            logger.Info("Initialising view products form");
 
             // prepare the listView
             listView_products.Columns.Add("Product ID Number");
@@ -37,33 +42,14 @@ namespace POS.View
             button_deleteSelectedProduct.Enabled = false;
 
             // controller dependency injection
-            controller = ProductController.getInstance();
-
-            // subscribe to Model events
-            ProductOps.OnGetAllProducts += new EventHandler<GetAllProductsEventArgs>(productEventHandler);
-
-            // populate the list upon loading
-            try
-            {
-                populateView(ProductOps.getAllProducts());
-            }
-            catch (System.Data.SqlClient.SqlException sqlEx)
-            {
-                // it failed
-                // tell the user and the logger
-                string errorMessage = "Error: failed to retrieve data from database";
-                MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                logger.Error(errorMessage);
-
-                // nothing more we can do
-                // TODO: do we want to close the window at this point?
-                this.Close();
-            }
+            controller = new ProductController();
         }
 
         #region UI event handlers
         private void button_close_Click(object sender, EventArgs e)
         {
+            logger.Info("Closing new products form");
+
             this.Close();
         }
 
@@ -73,34 +59,49 @@ namespace POS.View
             newProductForm.Show();
         }
 
-        private void button_deleteSelectedProduct_Click(object sender, EventArgs e)
+        private async void button_deleteSelectedProduct_Click(object sender, EventArgs e)
         {
             if (controller!=null)
             {
                 try
                 {
-                    int id;
-                    if (Int32.TryParse(listView_products.SelectedItems[0].SubItems[0].Text, out id))
+                    // prepare the data
+                    string idNumber = listView_products.SelectedItems[0].SubItems[0].Text;
+
+                    // log it
+                    logger.Info("Deleting product record: ");
+                    logger.Info("ID: " + idNumber);
+
+                    // run this operation in a separate thread
+                    await Task.Run(() =>
                     {
-                        controller.deleteProduct(id);
-                    }
+                        controller.deleteProduct(idNumber);
+                    });
                 }
-                catch (System.Data.SqlClient.SqlException sqlEx)
+                catch (Exception ex)
                 {
                     // it failed
                     // tell the user and the logger
-                    string errorMessage = "Error: could not delete product: " + sqlEx.Message;
+                    string errorMessage = "Error: could not delete product: " + ex.Message;
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     logger.Error(errorMessage);
-                    logger.Error("Stack trace: " + sqlEx.StackTrace);
+                    logger.Error("Stack trace: " + ex.StackTrace);
+
+                    return;
                 }
+
+                // at this point, it succeeded
+                // tell the user and the logger
+                string successMessage = "Successfully deleted product record";
+                MessageBox.Show(successMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                logger.Info(successMessage);
             }
         }
 
         private void listView_products_SelectedIndexChanged(object sender, EventArgs e)
         {
             // only one item allowed to be selected at a time
-            if (listView_products.SelectedItems.Count>0)
+            if (listView_products.SelectedItems.Count>1)
             {
                 foreach (ListViewItem item in listView_products.SelectedItems)
                 {
@@ -119,13 +120,25 @@ namespace POS.View
         }
         #endregion
 
-        private void productEventHandler(object sender, GetAllProductsEventArgs e)
+        private void productEventHandler(object sender, GetAllProductsEventArgs args)
         {
-            populateView(e.getList());
+            if (listView_products.InvokeRequired)
+            {
+                listView_products.Invoke(new populateProductsViewDelegate(populateView), new object[] { sender, args });
+            }
+            else
+            {
+                populateView(sender, args);
+            }
         }
 
-        private void populateView(List<Product> products)
+        private void populateView(object sender, GetAllProductsEventArgs args)
         {
+            List<Product> products = args.getList();
+
+            // tell the listView it is being updated
+            listView_products.BeginUpdate();
+
             // clean the list view
             foreach (ListViewItem item in listView_products.Items)
             {
@@ -143,6 +156,34 @@ namespace POS.View
 
                 ListViewItem item = new ListViewItem(itemArr);
                 listView_products.Items.Add(item);
+            }
+
+            // tell the listView it is ready
+            listView_products.EndUpdate();
+        }
+
+        private async void ViewProductsForm_Load(object sender, EventArgs e)
+        {
+            // subscribe to Model events
+            POS.Configuration.productOps.GetAllProducts += new EventHandler<GetAllProductsEventArgs>(productEventHandler);
+
+            // populate the list upon loading
+            try
+            {
+                // run this task in a separate thread
+                await Task.Run(() =>
+                {
+                    Configuration.productOps.getAllProducts();
+                });
+            }
+            catch (Exception ex)
+            {
+                // it failed
+                // tell the user and the logger
+                string errorMessage = "Error retrieving data from database: " + ex.Message;
+                MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, errorMessage);
+                logger.Error("Stack Trace: " + ex.StackTrace);
             }
         }
     }

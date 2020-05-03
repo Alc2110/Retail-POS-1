@@ -52,9 +52,10 @@ namespace POS
             setUI();
 
             // controller dependency injection
-            transController = TransactionController.getInstance();
+            transController = new TransactionController();
 
-            
+            // set title
+            this.Text = "Retail POS v" + Configuration.VERSION;
         }
 
         public enum State
@@ -173,21 +174,31 @@ namespace POS
             logout();
         }
        
-        private void button_addItem_Click(object sender, EventArgs e)
+        private async void button_addItem_Click(object sender, EventArgs e)
         {
             // retrieve product record from database, for this ID 
             string productID = textBox_itemProductID.Text;
             Product retrievedProduct = new Product();
             try
             {
-                retrievedProduct = ProductOps.getProduct(productID);
+                // run this operation on a separate thread
+               await Task.Run(() =>
+               {
+                   // ask the model for the product information
+                   retrievedProduct = POS.Configuration.productOps.getProduct(productID);
+               });
             }
-            catch (System.Data.SqlClient.SqlException sqlEx)
+            catch (Exception ex)
             {
                 // something went wrong
                 // tell the user and the logger
-                string retrieveProductErrorMessage = "Failed to retrieve product from database: " + sqlEx.Message;
+                string retrieveProductErrorMessage = "Failed to retrieve product from database: " + ex.Message;
                 System.Windows.Forms.MessageBox.Show(retrieveProductErrorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, retrieveProductErrorMessage);
+                logger.Error("Stack trace: " + ex.StackTrace);
+
+                // nothing more we can do
+                return;
             }
 
             logger.Info("Retrieving product from database, for product ID: " + productID);
@@ -408,24 +419,34 @@ namespace POS
             newProductForm.Show();
         }
 
-        private void button_findCustomer_Click(object sender, EventArgs e)
+        private async void button_findCustomer_Click(object sender, EventArgs e)
         {
             // get customer data
-            string customerAccNumber = textBox_customerAccNo.Text;
+            // prepare the data
+            //string customerAccNumber = textBox_customerAccNo.Text;
+            int customerAccNumber = (Int32.Parse(textBox_customerAccNo.Text));
             logger.Info("Attempting to find customer with account number: " + customerAccNumber);
-            Customer retrievedCustomer = new Customer();
+
+            Customer retrievedCustomer = null;
             try
             {
-                retrievedCustomer = CustomerOps.getCustomer(Int32.Parse(customerAccNumber));
+                // run this operation on a separate thread
+                await Task.Run(() =>
+                {
+                    retrievedCustomer = POS.Configuration.customerOps.getCustomer(customerAccNumber);
+                });
             }
-            catch (System.Data.SqlClient.SqlException sqlEx)
+            catch (Exception ex)
             {
                 // something went wrong 
                 // tell the user and the logger
-                string errorRetrievingCustomerMessage = "Failed to retrieve customer: " + sqlEx.Message;
+                string errorRetrievingCustomerMessage = "Failed to retrieve customer: " + ex.Message;
                 System.Windows.Forms.MessageBox.Show(errorRetrievingCustomerMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                logger.Error(sqlEx, errorRetrievingCustomerMessage);
-                logger.Error("Stack trace: " + sqlEx.StackTrace);
+                logger.Error(ex, errorRetrievingCustomerMessage);
+                logger.Error("Stack trace: " + ex.StackTrace);
+
+                // nothing more we can do
+                return;
             }
 
             // could not find customer
@@ -698,9 +719,12 @@ namespace POS
                             transController.addTransaction(currTransaction);
 
                             // retrieve the customer object for the invoice
-                            invoice.customer = CustomerOps.getCustomer(customerID);
+                            //invoice.customer = CustomerOps.getCustomer(customerID);
+                            CustomerOps customerOps = new CustomerOps();
+                            customerOps.getCustomer(customerID);
+
                             // retrieve the staff object for the invoice
-                            invoice.salesperson = StaffOps.getStaff(staffID);
+                            invoice.salesperson = POS.Configuration.staffOps.getStaff(staffID);
 
                             // create the transaction in the invoice
                             // retrieve the list of products
@@ -708,22 +732,25 @@ namespace POS
                             {
                                 Transaction trans = new Transaction();
                                 trans.setTimestamp(System.DateTime.Now.ToString("F")); // timestamp
-                                trans.setCustomer(CustomerOps.getCustomer(customerID)); // customer 
-                                trans.setStaff(StaffOps.getStaff(staffID)); // staff 
-                                trans.setProduct(ProductOps.getProduct(product.Key)); // product 
+                                //trans.setCustomer(CustomerOps.getCustomer(customerID)); // customer 
+                                trans.setCustomer(customerOps.getCustomer(customerID));
+                                //trans.setStaff(StaffOps.getStaff(staffID)); // staff 
+                                trans.setStaff(POS.Configuration.staffOps.getStaff(staffID));
+                                //trans.setProduct(ProductOps.getProduct(product.Key)); // product 
+                                trans.setProduct(POS.Configuration.productOps.getProduct(product.Key));
 
                                 invoice.transactions.Add(trans);
                             }
                         }
-                        catch (System.Data.SqlClient.SqlException sqlEx)
+                        catch (Exception ex)
                         {
                             // it failed
                             // tell the user and the logger
-                            string transactionErrorMessage = "Error in transaction: " + sqlEx.Message;
+                            string transactionErrorMessage = "Error in transaction: " + ex.Message;
                             MessageBox.Show(transactionErrorMessage, "Retail POS",
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            logger.Error(sqlEx, transactionErrorMessage);
-                            logger.Error("Stack trace: " + sqlEx.StackTrace);
+                            logger.Error(ex, transactionErrorMessage);
+                            logger.Error("Stack trace: " + ex.StackTrace);
 
                             // nothing more we can do
                             return;
@@ -745,7 +772,7 @@ namespace POS
                             Transaction newTransaction = new Transaction();
 
                             // retrieve the staff object for the invoice
-                            invoice.salesperson = StaffOps.getStaff(staffID);
+                            invoice.salesperson = POS.Configuration.staffOps.getStaff(staffID);
 
                             // create the transaction in the invoice
                             // retrieve the list of products
@@ -754,21 +781,23 @@ namespace POS
                                 Transaction trans = new Transaction();
                                 trans.setTimestamp(System.DateTime.Now.ToString("F")); // timestamp
                                 trans.setCustomer(null); // no customer data
-                                trans.setStaff(StaffOps.getStaff(staffID)); // staff 
-                                trans.setProduct(ProductOps.getProduct(product.Key)); // product
+                                //trans.setStaff(StaffOps.getStaff(staffID)); // staff 
+                                trans.setStaff(POS.Configuration.staffOps.getStaff(staffID));
+                                //trans.setProduct(ProductOps.getProduct(product.Key)); // product
+                                trans.setProduct(POS.Configuration.productOps.getProduct(product.Key));
 
                                 invoice.transactions.Add(trans);
                             }
                         }
-                        catch (System.Data.SqlClient.SqlException sqlEx)
+                        catch (Exception ex)
                         {
                             // it failed
                             // tell the user and the logger
-                            string transactionErrorMessage = "Error in transaction: " + sqlEx.Message;
+                            string transactionErrorMessage = "Error in transaction: " + ex.Message;
                             MessageBox.Show(transactionErrorMessage, "Retail POS",
                                             MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            logger.Error(sqlEx, transactionErrorMessage);
-                            logger.Error("Stack trace: " + sqlEx.StackTrace);
+                            logger.Error(ex, transactionErrorMessage);
+                            logger.Error("Stack trace: " + ex.StackTrace);
 
                             return;
                         }
@@ -895,16 +924,17 @@ namespace POS
             try
             {
                 // ask the model for the product information
-                retrievedProduct = ProductOps.getProduct(productIDnumber);
+                //retrievedProduct = ProductOps.getProduct(productIDnumber);
+                retrievedProduct = POS.Configuration.productOps.getProduct(productIDnumber);
             }
-            catch (System.Data.SqlClient.SqlException sqlEx)
+            catch (Exception ex)
             {
                 // database error
                 // tell the user and the logger
-                string dbErrorMessage = "Error: Could not retrieve item from database.";
+                string dbErrorMessage = "Error retrieving data from database: " + ex.Message;
                 MessageBox.Show(dbErrorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                logger.Error(sqlEx, dbErrorMessage + ": " + sqlEx.Message);
-                logger.Error("Stack trace: " + sqlEx.StackTrace);
+                logger.Error(ex, dbErrorMessage + ": " + ex.Message);
+                logger.Error("Stack trace: " + ex.StackTrace);
 
                 // nothing more we can do
                 return;
@@ -1004,15 +1034,18 @@ namespace POS
                 logger.Error(ex, "Error saving spreadsheet file: " + ex.Message);
                 logger.Error("Stack trace: ", ex.StackTrace);
 
+                // nothing more we can do
                 return;
             }
-
+            
+            /*
             // at this point, it succeeded
             // tell the user and the logger
             System.Windows.Forms.MessageBox.Show("Saved spreadsheet file", "Retail POS",
                                                  System.Windows.Forms.MessageBoxButtons.OK,
                                                  System.Windows.Forms.MessageBoxIcon.Information);
             logger.Info("Saved spreadsheet file");
+            */
         }
 
         // "import" menu item click events

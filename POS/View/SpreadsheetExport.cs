@@ -7,9 +7,14 @@ using OfficeOpenXml;
 using Model.ObjectModel;
 using Model.ServiceLayer;
 using System.IO;
+using System.Windows.Forms;
 
 namespace POS.View
 {
+    // TODO: fix open/closed principle violation in this class
+    /// <summary>
+    /// Factory class for creating Views for exporting data to spreadsheets.
+    /// </summary>
     public class SpreadsheetExportFactory
     {
         public SpreadsheetExport getSpreadsheetExportView(string exportType)
@@ -33,6 +38,9 @@ namespace POS.View
     }
 
     // TODO: continue factoring out common code
+    /// <summary>
+    /// Base class for the spreadsheet export Views.
+    /// </summary>
     public abstract class SpreadsheetExport
     {
         // create an instance of the logger for this class
@@ -121,34 +129,26 @@ namespace POS.View
         /// <param name="exportType">string. Describes the type of list being exported. Will be shown in file dialog title</param>
         public void saveSpreadsheet()
         {
-            try
-            {
-                // save the spreadsheet
+ 
+            // create a save file dialog
+            System.Windows.Forms.SaveFileDialog saveSpreadsheetDialog = new System.Windows.Forms.SaveFileDialog();
+            saveSpreadsheetDialog.Filter = "Excel spreadsheet|*.xlsx";
+            saveSpreadsheetDialog.Title = "Export " + exportType + " list as spreadsheet";
 
-                // create a save file dialog
-                System.Windows.Forms.SaveFileDialog saveSpreadsheetDialog = new System.Windows.Forms.SaveFileDialog();
-                saveSpreadsheetDialog.Filter = "Excel spreadsheet|*.xlsx";
-                saveSpreadsheetDialog.Title = "Export " + exportType + " list as spreadsheet";
-
-                // check if user clicked save button
-                if (saveSpreadsheetDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    // get the file info
-                    FileInfo fi = new FileInfo(saveSpreadsheetDialog.FileName);
-                    // write the file to disk
-                    this.spreadsheet.SaveAs(fi);
-                }
-            }
-            // TODO: find out the proper exception types to catch here
-            catch (Exception ex)
+            // check if user clicked save button
+            if (saveSpreadsheetDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                // it failed
+                // get the file info
+                FileInfo fi = new FileInfo(saveSpreadsheetDialog.FileName);
+                // write the file to disk
+                this.spreadsheet.SaveAs(fi);
+
+                // at this point, it succeeded
                 // tell the user and the logger
-                string exportSpreadsheetFailedMessage = "Exporting spreadsheet failed: " + ex.Message;
-                System.Windows.Forms.MessageBox.Show(exportSpreadsheetFailedMessage, "Retail POS", System.Windows.Forms.MessageBoxButtons.OK,
-                    System.Windows.Forms.MessageBoxIcon.Error);
-                logger.Error(ex, exportSpreadsheetFailedMessage);
-                logger.Error("Stack trace: " + ex.StackTrace);
+                System.Windows.Forms.MessageBox.Show("Saved spreadsheet file", "Retail POS",
+                                                     System.Windows.Forms.MessageBoxButtons.OK,
+                                                     System.Windows.Forms.MessageBoxIcon.Information);
+                logger.Info("Saved spreadsheet file");
             }
         }
 
@@ -204,16 +204,47 @@ namespace POS.View
     {
         private List<Customer> customerList;
 
+        // get an instance of the logger for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        // delegate for handling events fired from the model
+        private delegate void getCustomersListDelegate(object sender, GetAllCustomersEventArgs args);
+
         // ctor
         public CustomerSpreadsheetExport(string exportType) : base(exportType)
         {
             this.headers = new string[] { "Customer ID", "Full name", "Address", "Phone number", "Email", "City", "State", "Postcode" };
+            customerList = new List<Customer>();
         }
 
-        public override void retrieveData()
+        // event handler for model events
+        private void loadDataEventHandler(object sender, GetAllCustomersEventArgs args)
         {
-            // ask the model for a list of all customers
-            customerList = CustomerOps.getAllCustomers();
+            this.customerList = args.getList();
+        }
+
+        // fetch the data from the database and import it to this class
+        public async override void retrieveData()
+        {
+            // subscribe to model events
+            POS.Configuration.customerOps.GetAllCustomers += loadDataEventHandler;
+
+            try
+            {
+                // ask the model for a list of all customers
+                // run this operation in a separate thread
+                await Task.Run(() =>
+                {
+                    POS.Configuration.customerOps.getAllCustomers();
+                });
+            }
+            catch (Exception ex)
+            {
+                string retrieveDataErrorMessage = "Error retrieving data from database: " + ex.Message;
+                MessageBox.Show(retrieveDataErrorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, retrieveDataErrorMessage);
+                logger.Error("Stack Trace: " + ex.StackTrace);
+            }
         }
 
         protected override void writeData()
@@ -265,16 +296,47 @@ namespace POS.View
     {
         private List<Staff> staffList;
 
+        // get an instance of the logger for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        // delegate for handling events fired from the model
+        private delegate void getStafflistDelegate(object sender, GetAllStaffEventArgs args);
+
         // ctor
         public StaffSpreadsheetExport(string exportType) : base(exportType)
         {
             this.headers = new string[] { "Staff ID", "Full name", "Password hash", "Priveleges" };
+            this.staffList = new List<Staff>();
         }
 
-        public override void retrieveData()
+        // event handler for model events
+        private void loadDataEventHandler(object sender, GetAllStaffEventArgs args)
         {
-            // ask the model for a list of all staff
-            staffList = StaffOps.getAllStaff();
+            this.staffList = args.getList();
+        }
+
+        // fetch the data from the database and import it to this class
+        public async override void retrieveData()
+        {
+            // subscribe to model events
+            POS.Configuration.staffOps.GetAllStaff += loadDataEventHandler;
+
+            try
+            {
+                // ask the model for a list of all staff
+                // run this operation in a separate thread
+                await Task.Run(() =>
+                {
+                    POS.Configuration.staffOps.getAllStaff();
+                });
+            }
+            catch (Exception ex)
+            {
+                string retrieveDataErrorMessage = "Error retrieving data from database: " + ex.Message;
+                MessageBox.Show(retrieveDataErrorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, retrieveDataErrorMessage);
+                logger.Error("Stack Trace: " + ex.StackTrace);
+            }
         }
 
         protected override void writeData()
@@ -324,16 +386,47 @@ namespace POS.View
     {
         private List<Product> productList;
 
+        // get an instance of the logger for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        // delegate for handling events fired from the model
+        private delegate void getProductsListDelegate(object sender, GetAllProductsEventArgs args);
+
         // ctor
         public ProductSpreadsheetExport(string exportType) : base(exportType)
         {
             this.headers = new string[] { "Product ID", "Product number", "Description", "Quantity available", "Price" };
+            this.productList = new List<Product>();
         }
 
-        public override void retrieveData()
+        // event handler for model events
+        private void loadDataEventHandler(object sender, GetAllProductsEventArgs args)
         {
-            // ask the Model for a list of all products
-            productList = ProductOps.getAllProducts();
+            this.productList = args.getList();
+        }
+
+        // fetch the data from the database and import it to this class
+        public async override void retrieveData()
+        {
+            // subscribe to model events
+            POS.Configuration.productOps.GetAllProducts += loadDataEventHandler;
+
+            try
+            {
+                // ask the model for a list of products
+                // run this operation in a separate thread
+                await Task.Run(() =>
+                {
+                    POS.Configuration.productOps.getAllProducts();
+                });
+            }
+            catch (Exception ex)
+            {
+                string retrieveDataErrorMessage = "Error retrieving data from database: " + ex.Message;
+                MessageBox.Show(retrieveDataErrorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, retrieveDataErrorMessage);
+                logger.Error("Stack Trace: " + ex.StackTrace);
+            }
         }
 
         protected override void writeData()
@@ -382,18 +475,49 @@ namespace POS.View
     {
         public List<Transaction> transactionList;
 
+        // get an instance of the logger for this class
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
+        // delegate for handling events from the model
+        private delegate void getTransactionsListDelegate(object sender, GetAllTransactionsEventArgs args);
+
         // ctor
         public TransactionSpreadsheetExport(string exportType) : base(exportType)
         {
             // TODO: add remaining fields
             this.headers = new string[] { "Transaction ID", "Timestamp", "Customer ID", "Customer name", "Salesperson ID", "Salesperson name",
                                           "Product ID", "Product number", "Product description", "Product price" };
+            this.transactionList = new List<Transaction>();
         }
 
-        public override void retrieveData()
+        // event handler for model events
+        private void loadDataEventHandler(object sender, GetAllTransactionsEventArgs args)
         {
-            // ask the Model for a list of all transactions
-            transactionList = TransactionOps.getAllTransactions();
+            this.transactionList = args.getList();
+        }
+
+        // fetch the data from the database and import it to this class
+        public async override void retrieveData()
+        {
+            // subscribe to model events
+            POS.Configuration.transactionOps.GetAllTransactions += loadDataEventHandler;
+
+            try
+            {
+                // ask the model for a list of transactions
+                // run this operation in a separate thread
+                await Task.Run(() =>
+                {
+                    POS.Configuration.transactionOps.getAllTransactions();
+                });
+            }
+            catch (Exception ex)
+            {
+                string retrieveDataErrorMessage = "Error retrieving data from database: " + ex.Message;
+                MessageBox.Show(retrieveDataErrorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, retrieveDataErrorMessage);
+                logger.Error("Stack Trace: " + ex.StackTrace);
+            }
         }
 
         protected override void writeData()

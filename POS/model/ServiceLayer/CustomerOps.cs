@@ -8,9 +8,10 @@ using Model.ObjectModel;
 
 namespace Model.ServiceLayer
 {
-    public static class CustomerOps
+    //public static class CustomerOps
+    public class CustomerOps
     {
-        public static void addCustomer(Customer customer)
+        public void addCustomer(Customer customer)
         {
             // DAO
             CustomerDAO dao = new CustomerDAO();
@@ -20,7 +21,7 @@ namespace Model.ServiceLayer
             getAllCustomers();
         }
 
-        public static void addCustomer(string FullName, string streetAddress, string phoneNumber, string Email, string City, string state, int postcode)
+        public void addCustomer(string FullName, string streetAddress, string phoneNumber, string Email, string City, string state, int postcode)
         {
             // object
             Customer newCustomer = new Customer();
@@ -63,15 +64,15 @@ namespace Model.ServiceLayer
                     throw new Exception("Invalid customer data");
             }
 
-            // DAO
+            // prepare and execute the data access object  
             CustomerDAO dao = new CustomerDAO();
             dao.addCustomer(newCustomer);
 
-            // fire the event
+            // fire the event to re-fetch data
             getAllCustomers();
         }
 
-        public static void updateCustomer(Customer customer)
+        public void updateCustomer(Customer customer)
         {
             // strategy: find the customer record in the database with this ID. Update its remaining fields with these values.
             // DAO
@@ -82,7 +83,7 @@ namespace Model.ServiceLayer
             getAllCustomers();
         }
 
-        public static void deleteCustomer(int id)
+        public void deleteCustomer(int id)
         {
             // object
             Customer customer = new Customer();
@@ -96,29 +97,36 @@ namespace Model.ServiceLayer
             getAllCustomers();
         }
 
-        public static Customer getCustomer(int id)
+        public Customer getCustomer(int id)
         {
             // DAO
             CustomerDAO dao = new CustomerDAO();
             return dao.getCustomer(id);
         }
 
-        public static List<Customer> getAllCustomers()
+        public List<Customer> getAllCustomers()
         {
             // DAO
             CustomerDAO dao = new CustomerDAO();
             List<Customer> allCustomers = (List<Customer>)(dao.getAllCustomers());
 
             // fire the event
-            OnGetAllCustomers(null, new GetAllCustomersEventArgs(allCustomers));
+            GetAllCustomers(this, new GetAllCustomersEventArgs(allCustomers));
 
             return allCustomers;
         }
 
-        // event for getting all customers
-        public static event EventHandler<GetAllCustomersEventArgs> OnGetAllCustomers = delegate { };     
+        // event for getting all customers 
+        public event EventHandler<GetAllCustomersEventArgs> GetAllCustomers;
+        protected virtual void OnGetAllCustomers (GetAllCustomersEventArgs e)
+        {
+            GetAllCustomers?.Invoke(this, e);
+        }
     }
 
+    /// <summary>
+    /// Event arguments class.
+    /// </summary>
     public class GetAllCustomersEventArgs : EventArgs
     {
         private List<Customer> customerList;
@@ -134,4 +142,5 @@ namespace Model.ServiceLayer
             return this.customerList;
         }
     }
+    //GetAllCustomersEventArgs
 }

@@ -12,25 +12,13 @@ using System.Diagnostics;
 namespace Model.DataAccessLayer
 {
     public class CustomerDAO : ICustomerDAO
-    {
-        /// <summary>
-        /// Returns a customer record from the database.
-        /// </summary>
-        /// <param name="id">Customer id</param>
-        /// <returns>Customer object</returns>
-        public Customer getCustomer(int id)
-        {
-            Task<Customer> task = Task.Run<Customer>(async () => await retrieveCustomer(id));
-
-            return task.Result;
-        }
-
+    { 
         /// <summary>
         /// Retrieve a customer record from the database.
         /// </summary>
         /// <param name="id">Customer id.</param>
         /// <returns>Customer object</returns>
-        private async Task<Customer> retrieveCustomer(int id)
+        public Customer getCustomer(int id)
         {
             Customer customer = new Customer();
 
@@ -49,10 +37,10 @@ namespace Model.DataAccessLayer
                 cmd.Parameters.Add(idParam);
 
                 // try a connection
-                await conn.OpenAsync();
+                conn.Open();
 
                 // execute the query
-                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                SqlDataReader reader = cmd.ExecuteReader();
  
                 // check if results exist
                 if (reader.HasRows)
@@ -114,23 +102,12 @@ namespace Model.DataAccessLayer
             }
         }
 
-        /// <summary>
-        /// Returns a list of all customer records in the database.
-        /// </summary>
-        /// <returns>List of customer objects.</returns>
-        public List<Customer> getAllCustomers()
-        {
-            Task<List<Customer>> task = Task.Run<List<Customer>>(async () => await retrieveAllCustomers());
-
-            return task.Result;
-        }
-
         // this works
         /// <summary>
         /// Retrieves a list of all customer records in the database.
         /// </summary>
         /// <returns>Task List of customer objects.</returns>
-        private async Task<List<Customer>> retrieveAllCustomers()
+        public List<Customer> getAllCustomers()
         {
             List<Customer> customers = new List<Customer>();
 
@@ -140,11 +117,13 @@ namespace Model.DataAccessLayer
             {
                 SqlCommand cmd = new SqlCommand(queryGetAllCustomers, conn);
 
-                // try a connection
-                await conn.OpenAsync();
+   
+                    // try a connection
+                    conn.Open();
+
 
                 // execute the query
-                SqlDataReader reader = await cmd.ExecuteReaderAsync();
+                SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
                     Customer customer = new Customer();
@@ -197,13 +176,12 @@ namespace Model.DataAccessLayer
             return customers;
         }
 
-        // this works
         // TODO: change this to require an ID only
         /// <summary>
         /// Delete a customer record from the database.
         /// </summary>
         /// <param name="customer">Customer object</param>
-        public async void deleteCustomer(Customer customer)
+        public void deleteCustomer(Customer customer)
         {
             // CustomerID in the database is the PK
             int id = customer.getID();
@@ -214,22 +192,24 @@ namespace Model.DataAccessLayer
             {
                 SqlCommand cmd = new SqlCommand(queryDeleteCustomer, conn);
 
-                // try a connection
-                await conn.OpenAsync();
+             
+                    // try a connection
+                    conn.Open();
 
-                // execute the query
-                await cmd.ExecuteNonQueryAsync();
+                    // execute the query
+                    cmd.ExecuteNonQuery();
+                
+              
             }
             
             return;
         }
 
-        // this works
         /// <summary>
         /// Add a customer record to the database.
         /// </summary>
         /// <param name="customer">Customer object.</param>
-        public async void addCustomer(Customer customer)
+        public void addCustomer(Customer customer)
         {
             // CustomerID in the database is PK and AI
             string queryAddCustomer = "INSERT INTO Customers (FullName, StreetAddress, PhoneNumber, Email, City, State_, Postcode) " +
@@ -275,11 +255,13 @@ namespace Model.DataAccessLayer
                 postcodeParam.Value = customer.getPostcode();
                 cmd.Parameters.Add(postcodeParam);
 
-                // try a connection
-                await conn.OpenAsync();
+               
+                    // try a connection
+                    conn.Open();
 
-                // execute the query
-                await cmd.ExecuteNonQueryAsync();
+                    // execute the query
+                    cmd.ExecuteNonQuery();
+               
             }
         }
 
@@ -288,7 +270,7 @@ namespace Model.DataAccessLayer
         /// Update a customer record in the database.
         /// </summary>
         /// <param name="customer"></param>
-        public async void updateCustomer(Customer customer)
+        public void updateCustomer(Customer customer)
         {
             // CustomerID in the database is PK and AI
             string queryUpdateCustomer = "UPDATE Customers " +
@@ -340,11 +322,12 @@ namespace Model.DataAccessLayer
                 postcodeParam.Value = customer.getPostcode();
                 cmd.Parameters.Add(postcodeParam);
 
-                // try a connection
-                await conn.OpenAsync();
+                 // try a connection
+                    conn.Open();
 
-                // execute the query
-                await cmd.ExecuteNonQueryAsync();
+                    // execute the query
+                   cmd.ExecuteNonQuery();
+               
             }
         }
     }

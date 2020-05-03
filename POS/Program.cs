@@ -4,13 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
-// https://www.tutorialsteacher.com/csharp/csharp-event
 
 namespace POS
 {
     static class Program
     {
-        // TODO: fix process still running when the application is closed
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -30,12 +28,27 @@ namespace POS
             // read store name from configuration file
             Configuration.STORE_NAME = ConfigurationManager.AppSettings["storeName"];
 
-            // show the login form
-            LoginForm loginForm = new LoginForm();
-            Application.Run(loginForm);
+            // initialise the models
+            Configuration.customerOps = new Model.ServiceLayer.CustomerOps();
+            Configuration.productOps = new Model.ServiceLayer.ProductOps();
+            Configuration.staffOps = new Model.ServiceLayer.StaffOps();
+            Configuration.transactionOps = new Model.ServiceLayer.TransactionOps();
 
-            Application.ExitThread();
-            Environment.Exit(Environment.ExitCode);
+            try
+            {
+                // show the login form
+                LoginForm loginForm = new LoginForm();
+                Application.Run(loginForm);
+
+                Application.ExitThread();
+                Environment.Exit(Environment.ExitCode);
+            }
+            catch (Exception ex)
+            {
+                // something bad happened
+                // this is a last resort to catch the error
+                System.Windows.Forms.MessageBox.Show("A fatal error occurred: " + ex.Message);
+            }
         }
     }
 }

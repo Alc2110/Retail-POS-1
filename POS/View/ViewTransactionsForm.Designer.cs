@@ -76,6 +76,7 @@
             this.Controls.Add(this.listView_transactions);
             this.Name = "ViewTransactionsForm";
             this.Text = "Transactions";
+            this.Load += new System.EventHandler(this.ViewTransactionsForm_Load);
             this.ResumeLayout(false);
 
         }

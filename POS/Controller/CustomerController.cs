@@ -8,35 +8,25 @@ using Model.ObjectModel;
 
 namespace Controller
 {
-    // singleton
     public class CustomerController
     {
-        private static CustomerController instance;
-
-        private CustomerController()
+        // default ctor
+        public CustomerController()
         { }
-
-        public static CustomerController getInstance()
-        {
-            if (instance==null)
-            {
-                instance = new CustomerController();
-            }
-
-            return instance;
-        }
 
         public void addCustomer(string FullName, string streetAddress, string phoneNumber, string Email, string City, string state, int postcode)
         {
-            CustomerOps.addCustomer(FullName, streetAddress, phoneNumber, Email, City, state, postcode);
+            POS.Configuration.customerOps.addCustomer(FullName, streetAddress, phoneNumber, Email, City, state, postcode);
         }
 
         public void deleteCustomer(int id)
         {
-            CustomerOps.deleteCustomer(id);
+            POS.Configuration.customerOps.deleteCustomer(id);
         }
 
-        public void updateCustomer()
-        { }
+        public void updateCustomer(Customer toUpdate)
+        {
+            POS.Configuration.customerOps.updateCustomer(toUpdate);
+        }
     }
 }
