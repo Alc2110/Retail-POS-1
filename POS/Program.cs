@@ -13,7 +13,7 @@ namespace POS
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -47,6 +47,7 @@ namespace POS
             {
                 // something bad happened
                 // this is a last resort to catch the error
+                // TODO: log it
                 System.Windows.Forms.MessageBox.Show("A fatal error occurred: " + ex.Message);
             }
         }

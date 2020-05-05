@@ -38,6 +38,13 @@ namespace Model.ServiceLayer
             getAllStaff();
         }
 
+        public void importUpdateStaff(Staff staff)
+        {
+            // DAO
+            StaffDAO dao = new StaffDAO();
+            dao.importUpdateStaff(staff);
+        }
+
         public void delete(int id)
         {
             // DAO
@@ -56,7 +63,6 @@ namespace Model.ServiceLayer
             List<Staff> staffList = dao.getAllStaff();
 
             // fire the event
-            //GetAllStaff(null, new GetAllStaffEventArgs(staffList));
             GetAllStaff(this, new GetAllStaffEventArgs(staffList));
 
             return staffList;
@@ -70,6 +76,9 @@ namespace Model.ServiceLayer
         }
     }
 
+    /// <summary>
+    /// Event arguments class
+    /// </summary>
     public class GetAllStaffEventArgs : EventArgs
     {
         private List<Staff> staffList;

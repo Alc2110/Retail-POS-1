@@ -60,5 +60,27 @@ namespace Controller
 
             POS.Configuration.staffOps.updateStaff(toUpdate);
         }
+
+        public void importUpdateStaff(int id, string FullName, string PasswordHash, string role)
+        {
+            Model.ObjectModel.Staff toUpdate = new Model.ObjectModel.Staff();
+            toUpdate.setID(id);
+            toUpdate.setName(FullName);
+            toUpdate.setPasswordHash(PasswordHash);
+            switch (role)
+            {
+                case "Admin":
+                    toUpdate.setPrivelege(Model.ObjectModel.Staff.Privelege.Admin);
+                    break;
+                case "Normal":
+                    toUpdate.setPrivelege(Model.ObjectModel.Staff.Privelege.Normal);
+                    break;
+                default:
+                    // shouldn't happen
+                    return;
+            }
+
+            POS.Configuration.staffOps.importUpdateStaff(toUpdate);
+        }
     }
 }

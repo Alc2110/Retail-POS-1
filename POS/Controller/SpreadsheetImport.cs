@@ -7,6 +7,7 @@ using Model.ObjectModel;
 using Model.ServiceLayer;
 using OfficeOpenXml;
 using System.IO;
+using System.Diagnostics;
 
 namespace POS.Controller
 {
@@ -45,6 +46,9 @@ namespace POS.Controller
         protected string filePath;
         protected ExcelPackage spreadsheet;
         protected ExcelWorksheet worksheet;
+
+        // get an instance of the logger for this class
+        protected static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         // ctor
         public SpreadsheetImport(string importType)
@@ -123,84 +127,88 @@ namespace POS.Controller
         {
         }
 
-        public override void importUpdate()
+        public async override void importUpdate()
         {
-            // ask the model for all customers in database
-            List<Customer> databaseCustomers = POS.Configuration.customerOps.getAllCustomers();
-
-            // check for any Customer records in the spreadsheet that do not exist in the database (import)
-            List<Customer> spreadsheetCustomers = new List<Customer>();
-            // read the spreadsheet
+            // iterate through all the data rows and perform the import/update operation on each
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
-            while (spreadsheetCellsHaveData(this.worksheet.Cells[row,2]))
+            while (this.worksheet.Cells[row,2].Value!=null)
             {
-                Customer currCustomerRecord = new Customer();
-                if ((this.worksheet.Cells[row, 1].Value != null) && !(this.worksheet.Cells[row, 1].Value.ToString().Equals(string.Empty)))
+                // grab the data
+                int id = 0;
+                if (this.worksheet.Cells[row,1].Value!=null)
                 {
-                    currCustomerRecord.setID(Int32.Parse(this.worksheet.Cells[row, 1].Value.ToString()));
+                    id = int.Parse(this.worksheet.Cells[row, 1].Value.ToString());
                 }
-                else
-                {
-                    currCustomerRecord.setID(0);
-                }
-                currCustomerRecord.setName(this.worksheet.Cells[row, 2].Value.ToString());
-                currCustomerRecord.setAddress(this.worksheet.Cells[row, 3].Value.ToString());
-                currCustomerRecord.setPhoneNumber(this.worksheet.Cells[row, 4].Value.ToString());
-                currCustomerRecord.setEmail(this.worksheet.Cells[row, 5].Value.ToString());
-                currCustomerRecord.setCity(this.worksheet.Cells[row, 6].Value.ToString());
-                switch (this.worksheet.Cells[row, 7].Value.ToString())
+                string fullName = this.worksheet.Cells[row, 2].Value.ToString();
+                string address = this.worksheet.Cells[row, 3].Value.ToString();
+                string phoneNumber = this.worksheet.Cells[row, 4].Value.ToString();
+                string email = this.worksheet.Cells[row, 5].Value.ToString();
+                string city = this.worksheet.Cells[row, 6].Value.ToString();
+                string state = this.worksheet.Cells[row, 7].Value.ToString();
+                int postcode = int.Parse(this.worksheet.Cells[row, 8].Value.ToString());
+
+                Customer toUpdate = new Customer();
+                toUpdate.setID(id);
+                toUpdate.setName(fullName);
+                toUpdate.setAddress(address);
+                toUpdate.setPhoneNumber(phoneNumber);
+                toUpdate.setEmail(email);
+                toUpdate.setCity(city);
+                switch (state)
                 {
                     case "NSW":
-                        currCustomerRecord.setState(Customer.States.NSW);
-                        break;
-                    case "Vic":
-                        currCustomerRecord.setState(Customer.States.Vic);
+                        toUpdate.setState(Customer.States.NSW);
                         break;
                     case "Qld":
-                        currCustomerRecord.setState(Customer.States.Qld);
-                        break;
-                    case "ACT":
-                        currCustomerRecord.setState(Customer.States.ACT);
+                        toUpdate.setState(Customer.States.Qld);
                         break;
                     case "Tas":
-                        currCustomerRecord.setState(Customer.States.Tas);
+                        toUpdate.setState(Customer.States.Tas);
+                        break;
+                    case "ACT":
+                        toUpdate.setState(Customer.States.ACT);
+                        break;
+                    case "Vic":
+                        toUpdate.setState(Customer.States.Vic);
                         break;
                     case "SA":
-                        currCustomerRecord.setState(Customer.States.SA);
+                        toUpdate.setState(Customer.States.SA);
+                        break;
+                    case "WA":
+                        toUpdate.setState(Customer.States.WA);
                         break;
                     case "NT":
-                        currCustomerRecord.setState(Customer.States.NT);
+                        toUpdate.setState(Customer.States.NT);
                         break;
                     case "Other":
-                        currCustomerRecord.setState(Customer.States.Other);
+                        
                         break;
                     default:
-                        // shouldn't happen
-                        throw new Exception("Invalid data in database");
+                        // this shouldn't happen
+                        // TODO: handle this properly
+                        throw new Exception("Invalid data in spreadsheet");
                 }
-                currCustomerRecord.setPostcode(Int32.Parse(this.worksheet.Cells[row, 8].Value.ToString()));
+                toUpdate.setPostcode(postcode);
 
-                spreadsheetCustomers.Add(currCustomerRecord);
+                try
+                {
+                    // perform this task in a separate thread
+                    await Task.Run(() =>
+                   {
+                       Configuration.customerOps.importUpdateCustomer(toUpdate);
+                   });
+                }
+                catch (Exception ex)
+                {
+                    // it failed
+                    // tell the user and the logger
+                    string importFailedMsg = "Error importing data: " + ex.Message;
+                    System.Windows.Forms.MessageBox.Show(importFailedMsg, "Retail POS", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                    logger.Error(ex, importFailedMsg);
+                    logger.Error("Stack Trace: " + ex.StackTrace);
+                }
 
                 row++;
-            }
-
-            foreach (Customer spreadsheetCustomerRecord in spreadsheetCustomers)
-            {
-                if (!databaseCustomers.Exists(c => c.getID()==spreadsheetCustomerRecord.getID()))
-                {
-                    // no customer exists in database with this ID
-                    // insert the record
-                    //CustomerOps.addCustomer(spreadsheetCustomerRecord);
-                    POS.Configuration.customerOps.addCustomer(spreadsheetCustomerRecord);
-
-                    break;
-                }
-
-                // customer record already exists
-                // update it
-                //CustomerOps.updateCustomer(spreadsheetCustomerRecord);
-                POS.Configuration.customerOps.addCustomer(spreadsheetCustomerRecord);
             }
         }
     }
@@ -213,66 +221,52 @@ namespace POS.Controller
 
         public async override void importUpdate()
         {
-            // ask model for all staff records in database
-            List<Staff> databaseStaff = POS.Configuration.staffOps.getAllStaff();
-
-            // check for any Staff records in the spreadsheet that do not exist in the database (import)
-            List<Staff> spreadsheetStaff = new List<Staff>();
-            // read the spreadsheet
+            // iterate through all the data rows and perform the import/update operation on each 
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
-            while (spreadsheetCellsHaveData(this.worksheet.Cells[row,2]))
+            while (this.worksheet.Cells[row,2].Value!=null)
             {
-                Staff currStaffRecord = new Staff();
-                if ((this.worksheet.Cells[row, 1].Value != null) && !(this.worksheet.Cells[row, 1].Value.ToString().Equals(string.Empty)))
-                {
-                    currStaffRecord.setID(Int32.Parse(this.worksheet.Cells[row, 1].Value.ToString()));
-                }
-                else
-                {
-                    currStaffRecord.setID(0);
-                }
-                currStaffRecord.setName(this.worksheet.Cells[row, 2].Value.ToString());
-                currStaffRecord.setPasswordHash(this.worksheet.Cells[row, 3].Value.ToString());
-                switch (this.worksheet.Cells[row,4].Value.ToString())
+                // grab the data
+                int id = Int32.Parse(this.worksheet.Cells[row, 1].Value.ToString()); 
+                string fullName = this.worksheet.Cells[row, 2].Value.ToString();
+                string passwordHash = this.worksheet.Cells[row, 3].Value.ToString();
+                string privelege = this.worksheet.Cells[row, 4].Value.ToString();
+                Staff staff = new Staff();
+                staff.setID(id);
+                staff.setName(fullName);
+                staff.setPasswordHash(passwordHash);
+                switch (privelege)
                 {
                     case "Admin":
-                        currStaffRecord.setPrivelege(Staff.Privelege.Admin);
+                        staff.setPrivelege(Staff.Privelege.Admin);
                         break;
                     case "Normal":
-                        currStaffRecord.setPrivelege(Staff.Privelege.Normal);
+                        staff.setPrivelege(Staff.Privelege.Normal);
                         break;
                     default:
-                        // shouldn't happen
-                        throw new Exception("Invalid data in spreadsheet");
+                        // invalid data
+                        // TODO: deal with this appropriately
+                        break;
                 }
 
-                spreadsheetStaff.Add(currStaffRecord);
+                try
+                {
+                    await Task.Run(() =>
+                    {
+                        // perform the operation on a separate thread
+                        Configuration.staffOps.importUpdateStaff(staff);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    // it failed
+                    // tell the user and the logger
+                    string importFailedMsg = "Error importing data: " + ex.Message;
+                    System.Windows.Forms.MessageBox.Show(importFailedMsg, "Retail POS", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                    logger.Error(ex, importFailedMsg);
+                    logger.Error("Stack Trace: " + ex.StackTrace);
+                }
 
                 row++;
-            }
-
-            foreach (Staff spreadsheetStaffRecord in spreadsheetStaff)
-            {
-                if (!spreadsheetStaff.Any(s => s.getID()==spreadsheetStaffRecord.getID()))
-                {
-                    // no staff record exists in database with this ID
-                    // insert the record
-                    // run this operation in a separate thread
-                    await Task.Run(() =>
-                   {
-                       POS.Configuration.staffOps.addStaff(spreadsheetStaffRecord);
-                   });
-
-                    break;
-                }
-
-                // staff record already exists
-                // update it
-                // run this operation in a separate thread
-                await Task.Run(() =>
-                {
-                    POS.Configuration.staffOps.updateStaff(spreadsheetStaffRecord);
-                });
             }
         }
     }
@@ -281,53 +275,50 @@ namespace POS.Controller
     {
         public ProductSpreadsheetImport(string importType) : base(importType)
         {
-
         }
 
-        public override void importUpdate()
+        public async override void importUpdate()
         {
-            // ask the model for all product records in database
-            List<Product> databaseProducts = POS.Configuration.productOps.getAllProducts();
-
-            // check for any Product records in the spreadsheet that do not exist in the database (import)
-            List<Product> spreadsheetProducts = new List<Product>();
-            // read the spreadsheet
+            // iterate through all the data rows and perform the import/update operation on each
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
-            while (spreadsheetCellsHaveData(this.worksheet.Cells[row, 2]))
+            while (this.worksheet.Cells[row, 2].Value != null)
             {
-                Product currProductRecord = new Product();
-                if ((this.worksheet.Cells[row, 1].Value != null) && !(this.worksheet.Cells[row, 1].Value.ToString().Equals(string.Empty)))
+                // prepare the data
+                int id = 0;
+                if (this.worksheet.Cells[row, 1].Value!=null)
                 {
-                    currProductRecord.setProductID(Int32.Parse(this.worksheet.Cells[row, 1].Value.ToString()));
+                    id = int.Parse(this.worksheet.Cells[row, 1].Value.ToString());
                 }
-                else
-                {
-                    currProductRecord.setProductID(0);
-                }
-                currProductRecord.setProductIDNumber(this.worksheet.Cells[row, 2].Value.ToString());
-                currProductRecord.setDescription(this.worksheet.Cells[row, 3].Value.ToString());
-                currProductRecord.setQuantity(Int32.Parse(this.worksheet.Cells[row, 4].Value.ToString()));
-                currProductRecord.setPrice(float.Parse(this.worksheet.Cells[row, 5].Value.ToString()));
+                string productNumber = this.worksheet.Cells[row, 2].Value.ToString();
+                string description = this.worksheet.Cells[row, 3].Value.ToString();
+                int quantity = Int32.Parse(this.worksheet.Cells[row, 4].Value.ToString());
+                float price = float.Parse(this.worksheet.Cells[row, 5].Value.ToString());
+                Product toUpdate = new Product();
+                toUpdate.setProductID(id);
+                toUpdate.setProductIDNumber(productNumber);
+                toUpdate.setDescription(description);
+                toUpdate.setQuantity(quantity);
+                toUpdate.setPrice(price);
 
-                spreadsheetProducts.Add(currProductRecord);
+                try
+                {
+                    // run this task in a separate thread
+                    await Task.Run(() =>
+                    {
+                        Configuration.productOps.importUpdateProduct(toUpdate);
+                    });
+                }
+                catch (Exception ex)
+                {
+                    // it failed
+                    // tell the user and the logger
+                    string importFailedMsg = "Error importing data: " + ex.Message;
+                    System.Windows.Forms.MessageBox.Show(importFailedMsg, "Retail POS", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                    logger.Error(ex, importFailedMsg);
+                    logger.Error("Stack Trace: " + ex.StackTrace);
+                }
 
                 row++;
-            }
-
-            foreach (Product spreadsheetProductRecord in spreadsheetProducts)
-            {
-                if (!databaseProducts.Any(c => c.getProductID()==spreadsheetProductRecord.getProductID()))
-                {
-                    // no product exists in the database with this ID
-                    // insert the record
-                    
-
-                    break;
-                }
-
-                // product record already exists
-                // update it
-                
             }
         }
     }

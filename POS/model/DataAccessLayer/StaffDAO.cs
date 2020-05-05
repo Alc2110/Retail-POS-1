@@ -36,13 +36,12 @@ namespace Model.DataAccessLayer
 
                 SqlDataReader reader;
 
-                    // try a connection
-                    conn.Open();
+                // try a connection
+                conn.Open();
 
-                    // execute the query
-                    reader = cmd.ExecuteReader();
+                // execute the query
+                reader = cmd.ExecuteReader();
    
-
                 if (reader.HasRows)
                 {
                     while (reader.Read())
@@ -94,12 +93,12 @@ namespace Model.DataAccessLayer
                 SqlCommand cmd = new SqlCommand(queryGetAllStaff, conn);
 
                 SqlDataReader reader;
-                
-                    // try a connection
-                    conn.Open();
 
-                    // execute the query
-                    reader = cmd.ExecuteReader();
+                // try a connection
+                conn.Open();
+
+                // execute the query
+                reader = cmd.ExecuteReader();
                 
 
                 if (reader.HasRows)
@@ -155,12 +154,11 @@ namespace Model.DataAccessLayer
             {
                 SqlCommand cmd = new SqlCommand(queryDeleteStaff, conn);
 
-                    // try a connection
-                    conn.Open();
+                // try a connection
+                conn.Open();
 
-                    // execute the query
-                    cmd.ExecuteNonQuery();
-                
+                // execute the query
+                cmd.ExecuteNonQuery();
             }
             
             return;
@@ -211,16 +209,13 @@ namespace Model.DataAccessLayer
                         // this shouldn't happen
                         throw new Exception("Invalid staff data");
                 }
-
                 cmd.Parameters.Add(privParam);
 
-               
-                    // try a connection
-                    conn.Open();
+                // try a connection
+                conn.Open();
 
-                    // execute the query
-                    cmd.ExecuteNonQuery();
-               
+                // execute the query
+                cmd.ExecuteNonQuery();
             }
 
             return;
@@ -278,13 +273,27 @@ namespace Model.DataAccessLayer
 
                 cmd.Parameters.Add(privParam);
 
-               
-                    // try a connection
-                    conn.Open();
+                // try a connection
+                conn.Open();
 
-                    // execute the query
-                    cmd.ExecuteNonQuery();
-               
+                // execute the query
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void importUpdateStaff(Staff staff)
+        {
+            // strategy:
+            // use READ operation to retrieve record for this staff object
+            // if it is null, CREATE it
+            // else, UPDATE it
+            if (getStaff(staff.getID()) == null)
+            {
+                addStaff(staff);
+            }
+            else
+            {
+                updateStaff(staff);
             }
         }
     }

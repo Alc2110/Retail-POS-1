@@ -83,6 +83,13 @@ namespace Model.ServiceLayer
             getAllCustomers();
         }
 
+        public void importUpdateCustomer(Customer customer)
+        {
+            // DAO
+            CustomerDAO dao = new CustomerDAO();
+            dao.importUpdateCustomer(customer);
+        }
+
         public void deleteCustomer(int id)
         {
             // object

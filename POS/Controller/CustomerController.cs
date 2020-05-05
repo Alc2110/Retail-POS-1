@@ -28,5 +28,10 @@ namespace Controller
         {
             POS.Configuration.customerOps.updateCustomer(toUpdate);
         }
+
+        public void importUpdateCustomer(Customer toUpdate)
+        {
+            POS.Configuration.customerOps.importUpdateCustomer(toUpdate);
+        }
     }
 }

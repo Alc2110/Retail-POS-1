@@ -40,6 +40,13 @@ namespace Model.ServiceLayer
             getAllProducts();
         }
 
+        public void importUpdateProduct(Product product)
+        {
+            // DAO
+            ProductDAO dao = new ProductDAO();
+            dao.importUpdateProduct(product);
+        }
+
         public Product getProduct(string idNumber)
         {
             // DAO

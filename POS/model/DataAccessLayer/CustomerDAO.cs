@@ -198,8 +198,6 @@ namespace Model.DataAccessLayer
 
                     // execute the query
                     cmd.ExecuteNonQuery();
-                
-              
             }
             
             return;
@@ -322,12 +320,23 @@ namespace Model.DataAccessLayer
                 postcodeParam.Value = customer.getPostcode();
                 cmd.Parameters.Add(postcodeParam);
 
-                 // try a connection
-                    conn.Open();
+                // try a connection
+                conn.Open();
 
-                    // execute the query
-                   cmd.ExecuteNonQuery();
-               
+                // execute the query
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public void importUpdateCustomer(Customer customer)
+        {
+            if (getCustomer(customer.getID()) == null)
+            {
+                addCustomer(customer);
+            }
+            else
+            {
+                updateCustomer(customer);
             }
         }
     }

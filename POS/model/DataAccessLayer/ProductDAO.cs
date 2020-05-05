@@ -63,7 +63,6 @@ namespace Model.DataAccessLayer
             string queryGetProduct = "SELECT * FROM Products " +
                                      "WHERE ProductIDNumber = @id;";
 
-
             using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
             {
                 SqlCommand cmd = new SqlCommand(queryGetProduct, conn);
@@ -75,15 +74,12 @@ namespace Model.DataAccessLayer
                 cmd.Parameters.Add(idParam);
 
                 SqlDataReader reader;
-               
-                    // attempt a connection
-                    conn.Open();
 
-                    // execute the query
-                    reader = cmd.ExecuteReader();
-                
-                  
- 
+                // attempt a connection
+                conn.Open();
+
+                // execute the query
+                reader = cmd.ExecuteReader();
 
                 // check if results exist
                 if (reader.HasRows)
@@ -132,12 +128,11 @@ namespace Model.DataAccessLayer
                 idParam.Value = idNumber;
                 cmd.Parameters.Add(idParam);
 
-                    // attempt a connection
-                    conn.Open();
+                // attempt a connection
+                conn.Open();
 
-                    // execute the query
-                    cmd.ExecuteNonQuery();
-                
+                // execute the query
+                cmd.ExecuteNonQuery();
             }
          
             return;
@@ -178,12 +173,11 @@ namespace Model.DataAccessLayer
                 priceParam.Value = product.getPrice();
                 cmd.Parameters.Add(priceParam);
 
-                    // attempt a connection
-                    conn.Open();
+                // attempt a connection
+                conn.Open();
 
-                    // execute the query
-                    cmd.ExecuteNonQuery();
-                
+                // execute the query
+                cmd.ExecuteNonQuery(); 
             }
 
             return;
@@ -224,13 +218,23 @@ namespace Model.DataAccessLayer
                 priceParam.Value = product.getPrice();
                 cmd.Parameters.Add(priceParam);
 
+                // attempt a connection
+                conn.Open();
 
-                    // attempt a connection
-                    conn.Open();
+                // execute the query
+                cmd.ExecuteNonQuery();
+            }
+        }
 
-                    // execute the query
-                    cmd.ExecuteNonQuery();
-               
+        public void importUpdateProduct(Product product)
+        {
+            if (getProduct(product.getProductIDNumber())==null)
+            {
+                addProduct(product);
+            }
+            else
+            {
+                updateProduct(product);
             }
         }
     }

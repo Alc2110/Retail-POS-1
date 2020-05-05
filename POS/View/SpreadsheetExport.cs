@@ -346,7 +346,7 @@ namespace POS.View
             {
                 Staff staff = this.staffList[i];
                 this.worksheet.Cells[row, 1].Value = staff.getID().ToString();
-                this.worksheet.Cells[row, 1].Style.Numberformat.Format = "0"; 
+                //this.worksheet.Cells[row, 1].Style.Numberformat.Format = "0"; 
                 this.worksheet.Cells[row, 2].Value = staff.getName();
                 this.worksheet.Cells[row, 3].Value = staff.getPasswordHash();
                 this.worksheet.Cells[row, 4].Value = staff.getPrivelege().ToString();
