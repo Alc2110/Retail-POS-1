@@ -68,7 +68,7 @@ namespace POS.View
                     // prepare the data
                     int idNum;
                     Int32.TryParse(listView_staff.SelectedItems[0].SubItems[0].Text, out idNum);
-
+                    
                     // log it
                     logger.Info("Deleting staff record: ");
                     logger.Info("ID: " + idNum);
@@ -94,7 +94,7 @@ namespace POS.View
 
                 // at this point, it succeeded
                 // tell the user and the logger
-                string successMessage = "Successfully deleted customer record";
+                string successMessage = "Successfully deleted staff record";
                 MessageBox.Show(successMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 logger.Info(successMessage);
             }
@@ -136,8 +136,6 @@ namespace POS.View
 
         private void populateView(object sender, GetAllStaffEventArgs args)
         {
-            List<Staff> staffList = args.getList();
-
             // tell the listView it is being updated
             listView_staff.BeginUpdate();
 
@@ -148,13 +146,13 @@ namespace POS.View
             }
 
             // populate it
-            foreach (Staff staff in staffList)
+            foreach (var staff in args.getList())
             {
                 string[] itemArr = new string[4];
-                itemArr[0] = staff.getID().ToString();
-                itemArr[1] = staff.getName();
-                itemArr[2] = staff.getPasswordHash();
-                itemArr[3] = staff.getPrivelege().ToString();
+                itemArr[0] = staff.StaffID.ToString();
+                itemArr[1] = staff.FullName;
+                itemArr[2] = staff.PasswordHash;
+                itemArr[3] = staff.privelege.ToString();
 
                 ListViewItem staffListViewItem = new ListViewItem(itemArr);
                 listView_staff.Items.Add(staffListViewItem);

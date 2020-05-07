@@ -8,114 +8,65 @@ using Model.ObjectModel;
 
 namespace Model.ServiceLayer
 {
-    //public static class CustomerOps
-    public class CustomerOps
+    /// <summary>
+    /// Interacts with the data access layer.
+    /// The data access object could be replaced with another implementing that interface.
+    /// </summary>
+    public class CustomerOps : ICustomerOps
     {
-        public void addCustomer(Customer customer)
+        // data access layer dependency injection
+        public ICustomerDAO dataAccessObj { get; set; }
+        
+        // default constructor
+        // this still depends on a concrete implementation.
+        // however, it is not as tightly-coupled a design as before
+        public CustomerOps()
         {
-            // DAO
-            CustomerDAO dao = new CustomerDAO();
-            dao.addCustomer(customer);
+            dataAccessObj = new CustomerDAO();
+        }
+        // test constructor
+        public CustomerOps(ICustomerDAO dataAccessObj)
+        {
+            this.dataAccessObj = dataAccessObj;
+        }
+  
+        public void addCustomer(ICustomer newCustomer)
+        {
+            dataAccessObj.addCustomer(newCustomer);
 
-            // fire the event
+            // fire the event to update the view
             getAllCustomers();
         }
 
-        public void addCustomer(string FullName, string streetAddress, string phoneNumber, string Email, string City, string state, int postcode)
+        public void updateCustomer(ICustomer customer)
         {
-            // object
-            Customer newCustomer = new Customer();
-            newCustomer.setName(FullName);
-            newCustomer.setAddress(streetAddress);
-            newCustomer.setPhoneNumber(phoneNumber);
-            newCustomer.setEmail(Email);
-            newCustomer.setCity(City);
-            newCustomer.setPostcode(postcode);
-            switch (state)
-            {
-                case "NSW":
-                    newCustomer.setState(Customer.States.NSW);
-                    break;
-                case "Qld":
-                    newCustomer.setState(Customer.States.Qld);
-                    break;
-                case "Vic":
-                    newCustomer.setState(Customer.States.Vic);
-                    break;
-                case "ACT":
-                    newCustomer.setState(Customer.States.ACT);
-                    break;
-                case "Tas":
-                    newCustomer.setState(Customer.States.Tas);
-                    break;
-                case "SA":
-                    newCustomer.setState(Customer.States.SA);
-                    break;
-                case "WA":
-                    newCustomer.setState(Customer.States.WA);
-                    break;
-                case "NT":
-                    newCustomer.setState(Customer.States.NT);
-                    break;
-                case "Other":
-                    break;
-                default:
-                    // this shouldn't happen
-                    throw new Exception("Invalid customer data");
-            }
+            dataAccessObj.updateCustomer(customer);
 
-            // prepare and execute the data access object  
-            CustomerDAO dao = new CustomerDAO();
-            dao.addCustomer(newCustomer);
-
-            // fire the event to re-fetch data
+            // fire the event to update the view
             getAllCustomers();
         }
 
-        public void updateCustomer(Customer customer)
+        public void importUpdateCustomer(ICustomer customer)
         {
-            // strategy: find the customer record in the database with this ID. Update its remaining fields with these values.
-            // DAO
-            CustomerDAO dao = new CustomerDAO();
-            dao.updateCustomer(customer);
-
-            // fire the event
-            getAllCustomers();
-        }
-
-        public void importUpdateCustomer(Customer customer)
-        {
-            // DAO
-            CustomerDAO dao = new CustomerDAO();
-            dao.importUpdateCustomer(customer);
+            dataAccessObj.importUpdateCustomer(customer);
         }
 
         public void deleteCustomer(int id)
         {
-            // object
-            Customer customer = new Customer();
-            customer.setID(id);
+            dataAccessObj.deleteCustomer(id);
 
-            // DAO
-            CustomerDAO dao = new CustomerDAO();
-            dao.deleteCustomer(customer);
-
-            // fire the event
+            // fire the event to update the view 
             getAllCustomers();
         }
 
-        public Customer getCustomer(int id)
+        public ICustomer getCustomer(int id)
         {
-            // DAO
-            CustomerDAO dao = new CustomerDAO();
-            return dao.getCustomer(id);
+            return dataAccessObj.getCustomer(id);
         }
 
-        public List<Customer> getAllCustomers()
+        public IEnumerable<ICustomer> getAllCustomers()
         {
-            // DAO
-            CustomerDAO dao = new CustomerDAO();
-            List<Customer> allCustomers = (List<Customer>)(dao.getAllCustomers());
+            IEnumerable<ICustomer> allCustomers = dataAccessObj.getAllCustomers();
 
             // fire the event
             GetAllCustomers(this, new GetAllCustomersEventArgs(allCustomers));
@@ -131,20 +82,30 @@ namespace Model.ServiceLayer
         }
     }
 
+    public interface ICustomerOps
+    {
+        void addCustomer(ICustomer customer);
+        void updateCustomer(ICustomer customer);
+        void importUpdateCustomer(ICustomer customer);
+        void deleteCustomer(int id);
+        ICustomer getCustomer(int id);
+        IEnumerable<ICustomer> getAllCustomers();
+    }
+
     /// <summary>
     /// Event arguments class.
     /// </summary>
     public class GetAllCustomersEventArgs : EventArgs
     {
-        private List<Customer> customerList;
+        private IEnumerable<ICustomer> customerList;
 
         // ctor
-        public GetAllCustomersEventArgs(List<Customer> customerList)
+        public GetAllCustomersEventArgs(IEnumerable<ICustomer> customerList)
         {
             this.customerList = customerList;
         }
 
-        public List<Customer> getList()
+        public IEnumerable<ICustomer> getList()
         {
             return this.customerList;
         }

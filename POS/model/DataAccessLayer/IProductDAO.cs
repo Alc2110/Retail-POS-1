@@ -9,9 +9,13 @@ namespace Model.DataAccessLayer
 {
     public interface IProductDAO
     {
-        List<Product> getAllProducts();
+        string connString { get; set; }
+
+        IEnumerable<IProduct> getAllProducts();
         void deleteProduct(string idNumber);
-        void addProduct(Product product);
-        void updateProduct(Product product);
+        IProduct getProduct(string idNumber);
+        void addProduct(IProduct product);
+        void updateProduct(IProduct product);
+        void importUpdateProduct(IProduct product);
     }
 }

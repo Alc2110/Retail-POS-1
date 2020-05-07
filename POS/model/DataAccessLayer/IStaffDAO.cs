@@ -9,9 +9,13 @@ namespace Model.DataAccessLayer
 {
     public interface IStaffDAO
     {
-        List<Staff> getAllStaff();
+        string connString { get; set; }
+
+        IEnumerable<IStaff> getAllStaff();
+        IStaff getStaff(int id);
         void deleteStaff(int id);
-        void addStaff(Staff staff);
-        void updateStaff(Staff staff);
+        void addStaff(IStaff staff);
+        void updateStaff(IStaff staff);
+        void importUpdateStaff(IStaff staff);
     }
 }

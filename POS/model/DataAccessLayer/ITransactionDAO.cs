@@ -9,8 +9,10 @@ namespace Model.DataAccessLayer
 {
     public interface ITransactionDAO
     {
-        List<Transaction> getAllTransactions();
+        string connString { get; set; }
+
+        IEnumerable<ITransaction> getAllTransactions();
         void deleteTransaction(Transaction transaction);
-        void addTransaction(Transaction transaction);
+        void addTransaction(ValueTuple<int, int, Dictionary<string, int>> itemsn);
     }
 }

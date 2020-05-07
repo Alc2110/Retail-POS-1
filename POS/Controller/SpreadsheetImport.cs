@@ -148,37 +148,37 @@ namespace POS.Controller
                 int postcode = int.Parse(this.worksheet.Cells[row, 8].Value.ToString());
 
                 Customer toUpdate = new Customer();
-                toUpdate.setID(id);
-                toUpdate.setName(fullName);
-                toUpdate.setAddress(address);
-                toUpdate.setPhoneNumber(phoneNumber);
-                toUpdate.setEmail(email);
-                toUpdate.setCity(city);
+                toUpdate.CustomerID = id;
+                toUpdate.FullName = fullName;
+                toUpdate.Address = address;
+                toUpdate.PhoneNumber = phoneNumber;
+                toUpdate.Email = email;
+                toUpdate.City = city;
                 switch (state)
                 {
                     case "NSW":
-                        toUpdate.setState(Customer.States.NSW);
+                        toUpdate.state = Customer.States.NSW;
                         break;
                     case "Qld":
-                        toUpdate.setState(Customer.States.Qld);
+                        toUpdate.state = Customer.States.Qld;
                         break;
                     case "Tas":
-                        toUpdate.setState(Customer.States.Tas);
+                        toUpdate.state = Customer.States.Tas;
                         break;
                     case "ACT":
-                        toUpdate.setState(Customer.States.ACT);
+                        toUpdate.state = Customer.States.ACT;
                         break;
                     case "Vic":
-                        toUpdate.setState(Customer.States.Vic);
+                        toUpdate.state = Customer.States.Vic;
                         break;
                     case "SA":
-                        toUpdate.setState(Customer.States.SA);
+                        toUpdate.state = Customer.States.SA;
                         break;
                     case "WA":
-                        toUpdate.setState(Customer.States.WA);
+                        toUpdate.state = Customer.States.WA;
                         break;
                     case "NT":
-                        toUpdate.setState(Customer.States.NT);
+                        toUpdate.state = Customer.States.NT;
                         break;
                     case "Other":
                         
@@ -188,7 +188,7 @@ namespace POS.Controller
                         // TODO: handle this properly
                         throw new Exception("Invalid data in spreadsheet");
                 }
-                toUpdate.setPostcode(postcode);
+                toUpdate.Postcode = postcode;
 
                 try
                 {
@@ -231,16 +231,16 @@ namespace POS.Controller
                 string passwordHash = this.worksheet.Cells[row, 3].Value.ToString();
                 string privelege = this.worksheet.Cells[row, 4].Value.ToString();
                 Staff staff = new Staff();
-                staff.setID(id);
-                staff.setName(fullName);
-                staff.setPasswordHash(passwordHash);
+                staff.StaffID = id;
+                staff.FullName = fullName;
+                staff.PasswordHash = passwordHash;
                 switch (privelege)
                 {
                     case "Admin":
-                        staff.setPrivelege(Staff.Privelege.Admin);
+                        staff.privelege = Staff.Privelege.Admin;
                         break;
                     case "Normal":
-                        staff.setPrivelege(Staff.Privelege.Normal);
+                        staff.privelege = Staff.Privelege.Normal;
                         break;
                     default:
                         // invalid data
@@ -289,16 +289,16 @@ namespace POS.Controller
                 {
                     id = int.Parse(this.worksheet.Cells[row, 1].Value.ToString());
                 }
-                string productNumber = this.worksheet.Cells[row, 2].Value.ToString();
-                string description = this.worksheet.Cells[row, 3].Value.ToString();
-                int quantity = Int32.Parse(this.worksheet.Cells[row, 4].Value.ToString());
-                float price = float.Parse(this.worksheet.Cells[row, 5].Value.ToString());
+                string productNumber = worksheet.Cells[row, 2].Value.ToString();
+                string description = worksheet.Cells[row, 3].Value.ToString();
+                int quantity = Int32.Parse(worksheet.Cells[row, 4].Value.ToString());
+                float price = float.Parse(worksheet.Cells[row, 5].Value.ToString());
                 Product toUpdate = new Product();
-                toUpdate.setProductID(id);
-                toUpdate.setProductIDNumber(productNumber);
-                toUpdate.setDescription(description);
-                toUpdate.setQuantity(quantity);
-                toUpdate.setPrice(price);
+                toUpdate.ProductID = id;
+                toUpdate.ProductIDNumber = productNumber;
+                toUpdate.Description = description;
+                toUpdate.Quantity = quantity;
+                toUpdate.price = price;
 
                 try
                 {

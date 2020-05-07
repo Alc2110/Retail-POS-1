@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace Model.ObjectModel
 {
-    public class Customer : IActor
+    public class Customer : ICustomer
     {
-        // default ctor
+        // default constructor
         public Customer()
         {
         }
 
-        // ctor
-        public Customer(int CustomerID, string FullName, string Address, string phoneNumber, string Email, string City, States state, int Postcode, List<Transaction> Transactions)
+        // constructor with parameters
+        public Customer(int CustomerID, string FullName, string Address, string phoneNumber, string Email, string City, States state, int Postcode, IEnumerable<ITransaction> Transactions)
         {
             this.CustomerID = CustomerID;
             this.FullName = FullName;
@@ -38,104 +38,27 @@ namespace Model.ObjectModel
             Other
         }
 
-        private int CustomerID;
-        private string FullName;
-        private string Address;
-        private string PhoneNumber;
-        private string Email;
-        private string City;
-        private States state;
-        private int Postcode;
-        private IList<Transaction> Transactions;
+        public int CustomerID { get; set; }
+        public string FullName { get; set; }
+        public string Address { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+        public string City { get; set; }
+        public States state { get; set; }
+        public int Postcode { get; set; }
+        public IEnumerable<ITransaction> Transactions { get; set; }
+    }
 
-        public int getID()
-        {
-            return CustomerID;
-        }
-
-        public void setID(int id)
-        {
-            this.CustomerID = id;
-        }
-
-        public string getName()
-        {
-            return FullName;
-        }
-
-        public void setName(string name)
-        {
-            this.FullName = name;
-        }
-
-        public string getAddress()
-        {
-            return Address;
-        }
-
-        public void setAddress(string address)
-        {
-            this.Address = address;
-        }
-
-        public string getPhoneNumber()
-        {
-            return PhoneNumber;
-        }
-
-        public void setPhoneNumber(string number)
-        {
-            this.PhoneNumber = number;
-        }
-
-        public string getEmail()
-        {
-            return this.Email;
-        }
-
-        public void setEmail(string email)
-        {
-            this.Email = email;
-        }
-
-        public string getCity()
-        {
-            return this.City;
-        }
-
-        public void setCity(string city)
-        {
-            this.City = city;
-        }
-
-        public States getState()
-        {
-            return this.state;
-        }
-
-        public void setState(States state)
-        {
-            this.state = state;
-        }
-
-        public int getPostcode()
-        {
-            return this.Postcode;
-        }
-
-        public void setPostcode(int postcode)
-        {
-            this.Postcode = postcode;
-        }
-
-        public List<Transaction> getTransactions()
-        {
-            return (List<Transaction>)this.Transactions;
-        }
-
-        public void setTransactions(List<Transaction> transactions)
-        {
-            this.Transactions = transactions;
-        }
+    public interface ICustomer
+    {
+        int CustomerID { get; set; }
+        string FullName { get; set; }
+        string Address { get; set; }
+        string PhoneNumber { get; set; }
+        string Email { get; set; }
+        string City { get; set; }
+        Model.ObjectModel.Customer.States state { get; set; }
+        int Postcode { get; set; }
+        IEnumerable<ITransaction> Transactions { get; set; }
     }
 }

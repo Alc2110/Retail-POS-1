@@ -2,7 +2,7 @@
 
 namespace Model.ObjectModel
 {
-    public class Staff : IActor
+    public class Staff : IStaff
     {
         public enum Privelege
         {
@@ -15,7 +15,7 @@ namespace Model.ObjectModel
         {
         }
 
-        // ctor
+        // constructor with parameters
         public Staff(int StaffID, string FullName, string PasswordHash, Privelege privelege)
         {
             this.StaffID = StaffID;
@@ -24,49 +24,17 @@ namespace Model.ObjectModel
             this.privelege = privelege;
         }
 
-        private int StaffID;
-        private string FullName;
-        private string PasswordHash;
-        private Privelege privelege;
+        public int StaffID { get; set; }
+        public string FullName { get; set; }
+        public string PasswordHash { get; set; }
+        public Privelege privelege { get; set; }
+    }
 
-        public string getName()
-        {
-            return FullName;
-        }
-
-        public void setName(string name)
-        {
-            this.FullName = name;
-        }
-
-        public int getID()
-        {
-            return StaffID;
-        }
-
-        public void setID(int id)
-        {
-            this.StaffID = id;
-        }
-
-        public Privelege getPrivelege()
-        {
-            return privelege;
-        }
-
-        public void setPrivelege(Privelege privelege)
-        {
-            this.privelege = privelege;
-        }
-
-        public string getPasswordHash()
-        {
-            return PasswordHash;
-        }
-
-        public void setPasswordHash(string PasswordHash)
-        {
-            this.PasswordHash = PasswordHash;
-        }
+    public interface IStaff
+    {
+        int StaffID { get; set; }
+        string FullName { get; set; }
+        string PasswordHash { get; set; }
+        Staff.Privelege privelege { get; set; }
     }
 }

@@ -182,29 +182,30 @@ namespace POS.View
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
             foreach (Transaction trans in this.transactions)
             {
-                this.invoiceWorksheet.Cells[row, 1].Value = trans.getTimestamp();
-                if (trans.getCustomer()!=null)
+                this.invoiceWorksheet.Cells[row, 1].Value = trans.Timestamp;
+                if (trans.customer!=null)
                 {
-                    this.invoiceWorksheet.Cells[row, 2].Value = trans.getCustomer().getID().ToString();
-                    this.invoiceWorksheet.Cells[row, 3].Value = trans.getCustomer().getName();
+                    invoiceWorksheet.Cells[row, 2].Value = trans.customer.CustomerID.ToString();
+                    invoiceWorksheet.Cells[row, 3].Value = trans.customer.FullName;
                 }
-                this.invoiceWorksheet.Cells[row, 4].Value = trans.getStaff().getID();
-                this.invoiceWorksheet.Cells[row, 5].Value = trans.getStaff().getName();
-                this.invoiceWorksheet.Cells[row, 6].Value = trans.getProduct().getProductID();
-                this.invoiceWorksheet.Cells[row, 7].Value = trans.getProduct().getProductIDNumber();
-                this.invoiceWorksheet.Cells[row, 8].Value = trans.getProduct().getDescription();
-                this.invoiceWorksheet.Cells[row, 9].Value = trans.getProduct().getPrice();
+                invoiceWorksheet.Cells[row, 4].Value = trans.staff.StaffID;
+                invoiceWorksheet.Cells[row, 5].Value = trans.staff.FullName;
+
+                invoiceWorksheet.Cells[row, 6].Value = trans.product.ProductID;
+                invoiceWorksheet.Cells[row, 7].Value = trans.product.ProductIDNumber;
+                invoiceWorksheet.Cells[row, 8].Value = trans.product.Description;
+                invoiceWorksheet.Cells[row, 9].Value = trans.product.price;
 
                 // apply appropriate styling
                 if (row%2==0)
                 {
-                    this.invoiceWorksheet.Cells[row,1,row,9].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    this.invoiceWorksheet.Cells[row, 1, row, 9].Style.Fill.BackgroundColor.SetColor(dataColour1);
+                    invoiceWorksheet.Cells[row,1,row,9].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    invoiceWorksheet.Cells[row, 1, row, 9].Style.Fill.BackgroundColor.SetColor(dataColour1);
                 }
                 else
                 {
-                    this.invoiceWorksheet.Cells[row, 1, row, 9].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    this.invoiceWorksheet.Cells[row, 1, row, 9].Style.Fill.BackgroundColor.SetColor(dataColour2);
+                    invoiceWorksheet.Cells[row, 1, row, 9].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    invoiceWorksheet.Cells[row, 1, row, 9].Style.Fill.BackgroundColor.SetColor(dataColour2);
                 }
 
                 // next row
@@ -212,8 +213,8 @@ namespace POS.View
             }
 
             // protect worksheet
-            this.invoiceWorksheet.Protection.IsProtected = true;
-            this.invoiceWorksheet.Protection.AllowFormatColumns = true;
+            invoiceWorksheet.Protection.IsProtected = true;
+            invoiceWorksheet.Protection.AllowFormatColumns = true;
         }
 
         public override void save()

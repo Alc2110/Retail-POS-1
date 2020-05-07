@@ -164,7 +164,7 @@ namespace POS.View
 
         private void populateView(object sender, GetAllCustomersEventArgs args)
         {
-            List<Customer> customers = args.getList();
+            List<ICustomer> customers = args.getList().ToList();
 
             // tell the listView it is being updated
             listView_customers.BeginUpdate();
@@ -176,14 +176,14 @@ namespace POS.View
             foreach (Customer customer in customers)
             {
                 string[] itemArr = new string[8];
-                itemArr[0] = customer.getID().ToString();
-                itemArr[1] = customer.getName();
-                itemArr[2] = customer.getAddress();
-                itemArr[3] = customer.getPhoneNumber();
-                itemArr[4] = customer.getEmail();
-                itemArr[5] = customer.getCity();
-                itemArr[6] = customer.getState().ToString();
-                itemArr[7] = customer.getPostcode().ToString();
+                itemArr[0] = customer.CustomerID.ToString();
+                itemArr[1] = customer.FullName;
+                itemArr[2] = customer.Address;
+                itemArr[3] = customer.PhoneNumber;
+                itemArr[4] = customer.Email;
+                itemArr[5] = customer.City;
+                itemArr[6] = customer.state.ToString();
+                itemArr[7] = customer.Postcode.ToString();
                 ListViewItem item = new ListViewItem(itemArr);
                 listView_customers.Items.Add(item);
             }

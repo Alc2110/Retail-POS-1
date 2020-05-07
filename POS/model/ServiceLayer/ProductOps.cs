@@ -8,64 +8,65 @@ using Model.DataAccessLayer;
 
 namespace Model.ServiceLayer
 {
-    public class ProductOps
+    public class ProductOps : IProductOps
     {
-        public void addProduct(Product newProduct)
+        // data access layer dependency injection
+        public IProductDAO dataAccessObj { get; set; }
+        // default constructor
+        // this still depends on a concrete implementation.
+        // however, it is not as tightly-coupled a design as before
+        public ProductOps()
         {
-            // DAO
-            ProductDAO dao = new ProductDAO();
-            dao.addProduct(newProduct);
+            dataAccessObj = new ProductDAO();
+        }
+        // test constructor
+        public ProductOps(IProductDAO dataAccessObj)
+        {
+            this.dataAccessObj = dataAccessObj;
+        }
 
-            // fire the event
+        public void addProduct(IProduct newProduct)
+        {
+            dataAccessObj.addProduct(newProduct);
+
+            // fire the event to update the view
             getAllProducts();
         }
 
         public void deleteProduct(string idNumber)
         {
-            // DAO
-            ProductDAO dao = new ProductDAO();
-            dao.deleteProduct(idNumber);
+            dataAccessObj.deleteProduct(idNumber);
 
-            // fire the event
+            // fire the event to update the view
             getAllProducts();
         }
 
-        public void updateProduct(Product product)
+        public void updateProduct(IProduct product)
         {
-            // DAO
-            ProductDAO dao = new ProductDAO();
-            dao.updateProduct(product);
+            dataAccessObj.updateProduct(product);
 
-            // fire the event
+            // fire the event to update the view
             getAllProducts();
         }
 
-        public void importUpdateProduct(Product product)
+        public void importUpdateProduct(IProduct product)
         {
-            // DAO
-            ProductDAO dao = new ProductDAO();
-            dao.importUpdateProduct(product);
+            dataAccessObj.importUpdateProduct(product);
         }
 
-        public Product getProduct(string idNumber)
+        public IProduct getProduct(string idNumber)
         {
-            // DAO
-            // retrieve from database
-            ProductDAO dao = new ProductDAO();
-            return dao.getProduct(idNumber);
+            return dataAccessObj.getProduct(idNumber);
         }
 
-        public List<Product> getAllProducts()
+        public IEnumerable<IProduct> getAllProducts()
         {
-            // DAO
-            // retrieve from database
-            ProductDAO dao = new ProductDAO();
-            List<Product> products = (List<Product>)dao.getAllProducts();
+            IEnumerable<IProduct> products = dataAccessObj.getAllProducts();
 
-            // fire the event
+            // fire the event to update the view
             GetAllProducts(this, new GetAllProductsEventArgs(products));
 
-            return products;
+            return products;    
         }
 
         // event for getting all products
@@ -76,22 +77,31 @@ namespace Model.ServiceLayer
         }
     }
 
+    public interface IProductOps
+    {
+        void addProduct(IProduct newProduct);
+        void deleteProduct(string idNumber);
+        void updateProduct(IProduct product);
+        void importUpdateProduct(IProduct product);
+        IEnumerable<IProduct> getAllProducts();
+    }
+
     /// <summary>
     /// Event arguments class
     /// </summary>
     public class GetAllProductsEventArgs : EventArgs
     {
-        private List<Product> list;
+        private IEnumerable<IProduct> productList;
 
-        // ctor
-        public GetAllProductsEventArgs(List<Product> productList)
+        // constructor
+        public GetAllProductsEventArgs(IEnumerable<IProduct> productList)
         {
-            this.list = productList;
+            this.productList = productList;
         }
 
-        public List<Product> getList()
+        public IEnumerable<IProduct> getList()
         {
-            return this.list;
+            return productList;
         }
     }
 }

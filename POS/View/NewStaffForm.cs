@@ -77,6 +77,21 @@ namespace POS.View
                         string privelege = comboBox_privelege.Text;
                         Hasher hasher = new Hasher(fullName, password);
                         string passwordHash = hasher.computeHash();
+                        Model.ObjectModel.Staff newStaff = new Model.ObjectModel.Staff();
+                        newStaff.FullName = fullName;
+                        newStaff.PasswordHash = passwordHash;
+                        switch (privelege)
+                        {
+                            case "Admin":
+                                newStaff.privelege = Model.ObjectModel.Staff.Privelege.Admin;
+                                break;
+                            case "Normal":
+                                newStaff.privelege = Model.ObjectModel.Staff.Privelege.Normal;
+                                break;
+                            default:
+                                // shouldn't happen
+                                return;
+                        }
 
                         // log it
                         logger.Info("Adding staff record: ");
@@ -88,7 +103,7 @@ namespace POS.View
                         await Task.Run(() =>
                         {
                             // run this task in a separate thread
-                            controller.addStaff(fullName, passwordHash, privelege);
+                            controller.addStaff(newStaff);
                         });
                     }
                 }

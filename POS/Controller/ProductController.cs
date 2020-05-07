@@ -10,29 +10,34 @@ namespace Controller
 {
     public class ProductController
     {
-        // default ctor
+        public IProductOps service { get; set; }
+
+        // default constructor
         public ProductController()
-        { }
-
-        public void addProduct(string idNumber, string description, int quantity, float price)
         {
-            Product newProduct = new Product();
-            newProduct.setProductIDNumber(idNumber);
-            newProduct.setDescription(description);
-            newProduct.setQuantity(quantity);
-            newProduct.setPrice(price);
-
-            POS.Configuration.productOps.addProduct(newProduct);
+            service = POS.Configuration.productOps;
         }
 
-        public void updateProduct(Product toUpdate)
+        // test constructor
+        public ProductController(IProductOps service)
         {
-            POS.Configuration.productOps.updateProduct(toUpdate);
+            this.service = service;
+        }
+
+        public void addProduct(IProduct newProduct)
+        {
+            service.addProduct(newProduct);
+        }
+
+        // TODO: currently a redundant method. Deal with this.
+        public void updateProduct(IProduct toUpdate)
+        {
+            service.updateProduct(toUpdate);
         }
 
         public void deleteProduct(string idNumber)
         {
-            POS.Configuration.productOps.deleteProduct(idNumber);
+            service.deleteProduct(idNumber);
         }
     }
 }

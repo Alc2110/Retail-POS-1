@@ -4,78 +4,37 @@ using System.Collections.Generic;
 
 namespace Model.ObjectModel
 {
-    public class Transaction
+    public class Transaction : ITransaction
     {
-        // default ctor
+        // default constructor
         public Transaction()
         {
             Timestamp = null;
         }
 
-        // ctor
-        public Transaction(int TransactionID, string Timestamp, Customer customer, Staff staff, Product Product)
+        // constructor with parameters
+        public Transaction(int TransactionID, string Timestamp, ICustomer customer, IStaff staff, IProduct Product)
         {
             this.TransactionID = TransactionID;
             this.Timestamp = Timestamp;
             this.customer = customer;
             this.staff = staff;
-            this.Product = Product;
+            this.product = Product;
         }
 
-        private int TransactionID;
-        private string Timestamp;
-        private Customer customer;
-        private Staff staff;
-        private Product Product;
+        public int TransactionID { get; set; }
+        public string Timestamp { get; set; }
+        public ICustomer customer { get; set; }
+        public IStaff staff { get; set; }
+        public IProduct product { get; set; }
+    }
 
-        public int getTransactionID()
-        {
-            return TransactionID;
-        }
-
-        public void setTransactionID(int id)
-        {
-            this.TransactionID = id;
-        }
-
-        public string getTimestamp()
-        {
-            return Timestamp;
-        }
-
-        public void setTimestamp(string timestamp)
-        {
-            this.Timestamp = timestamp;
-        }
-
-        public void setCustomer(Customer customer)
-        {
-            this.customer = customer;
-        }
-
-        public Customer getCustomer()
-        {
-            return this.customer;
-        }
-
-        public void setStaff(Staff staff)
-        {
-            this.staff = staff;
-        }
-
-        public Staff getStaff()
-        {
-            return this.staff;
-        }
-
-        public void setProduct(Product product)
-        {
-            this.Product = product;
-        }
-
-        public Product getProduct()
-        {
-            return Product;
-        }
+    public interface ITransaction
+    {
+        int TransactionID { get; set; }
+        string Timestamp { get; set; }
+        ICustomer customer { get; set; }
+        IStaff staff { get; set; }
+        IProduct product { get; set; }
     }
 }

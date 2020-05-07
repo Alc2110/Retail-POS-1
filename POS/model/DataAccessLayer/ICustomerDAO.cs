@@ -9,9 +9,13 @@ namespace Model.DataAccessLayer
 {
     public interface ICustomerDAO
     {
-        List<Customer> getAllCustomers();
-        void deleteCustomer(Customer customer);
-        void addCustomer(Customer customer);
-        void updateCustomer(Customer customer);
+        string connString { get; set; }
+
+        IEnumerable<ICustomer> getAllCustomers();
+        ICustomer getCustomer(int id);
+        void deleteCustomer(int id);
+        void addCustomer(ICustomer customer);
+        void updateCustomer(ICustomer customer);
+        void importUpdateCustomer(ICustomer customer);
     }
 }

@@ -134,7 +134,7 @@ namespace POS.View
 
         private void populateView(object sender, GetAllProductsEventArgs args)
         {
-            List<Product> products = args.getList();
+            List<IProduct> products = args.getList().ToList();
 
             // tell the listView it is being updated
             listView_products.BeginUpdate();
@@ -149,10 +149,10 @@ namespace POS.View
             foreach (Product product in products)
             {
                 string[] itemArr = new string[4];
-                itemArr[0] = product.getProductIDNumber();
-                itemArr[1] = product.getDescription();
-                itemArr[2] = product.getQuantity().ToString();
-                itemArr[3] = product.getPrice().ToString();
+                itemArr[0] = product.ProductIDNumber;
+                itemArr[1] = product.Description;
+                itemArr[2] = product.Quantity.ToString();
+                itemArr[3] = product.price.ToString();
 
                 ListViewItem item = new ListViewItem(itemArr);
                 listView_products.Items.Add(item);

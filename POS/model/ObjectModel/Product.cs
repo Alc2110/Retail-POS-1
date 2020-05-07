@@ -2,14 +2,14 @@
 
 namespace Model.ObjectModel
 {
-    public class Product : IEquatable<Product>
+    public class Product : IProduct
     {
-        // default ctor
+        // default constructor
         public Product()
         {
         }
 
-        // ctor
+        // constructor with parameters
         public Product(long ProductID, string ProductIDNumber, string Description, int Quantity, float price)
         {
             this.ProductID = ProductID;
@@ -19,71 +19,19 @@ namespace Model.ObjectModel
             this.price = price;
         }
 
-        // equality comparer
-        public bool Equals(Product that)
-        {
-            if ((this.ProductIDNumber==that.getProductIDNumber()) && (this.Description==that.getDescription()))
-            {
-                return true;
-            }
+        public long ProductID { get; set; }
+        public string ProductIDNumber { get; set; }
+        public string Description { get; set; }
+        public int Quantity { get; set; }
+        public float price { get; set; }
+    }
 
-            return false;
-        }
-
-        private long ProductID;
-        private string ProductIDNumber;
-        private string Description;
-        private int Quantity;
-        private float price;
-
-        public void setProductID(long id)
-        {
-            this.ProductID = id;
-        }
-
-        public long getProductID()
-        {
-            return ProductID;
-        }
-
-        public void setProductIDNumber(string id)
-        {
-            this.ProductIDNumber = id;
-        }
-
-        public string getProductIDNumber()
-        {
-            return this.ProductIDNumber;
-        }
-
-        public void setQuantity(int quantity)
-        {
-            this.Quantity = quantity;
-        }
-
-        public int getQuantity()
-        {
-            return this.Quantity;
-        }
-
-        public void setPrice(float price)
-        {
-            this.price = price;
-        }
-
-        public float getPrice()
-        {
-            return price;
-        }
-
-        public void setDescription(string desc)
-        {
-            this.Description = desc;
-        }
-
-        public string getDescription()
-        {
-            return this.Description;
-        }
+    public interface IProduct
+    {
+        long ProductID { get; set; }
+        string ProductIDNumber { get; set; }
+        string Description { get; set; }
+        int Quantity { get; set; }
+        float price { get; set; }
     }
 }

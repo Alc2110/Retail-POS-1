@@ -4,83 +4,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model.ServiceLayer;
+using Model.ObjectModel;
 
 namespace Controller
 {
     public class StaffController
     {
-        // default ctor
+        public IStaffOps service { get; set; }
+
+        // default constructor
         public StaffController()
-        { }
-
-        public void addStaff(string FullName, string PasswordHash, string role)
         {
-            Model.ObjectModel.Staff toAdd = new Model.ObjectModel.Staff();
-            toAdd.setName(FullName);
-            toAdd.setPasswordHash(PasswordHash);
-            switch (role)
-            {
-                case "Admin":
-                    toAdd.setPrivelege(Model.ObjectModel.Staff.Privelege.Admin);
-                    break;
-                case "Normal":
-                    toAdd.setPrivelege(Model.ObjectModel.Staff.Privelege.Normal);
-                    break;
-                default:
-                    // shouldn't happen
-                    return;
-            }
+            service = POS.Configuration.staffOps;
+        }
 
-            POS.Configuration.staffOps.addStaff(toAdd);
+        // test constructor
+        public StaffController(IStaffOps service)
+        {
+            this.service = service;
+        }
+
+
+        public void addStaff(IStaff newStaff)
+        {
+            service.addStaff(newStaff);
         }
 
         public void deleteStaff(int id)
         {
-            POS.Configuration.staffOps.delete(id);
+            service.delete(id);
         }
-        
-        public void updateStaff(int id, string FullName, string PasswordHash, string role)
+ 
+        // TODO: redundant methods - deal with it
+        public void updateStaff(IStaff toUpdate)
         {
-            Model.ObjectModel.Staff toUpdate = new Model.ObjectModel.Staff();
-            toUpdate.setID(id);
-            toUpdate.setName(FullName);
-            toUpdate.setPasswordHash(PasswordHash);
-            switch (role)
-            {
-                case "Admin":
-                    toUpdate.setPrivelege(Model.ObjectModel.Staff.Privelege.Admin);
-                    break;
-                case "Normal":
-                    toUpdate.setPrivelege(Model.ObjectModel.Staff.Privelege.Normal);
-                    break;
-                default:
-                    // shouldn't happen
-                    return;
-            }
-
-            POS.Configuration.staffOps.updateStaff(toUpdate);
+            service.updateStaff(toUpdate);
         }
-
-        public void importUpdateStaff(int id, string FullName, string PasswordHash, string role)
+        public void importUpdateStaff(IStaff toUpdate)
         {
-            Model.ObjectModel.Staff toUpdate = new Model.ObjectModel.Staff();
-            toUpdate.setID(id);
-            toUpdate.setName(FullName);
-            toUpdate.setPasswordHash(PasswordHash);
-            switch (role)
-            {
-                case "Admin":
-                    toUpdate.setPrivelege(Model.ObjectModel.Staff.Privelege.Admin);
-                    break;
-                case "Normal":
-                    toUpdate.setPrivelege(Model.ObjectModel.Staff.Privelege.Normal);
-                    break;
-                default:
-                    // shouldn't happen
-                    return;
-            }
-
-            POS.Configuration.staffOps.importUpdateStaff(toUpdate);
+            service.importUpdateStaff(toUpdate);
         }
     }
 }

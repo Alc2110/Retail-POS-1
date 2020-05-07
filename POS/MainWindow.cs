@@ -185,7 +185,7 @@ namespace POS
                await Task.Run(() =>
                {
                    // ask the model for the product information
-                   retrievedProduct = POS.Configuration.productOps.getProduct(productID);
+                   retrievedProduct = (Product)(POS.Configuration.productOps.getProduct(productID));
                });
             }
             catch (Exception ex)
@@ -230,7 +230,7 @@ namespace POS
                     logger.Info("Item of this type is already in list");
 
                     // calculate cost of new items being added
-                    float productPrice = retrievedProduct.getPrice();
+                    float productPrice = retrievedProduct.price;
                     string sNumber = textBox_itemQuantity.Text;
                     int iNumber = Int32.Parse(sNumber);
 
@@ -262,16 +262,16 @@ namespace POS
 
                 // add it to the list
                 string[] itemArr = new string[5];
-                itemArr[0] = retrievedProduct.getProductIDNumber();
-                itemArr[1] = retrievedProduct.getDescription();
+                itemArr[0] = retrievedProduct.ProductIDNumber;
+                itemArr[1] = retrievedProduct.Description;
                 //itemArr[2] = "1";// quantity
                 string sQuantity = textBox_itemQuantity.Text;
                 int iQuantity = Int32.Parse(sQuantity);
                 //itemArr[2] = textBox_itemQuantity.Text;
                 itemArr[2] = sQuantity;
                 //itemArr[4] = retrievedProduct.getPrice().ToString();// total
-                itemArr[4] = (iQuantity * retrievedProduct.getPrice()).ToString();
-                itemArr[3] = retrievedProduct.getPrice().ToString();
+                itemArr[4] = (iQuantity * retrievedProduct.price).ToString();
+                itemArr[3] = retrievedProduct.price.ToString();
                 ListViewItem item = new ListViewItem(itemArr);
                 listView_sales.Items.Add(item);
 
@@ -433,7 +433,7 @@ namespace POS
                 // run this operation on a separate thread
                 await Task.Run(() =>
                 {
-                    retrievedCustomer = POS.Configuration.customerOps.getCustomer(customerAccNumber);
+                    retrievedCustomer = (Customer)POS.Configuration.customerOps.getCustomer(customerAccNumber);
                 });
             }
             catch (Exception ex)
@@ -465,14 +465,14 @@ namespace POS
             // found the customer
             logger.Info("Found customer record");
             button_findCustomer.Enabled = false;
-            textBox_customerName.Text = retrievedCustomer.getName();
-            textBox_customerPhone.Text = retrievedCustomer.getPhoneNumber();
-            textBox_customerEmail.Text = retrievedCustomer.getEmail();
-            textBox_customerAddress.Text = retrievedCustomer.getAddress();
-            textBox_customerCity.Text = retrievedCustomer.getCity();
-            textBox_customerPostCode.Text = retrievedCustomer.getPostcode().ToString();
+            textBox_customerName.Text = retrievedCustomer.FullName;
+            textBox_customerPhone.Text = retrievedCustomer.PhoneNumber;
+            textBox_customerEmail.Text = retrievedCustomer.Email;
+            textBox_customerAddress.Text = retrievedCustomer.Address;
+            textBox_customerCity.Text = retrievedCustomer.City;
+            textBox_customerPostCode.Text = retrievedCustomer.Postcode.ToString();
             
-            switch (retrievedCustomer.getState())
+            switch (retrievedCustomer.state)
             {
                 case Customer.States.ACT:
                     comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("ACT");
@@ -675,7 +675,7 @@ namespace POS
         }
 
         // "Checkout" button click event handler
-        private void button_checkout_Click(object sender, EventArgs e)
+        private async void button_checkout_Click(object sender, EventArgs e)
         {
             // create invoice object
             // implement Excel invoices for now
@@ -715,32 +715,35 @@ namespace POS
                         currTransaction = (staffID, customerID, saleItems);
                         try
                         {
-                            // create the transaction in the database
-                            transController.addTransaction(currTransaction);
-
-                            // retrieve the customer object for the invoice
-                            //invoice.customer = CustomerOps.getCustomer(customerID);
-                            CustomerOps customerOps = new CustomerOps();
-                            customerOps.getCustomer(customerID);
-
-                            // retrieve the staff object for the invoice
-                            invoice.salesperson = POS.Configuration.staffOps.getStaff(staffID);
-
-                            // create the transaction in the invoice
-                            // retrieve the list of products
-                            foreach (KeyValuePair<string, int> product in saleItems)
+                            await Task.Run(() =>
                             {
-                                Transaction trans = new Transaction();
-                                trans.setTimestamp(System.DateTime.Now.ToString("F")); // timestamp
-                                //trans.setCustomer(CustomerOps.getCustomer(customerID)); // customer 
-                                trans.setCustomer(customerOps.getCustomer(customerID));
-                                //trans.setStaff(StaffOps.getStaff(staffID)); // staff 
-                                trans.setStaff(POS.Configuration.staffOps.getStaff(staffID));
-                                //trans.setProduct(ProductOps.getProduct(product.Key)); // product 
-                                trans.setProduct(POS.Configuration.productOps.getProduct(product.Key));
+                                // create the transaction in the database
+                                transController.addTransaction(currTransaction);
 
-                                invoice.transactions.Add(trans);
-                            }
+                                // retrieve the customer object for the invoice
+                                //invoice.customer = CustomerOps.getCustomer(customerID);
+                                CustomerOps customerOps = new CustomerOps();
+                                customerOps.getCustomer(customerID);
+
+                                // retrieve the staff object for the invoice
+                                invoice.salesperson = (Staff)POS.Configuration.staffOps.getStaff(staffID);
+
+                                // create the transaction in the invoice
+                                // retrieve the list of products
+                                foreach (KeyValuePair<string, int> product in saleItems)
+                                {
+                                    Transaction trans = new Transaction();
+                                    trans.Timestamp = System.DateTime.Now.ToString("F"); // timestamp
+
+                                    trans.customer = customerOps.getCustomer(customerID);
+
+                                    trans.staff = (Staff)POS.Configuration.staffOps.getStaff(staffID);
+
+                                    trans.product = (Product)(POS.Configuration.productOps.getProduct(product.Key));
+
+                                    invoice.transactions.Add(trans);
+                                }
+                            });
                         }
                         catch (Exception ex)
                         {
@@ -772,19 +775,19 @@ namespace POS
                             Transaction newTransaction = new Transaction();
 
                             // retrieve the staff object for the invoice
-                            invoice.salesperson = POS.Configuration.staffOps.getStaff(staffID);
+                            invoice.salesperson = (Staff)POS.Configuration.staffOps.getStaff(staffID);
 
                             // create the transaction in the invoice
                             // retrieve the list of products
                             foreach (KeyValuePair<string, int> product in saleItems)
                             {
                                 Transaction trans = new Transaction();
-                                trans.setTimestamp(System.DateTime.Now.ToString("F")); // timestamp
-                                trans.setCustomer(null); // no customer data
-                                //trans.setStaff(StaffOps.getStaff(staffID)); // staff 
-                                trans.setStaff(POS.Configuration.staffOps.getStaff(staffID));
+                                trans.Timestamp = System.DateTime.Now.ToString("F"); // timestamp
+                                trans.customer=null; // no customer data
+                                 
+                                trans.staff = (Staff)POS.Configuration.staffOps.getStaff(staffID);
                                 //trans.setProduct(ProductOps.getProduct(product.Key)); // product
-                                trans.setProduct(POS.Configuration.productOps.getProduct(product.Key));
+                                trans.product = (Product)(POS.Configuration.productOps.getProduct(product.Key));
 
                                 invoice.transactions.Add(trans);
                             }
@@ -925,7 +928,7 @@ namespace POS
             {
                 // ask the model for the product information
                 //retrievedProduct = ProductOps.getProduct(productIDnumber);
-                retrievedProduct = POS.Configuration.productOps.getProduct(productIDnumber);
+                retrievedProduct = (Product)(POS.Configuration.productOps.getProduct(productIDnumber));
             }
             catch (Exception ex)
             {
@@ -955,8 +958,8 @@ namespace POS
             {
                 // at this point, it succeeded
                 // tell the user and the logger
-                MessageBox.Show("Product ID: " + productIDnumber + "\nDescription: " + retrievedProduct.getDescription() +
-                                "\nPrice: " + retrievedProduct.getPrice().ToString(), "Item Lookup", MessageBoxButtons.OK);
+                MessageBox.Show("Product ID: " + productIDnumber + "\nDescription: " + retrievedProduct.Description +
+                                "\nPrice: " + retrievedProduct.price.ToString(), "Item Lookup", MessageBoxButtons.OK);
                 logger.Info("Successfully retrieved product information");
 
             }

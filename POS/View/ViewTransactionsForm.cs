@@ -63,8 +63,6 @@ namespace POS.View
 
         private void populateView(object sender, GetAllTransactionsEventArgs args)
         {
-            List<Transaction> transactions = args.getList();
-
             // tell the listView it is being updated
             listView_transactions.BeginUpdate();
 
@@ -75,25 +73,24 @@ namespace POS.View
             }
 
             // populate it
-            foreach (Transaction transaction in transactions)
+            foreach (var transaction in args.getList())
             {
                 string[] itemArr = new string[9];
 
-                itemArr[0] = transaction.getTransactionID().ToString();
-                itemArr[1] = transaction.getTimestamp();
+                itemArr[0] = transaction.TransactionID.ToString();
+                itemArr[1] = transaction.Timestamp;
 
-                if (transaction.getCustomer() != null)
+                if (transaction.customer != null)
                 {
-                    itemArr[2] = transaction.getCustomer().getID().ToString();
-                    itemArr[3] = transaction.getCustomer().getName();
+                    itemArr[2] = transaction.customer.CustomerID.ToString();
+                    itemArr[3] = transaction.customer.FullName;
                 }
 
-                itemArr[4] = transaction.getStaff().getID().ToString();
-                itemArr[5] = transaction.getStaff().getName();
-
-                itemArr[6] = transaction.getProduct().getProductIDNumber();
-                itemArr[7] = transaction.getProduct().getDescription();
-                itemArr[8] = transaction.getProduct().getPrice().ToString();
+                itemArr[4] = transaction.staff.StaffID.ToString();
+                itemArr[5] = transaction.staff.FullName;
+                itemArr[6] = transaction.product.ProductIDNumber;
+                itemArr[7] = transaction.product.Description;
+                itemArr[8] = transaction.product.price.ToString();
                 
                 ListViewItem transactionItem = new ListViewItem(itemArr);
                 listView_transactions.Items.Add(transactionItem);

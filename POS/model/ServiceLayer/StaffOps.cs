@@ -8,59 +8,58 @@ using Model.ObjectModel;
 
 namespace Model.ServiceLayer
 {
-    public class StaffOps
+    public class StaffOps : IStaffOps
     {
-        public void addStaff(Staff newStaff)
+        // data access dependency injection
+        public IStaffDAO dataAccessObj { get; set; }
+        // default constructor
+        public StaffOps()
         {
-            // DAO
-            StaffDAO dao = new StaffDAO();
-            dao.addStaff(newStaff);
+            dataAccessObj = new StaffDAO();
+        }
+        // test constructor
+        public StaffOps(IStaffDAO dataAccessObj)
+        {
+            this.dataAccessObj = dataAccessObj;
+        }
 
-            // fire the event
+        public void addStaff(IStaff newStaff)
+        {
+            dataAccessObj.addStaff(newStaff);
+
+            // fire the event to update the view
             getAllStaff();
         }
 
-        public Staff getStaff(int id)
+        public IStaff getStaff(int id)
         {
-            // DAO
-            // retrieve from database
-            StaffDAO dao = new StaffDAO();
-            return dao.getStaff(id);
+            return dataAccessObj.getStaff(id);
         }
 
-        public void updateStaff(Staff staff)
+        public void updateStaff(IStaff staff)
         {
-            // DAO
-            StaffDAO dao = new StaffDAO();
-            dao.updateStaff(staff);
+            dataAccessObj.updateStaff(staff);
 
-            // fire the event
+            // fire the event to update the view
             getAllStaff();
         }
 
-        public void importUpdateStaff(Staff staff)
+        public void importUpdateStaff(IStaff staff)
         {
-            // DAO
-            StaffDAO dao = new StaffDAO();
-            dao.importUpdateStaff(staff);
+            dataAccessObj.importUpdateStaff(staff);
         }
 
         public void delete(int id)
         {
-            // DAO
-            StaffDAO dao = new StaffDAO();
-            dao.deleteStaff(id);
+            dataAccessObj.deleteStaff(id);
 
-            // fire the event
+            // fire the event to update the view
             getAllStaff();
         }
 
-        public List<Staff> getAllStaff()
+        public IEnumerable<IStaff> getAllStaff()
         {
-            // DAO
-            // retrieve from database
-            StaffDAO dao = new StaffDAO();
-            List<Staff> staffList = dao.getAllStaff();
+            IEnumerable<IStaff> staffList = dataAccessObj.getAllStaff();
 
             // fire the event
             GetAllStaff(this, new GetAllStaffEventArgs(staffList));
@@ -76,20 +75,30 @@ namespace Model.ServiceLayer
         }
     }
 
+    public interface IStaffOps
+    {
+        IStaff getStaff(int id);
+        void addStaff(IStaff newStaff);
+        void updateStaff(IStaff staff);
+        void importUpdateStaff(IStaff staff);
+        void delete(int id);
+        IEnumerable<IStaff> getAllStaff();
+    }
+
     /// <summary>
     /// Event arguments class
     /// </summary>
     public class GetAllStaffEventArgs : EventArgs
     {
-        private List<Staff> staffList;
+        private IEnumerable<IStaff> staffList;
 
-        // ctor
-        public GetAllStaffEventArgs(List<Staff> staffList)
+        // constructor
+        public GetAllStaffEventArgs(IEnumerable<IStaff> staffList)
         {
             this.staffList = staffList;
         }
 
-        public List<Staff> getList()
+        public IEnumerable<IStaff> getList()
         {
             return staffList;
         }

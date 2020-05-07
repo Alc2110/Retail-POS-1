@@ -10,28 +10,39 @@ namespace Controller
 {
     public class CustomerController
     {
-        // default ctor
-        public CustomerController()
-        { }
+        public ICustomerOps service { get; set; }
 
-        public void addCustomer(string FullName, string streetAddress, string phoneNumber, string Email, string City, string state, int postcode)
+        // default constructor
+        public CustomerController()
         {
-            POS.Configuration.customerOps.addCustomer(FullName, streetAddress, phoneNumber, Email, City, state, postcode);
+            service = POS.Configuration.customerOps;
+        }
+
+        // test constructor
+        public CustomerController(ICustomerOps service)
+        {
+            this.service = service;
+        }
+
+        public void addCustomer(ICustomer newcustomer)
+        {
+            service.addCustomer(newcustomer);
         }
 
         public void deleteCustomer(int id)
         {
-            POS.Configuration.customerOps.deleteCustomer(id);
+            service.deleteCustomer(id);
         }
 
-        public void updateCustomer(Customer toUpdate)
+        public void updateCustomer(ICustomer toUpdate)
         {
-            POS.Configuration.customerOps.updateCustomer(toUpdate);
+            service.updateCustomer(toUpdate);
         }
 
-        public void importUpdateCustomer(Customer toUpdate)
+        // TODO: redundant method. Deal with this.
+        public void importUpdateCustomer(ICustomer toUpdate)
         {
-            POS.Configuration.customerOps.importUpdateCustomer(toUpdate);
+            service.importUpdateCustomer(toUpdate);
         }
     }
 }

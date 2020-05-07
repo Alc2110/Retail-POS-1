@@ -11,21 +11,38 @@ using System.Diagnostics;
 
 namespace Model.DataAccessLayer
 {
+    // this class might be faked for testing other classes, but won't be tested itself
     public class CustomerDAO : ICustomerDAO
-    { 
+    {
+        // connection string
+        public string connString { get; set; }
+
+        // default constructor
+        // loads the connection string
+        public CustomerDAO()
+        {
+            this.connString = Configuration.CONNECTION_STRING;
+        }
+
+        // constructor with parameter
+        public CustomerDAO(string connString)
+        {
+            this.connString = connString;
+        }
+
         /// <summary>
         /// Retrieve a customer record from the database.
         /// </summary>
         /// <param name="id">Customer id.</param>
         /// <returns>Customer object</returns>
-        public Customer getCustomer(int id)
+        public ICustomer getCustomer(int id)
         {
-            Customer customer = new Customer();
+            ICustomer customer = new Customer();
 
             string queryGetCustomer = "SELECT * From Customers " +
                                       "WHERE CustomerID = @id;";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 // define the command object
                 SqlCommand cmd = new SqlCommand(queryGetCustomer, conn);
@@ -48,41 +65,41 @@ namespace Model.DataAccessLayer
                     // results exist
                     while (reader.Read())
                     {
-                        customer.setID(reader.GetInt32(0));
-                        customer.setName(reader.GetString(1));
-                        customer.setAddress(reader.GetString(2));
-                        customer.setPhoneNumber(reader.GetString(3));
-                        customer.setEmail(reader.GetString(4));
-                        customer.setCity(reader.GetString(5));
+                        customer.CustomerID = reader.GetInt32(0);
+                        customer.FullName = reader.GetString(1);
+                        customer.Address = reader.GetString(2);
+                        customer.PhoneNumber = reader.GetString(3);
+                        customer.Email = reader.GetString(4);
+                        customer.City = reader.GetString(5);
 
                         switch (reader.GetString(6))
                         {
                             case "NSW":
-                                customer.setState(Customer.States.NSW);
+                                customer.state = Customer.States.NSW;
                                 break;
                             case "Qld":
-                                customer.setState(Customer.States.Qld);
+                                customer.state = Customer.States.Qld;
                                 break;
                             case "Tas":
-                                customer.setState(Customer.States.Tas);
+                                customer.state = Customer.States.Tas;
                                 break;
                             case "ACT":
-                                customer.setState(Customer.States.ACT);
+                                customer.state = Customer.States.ACT;
                                 break;
                             case "Vic":
-                                customer.setState(Customer.States.Vic);
+                                customer.state = Customer.States.Vic;
                                 break;
                             case "SA":
-                                customer.setState(Customer.States.SA);
+                                customer.state = Customer.States.SA;
                                 break;
                             case "WA":
-                                customer.setState(Customer.States.WA);
+                                customer.state = Customer.States.WA;
                                 break;
                             case "NT":
-                                customer.setState(Customer.States.NT);
+                                customer.state = Customer.States.NT;
                                 break;
                             case "Other":
-                                customer.setState(Customer.States.Other);
+                                customer.state = Customer.States.Other;
                                 break;
                             default:
                                 // this shouldn't happen
@@ -90,7 +107,7 @@ namespace Model.DataAccessLayer
                                 throw new Exception("Invalid data in database");
                         }
 
-                        customer.setPostcode(reader.GetInt32(7));
+                        customer.Postcode = reader.GetInt32(7);
                     }
                 }
                 else
@@ -107,97 +124,91 @@ namespace Model.DataAccessLayer
         /// Retrieves a list of all customer records in the database.
         /// </summary>
         /// <returns>Task List of customer objects.</returns>
-        public List<Customer> getAllCustomers()
+        public IEnumerable<ICustomer> getAllCustomers()
         {
-            List<Customer> customers = new List<Customer>();
-
             string queryGetAllCustomers = "SELECT * From Customers;";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 SqlCommand cmd = new SqlCommand(queryGetAllCustomers, conn);
 
-   
-                    // try a connection
-                    conn.Open();
-
+                // try a connection
+                conn.Open();
 
                 // execute the query
                 SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                if (reader.HasRows)
                 {
-                    Customer customer = new Customer();
-                    customer.setID(reader.GetInt32(0));
-                    customer.setName(reader.GetString(1));
-                    customer.setAddress(reader.GetString(2));
-                    customer.setPhoneNumber(reader.GetString(3));
-                    customer.setEmail(reader.GetString(4));
-                    customer.setCity(reader.GetString(5));
-
-                    switch (reader.GetString(6))
+                    while (reader.Read())
                     {
-                        case "NSW":
-                            customer.setState(Customer.States.NSW);
-                            break;
-                        case "Qld":
-                            customer.setState(Customer.States.Qld);
-                            break;
-                        case "Tas":
-                            customer.setState(Customer.States.Tas);
-                            break;
-                        case "ACT":
-                            customer.setState(Customer.States.ACT);
-                            break;
-                        case "Vic":
-                            customer.setState(Customer.States.Vic);
-                            break;
-                        case "SA":
-                            customer.setState(Customer.States.SA);
-                            break;
-                        case "WA":
-                            customer.setState(Customer.States.WA);
-                            break;
-                        case "NT":
-                            customer.setState(Customer.States.NT);
-                            break;
-                        case "Other":
-                            customer.setState(Customer.States.Other);
-                            break;
-                        default:
-                            // this shouldn't happen
-                            throw new Exception("Invalid data in database");
-                    }
-                    customer.setPostcode(reader.GetInt32(7));
+                        ICustomer customer = new Customer();
+                        customer.CustomerID = reader.GetInt32(0);
+                        customer.FullName = reader.GetString(1);
+                        customer.Address = reader.GetString(2);
+                        customer.PhoneNumber = reader.GetString(3);
+                        customer.Email = reader.GetString(4);
+                        customer.City = reader.GetString(5);
 
-                    customers.Add(customer);
+                        switch (reader.GetString(6))
+                        {
+                            case "NSW":
+                                customer.state = Customer.States.NSW;
+                                break;
+                            case "Qld":
+                                customer.state = Customer.States.Qld;
+                                break;
+                            case "Tas":
+                                customer.state = Customer.States.Tas;
+                                break;
+                            case "ACT":
+                                customer.state = Customer.States.ACT;
+                                break;
+                            case "Vic":
+                                customer.state = Customer.States.Vic;
+                                break;
+                            case "SA":
+                                customer.state = Customer.States.SA;
+                                break;
+                            case "WA":
+                                customer.state = Customer.States.WA;
+                                break;
+                            case "NT":
+                                customer.state = Customer.States.NT;
+                                break;
+                            case "Other":
+                                customer.state = Customer.States.Other;
+                                break;
+                            default:
+                                // this shouldn't happen
+                                throw new Exception("Invalid data in database");
+                        }
+                        customer.Postcode = reader.GetInt32(7);
+
+                        yield return customer;
+                    }
                 }
             }
-
-            return customers;
         }
 
-        // TODO: change this to require an ID only
         /// <summary>
         /// Delete a customer record from the database.
         /// </summary>
         /// <param name="customer">Customer object</param>
-        public void deleteCustomer(Customer customer)
+        public void deleteCustomer(int id)
         {
             // CustomerID in the database is the PK
-            int id = customer.getID();
             // TODO: parameterise this!
             string queryDeleteCustomer = "DELETE FROM Customers WHERE CustomerID = " + id + ";";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 SqlCommand cmd = new SqlCommand(queryDeleteCustomer, conn);
 
-             
-                    // try a connection
-                    conn.Open();
+                // try a connection
+                conn.Open();
 
-                    // execute the query
-                    cmd.ExecuteNonQuery();
+                // execute the query
+                cmd.ExecuteNonQuery();
             }
             
             return;
@@ -207,117 +218,50 @@ namespace Model.DataAccessLayer
         /// Add a customer record to the database.
         /// </summary>
         /// <param name="customer">Customer object.</param>
-        public void addCustomer(Customer customer)
+        public void addCustomer(ICustomer customer)
         {
             // CustomerID in the database is PK and AI
             string queryAddCustomer = "INSERT INTO Customers (FullName, StreetAddress, PhoneNumber, Email, City, State_, Postcode) " +
                                       "VALUES (@name, @address, @number, @email, @city, @state, @postcode);";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 SqlCommand cmd = new SqlCommand(queryAddCustomer, conn);
 
                 // parameterise
                 SqlParameter nameParam = new SqlParameter();
                 nameParam.ParameterName = "@name";
-                nameParam.Value = customer.getName();
+                nameParam.Value = customer.FullName;
                 cmd.Parameters.Add(nameParam);
 
                 SqlParameter addressParam = new SqlParameter();
                 addressParam.ParameterName = "@address";
-                addressParam.Value = customer.getAddress();
+                addressParam.Value = customer.Address;
                 cmd.Parameters.Add(addressParam);
 
                 SqlParameter numberParam = new SqlParameter();
                 numberParam.ParameterName = "@number";
-                numberParam.Value = customer.getPhoneNumber();
+                numberParam.Value = customer.PhoneNumber;
                 cmd.Parameters.Add(numberParam);
 
                 SqlParameter emailParam = new SqlParameter();
                 emailParam.ParameterName = "@email";
-                emailParam.Value = customer.getEmail();
+                emailParam.Value = customer.Email;
                 cmd.Parameters.Add(emailParam);
 
                 SqlParameter cityParam = new SqlParameter();
                 cityParam.ParameterName = "@city";
-                cityParam.Value = customer.getCity();
+                cityParam.Value = customer.City;
                 cmd.Parameters.Add(cityParam);
 
                 SqlParameter stateParam = new SqlParameter();
                 stateParam.ParameterName = "@state";
-                stateParam.Value = customer.getState().ToString();
+                stateParam.Value = customer.state.ToString();
                 cmd.Parameters.Add(stateParam);
 
                 SqlParameter postcodeParam = new SqlParameter();
                 postcodeParam.ParameterName = "@postcode";
-                postcodeParam.Value = customer.getPostcode();
-                cmd.Parameters.Add(postcodeParam);
-
-               
-                    // try a connection
-                    conn.Open();
-
-                    // execute the query
-                    cmd.ExecuteNonQuery();
-               
-            }
-        }
-
-        // this works
-        /// <summary>
-        /// Update a customer record in the database.
-        /// </summary>
-        /// <param name="customer"></param>
-        public void updateCustomer(Customer customer)
-        {
-            // CustomerID in the database is PK and AI
-            string queryUpdateCustomer = "UPDATE Customers " +
-                                         "SET FullName = @name, StreetAddress = @address, PhoneNumber = @number, Email = @email, City = @city, State_ = @state, Postcode = @Postcode " +
-                                         "WHERE CustomerID = @id;";
-
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
-            {
-                SqlCommand cmd = new SqlCommand(queryUpdateCustomer, conn);
-
-                // parameterise
-                SqlParameter idParam = new SqlParameter();
-                idParam.ParameterName = "@id";
-                idParam.Value = customer.getID();
-                cmd.Parameters.Add(idParam);
-
-                SqlParameter nameParam = new SqlParameter();
-                nameParam.ParameterName = "@name";
-                nameParam.Value = customer.getName();
-                cmd.Parameters.Add(nameParam);
-
-                SqlParameter addressParam = new SqlParameter();
-                addressParam.ParameterName = "@address";
-                addressParam.Value = customer.getAddress();
-                cmd.Parameters.Add(addressParam);
-
-                SqlParameter numberParam = new SqlParameter();
-                numberParam.ParameterName = "@number";
-                numberParam.Value = customer.getPhoneNumber();
-                cmd.Parameters.Add(numberParam);
-
-                SqlParameter emailParam = new SqlParameter();
-                emailParam.ParameterName = "@email";
-                emailParam.Value = customer.getEmail();
-                cmd.Parameters.Add(emailParam);
-
-                SqlParameter cityParam = new SqlParameter();
-                cityParam.ParameterName = "@city";
-                cityParam.Value = customer.getCity();
-                cmd.Parameters.Add(cityParam);
-
-                SqlParameter stateParam = new SqlParameter();
-                stateParam.ParameterName = "@state";
-                stateParam.Value = customer.getState().ToString();
-                cmd.Parameters.Add(stateParam);
-
-                SqlParameter postcodeParam = new SqlParameter();
-                postcodeParam.ParameterName = "@postcode";
-                postcodeParam.Value = customer.getPostcode();
+                postcodeParam.Value = customer.Postcode;
                 cmd.Parameters.Add(postcodeParam);
 
                 // try a connection
@@ -328,9 +272,78 @@ namespace Model.DataAccessLayer
             }
         }
 
-        public void importUpdateCustomer(Customer customer)
+        // this works
+        /// <summary>
+        /// Update a customer record in the database.
+        /// </summary>
+        /// <param name="customer"></param>
+        public void updateCustomer(ICustomer customer)
         {
-            if (getCustomer(customer.getID()) == null)
+            // CustomerID in the database is PK and AI
+            string queryUpdateCustomer = "UPDATE Customers " +
+                                         "SET FullName = @name, StreetAddress = @address, PhoneNumber = @number, Email = @email, City = @city, State_ = @state, Postcode = @Postcode " +
+                                         "WHERE CustomerID = @id;";
+
+            using (SqlConnection conn = new SqlConnection(this.connString))
+            {
+                SqlCommand cmd = new SqlCommand(queryUpdateCustomer, conn);
+
+                // parameterise
+                SqlParameter idParam = new SqlParameter();
+                idParam.ParameterName = "@id";
+                idParam.Value = customer.CustomerID;
+                cmd.Parameters.Add(idParam);
+
+                SqlParameter nameParam = new SqlParameter();
+                nameParam.ParameterName = "@name";
+                nameParam.Value = customer.FullName;
+                cmd.Parameters.Add(nameParam);
+
+                SqlParameter addressParam = new SqlParameter();
+                addressParam.ParameterName = "@address";
+                addressParam.Value = customer.Address;
+                cmd.Parameters.Add(addressParam);
+
+                SqlParameter numberParam = new SqlParameter();
+                numberParam.ParameterName = "@number";
+                numberParam.Value = customer.PhoneNumber;
+                cmd.Parameters.Add(numberParam);
+
+                SqlParameter emailParam = new SqlParameter();
+                emailParam.ParameterName = "@email";
+                emailParam.Value = customer.Email;
+                cmd.Parameters.Add(emailParam);
+
+                SqlParameter cityParam = new SqlParameter();
+                cityParam.ParameterName = "@city";
+                cityParam.Value = customer.City;
+                cmd.Parameters.Add(cityParam);
+
+                SqlParameter stateParam = new SqlParameter();
+                stateParam.ParameterName = "@state";
+                stateParam.Value = customer.state.ToString();
+                cmd.Parameters.Add(stateParam);
+
+                SqlParameter postcodeParam = new SqlParameter();
+                postcodeParam.ParameterName = "@postcode";
+                postcodeParam.Value = customer.Postcode.ToString();
+                cmd.Parameters.Add(postcodeParam);
+
+                // try a connection
+                conn.Open();
+
+                // execute the query
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Performs the import/update operation.
+        /// </summary>
+        /// <param name="customer">Customer interface</param>
+        public void importUpdateCustomer(ICustomer customer)
+        {
+            if (getCustomer(customer.CustomerID) == null)
             {
                 addCustomer(customer);
             }

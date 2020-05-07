@@ -202,7 +202,7 @@ namespace POS.View
 
     public class CustomerSpreadsheetExport : SpreadsheetExport
     {
-        private List<Customer> customerList;
+        private List<ICustomer> customerList;
 
         // get an instance of the logger for this class
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -214,13 +214,13 @@ namespace POS.View
         public CustomerSpreadsheetExport(string exportType) : base(exportType)
         {
             this.headers = new string[] { "Customer ID", "Full name", "Address", "Phone number", "Email", "City", "State", "Postcode" };
-            customerList = new List<Customer>();
+            customerList = new List<ICustomer>();
         }
 
         // event handler for model events
         private void loadDataEventHandler(object sender, GetAllCustomersEventArgs args)
         {
-            this.customerList = args.getList();
+            this.customerList = args.getList().ToList();
         }
 
         // fetch the data from the database and import it to this class
@@ -252,15 +252,15 @@ namespace POS.View
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
             for (int i = 0; i < this.customerList.Count; i++)
             {
-                Customer currCustomer = this.customerList[i];
-                this.worksheet.Cells[row, 1].Value = currCustomer.getID().ToString();
-                this.worksheet.Cells[row, 2].Value = currCustomer.getName();
-                this.worksheet.Cells[row, 3].Value = currCustomer.getAddress();
-                this.worksheet.Cells[row, 4].Value = currCustomer.getPhoneNumber();
-                this.worksheet.Cells[row, 5].Value = currCustomer.getEmail();
-                this.worksheet.Cells[row, 6].Value = currCustomer.getCity();
-                this.worksheet.Cells[row, 7].Value = currCustomer.getState().ToString();
-                this.worksheet.Cells[row, 8].Value = currCustomer.getPostcode().ToString();
+                Customer currCustomer = (Customer)this.customerList[i];
+                worksheet.Cells[row, 1].Value = currCustomer.CustomerID.ToString();
+                worksheet.Cells[row, 2].Value = currCustomer.FullName;
+                worksheet.Cells[row, 3].Value = currCustomer.Address;
+                worksheet.Cells[row, 4].Value = currCustomer.PhoneNumber;
+                worksheet.Cells[row, 5].Value = currCustomer.Email;
+                worksheet.Cells[row, 6].Value = currCustomer.City;
+                worksheet.Cells[row, 7].Value = currCustomer.state.ToString();
+                worksheet.Cells[row, 8].Value = currCustomer.Postcode.ToString();
                 applyRightThickBorders(this.worksheet.Cells[row, 8]);
                 // even and odd rows have alternating colours
                 if (row % 2 == 0)
@@ -294,7 +294,7 @@ namespace POS.View
 
     public class StaffSpreadsheetExport : SpreadsheetExport
     {
-        private List<Staff> staffList;
+        private List<IStaff> staffList;
 
         // get an instance of the logger for this class
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -305,14 +305,14 @@ namespace POS.View
         // ctor
         public StaffSpreadsheetExport(string exportType) : base(exportType)
         {
-            this.headers = new string[] { "Staff ID", "Full name", "Password hash", "Priveleges" };
-            this.staffList = new List<Staff>();
+            headers = new string[] { "Staff ID", "Full name", "Password hash", "Priveleges" };
+            staffList = new List<IStaff>();
         }
 
         // event handler for model events
         private void loadDataEventHandler(object sender, GetAllStaffEventArgs args)
         {
-            this.staffList = args.getList();
+            staffList = args.getList().ToList();
         }
 
         // fetch the data from the database and import it to this class
@@ -344,12 +344,12 @@ namespace POS.View
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
             for (int i = 0; i < this.staffList.Count; i++)
             {
-                Staff staff = this.staffList[i];
-                this.worksheet.Cells[row, 1].Value = staff.getID().ToString();
+                Staff staff = (Staff)staffList[i];
+                worksheet.Cells[row, 1].Value = staff.StaffID.ToString();
                 //this.worksheet.Cells[row, 1].Style.Numberformat.Format = "0"; 
-                this.worksheet.Cells[row, 2].Value = staff.getName();
-                this.worksheet.Cells[row, 3].Value = staff.getPasswordHash();
-                this.worksheet.Cells[row, 4].Value = staff.getPrivelege().ToString();
+                worksheet.Cells[row, 2].Value = staff.FullName;
+                worksheet.Cells[row, 3].Value = staff.PasswordHash;
+                worksheet.Cells[row, 4].Value = staff.privelege.ToString();
                 applyRightThickBorders(this.worksheet.Cells[row, 4]);
                 // even and odd rows have alternating colours
                 if (row % 2 == 0)
@@ -384,7 +384,7 @@ namespace POS.View
 
     public class ProductSpreadsheetExport : SpreadsheetExport
     {
-        private List<Product> productList;
+        private List<IProduct> productList;
 
         // get an instance of the logger for this class
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -395,14 +395,14 @@ namespace POS.View
         // ctor
         public ProductSpreadsheetExport(string exportType) : base(exportType)
         {
-            this.headers = new string[] { "Product ID", "Product number", "Description", "Quantity available", "Price" };
-            this.productList = new List<Product>();
+            headers = new string[] { "Product ID", "Product number", "Description", "Quantity available", "Price" };
+            productList = new List<IProduct>();
         }
 
         // event handler for model events
         private void loadDataEventHandler(object sender, GetAllProductsEventArgs args)
         {
-            this.productList = args.getList();
+            productList = args.getList().ToList();
         }
 
         // fetch the data from the database and import it to this class
@@ -434,12 +434,13 @@ namespace POS.View
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
             for (int i = 0; i < this.productList.Count; i++)
             {
-                Product product = this.productList[i];
-                this.worksheet.Cells[row, 1].Value = product.getProductID().ToString();
-                this.worksheet.Cells[row, 2].Value = product.getProductIDNumber();
-                this.worksheet.Cells[row, 3].Value = product.getDescription();
-                this.worksheet.Cells[row, 4].Value = product.getQuantity();
-                this.worksheet.Cells[row, 5].Value = product.getPrice().ToString();
+                Product product = (Product)this.productList[i];
+                worksheet.Cells[row, 1].Value = product.ProductID.ToString();
+                worksheet.Cells[row, 2].Value = product.ProductIDNumber;
+                worksheet.Cells[row, 3].Value = product.Description;
+                worksheet.Cells[row, 4].Value = product.Quantity;
+                worksheet.Cells[row, 5].Value = product.price.ToString();
+
                 applyRightThickBorders(this.worksheet.Cells[row, 5]);
                 // even and odd rows have alternating colours
                 if (row % 2 == 0)
@@ -473,7 +474,7 @@ namespace POS.View
 
     public class TransactionSpreadsheetExport : SpreadsheetExport
     {
-        public List<Transaction> transactionList;
+        public List<ITransaction> transactionList;
 
         // get an instance of the logger for this class
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -487,13 +488,13 @@ namespace POS.View
             // TODO: add remaining fields
             this.headers = new string[] { "Transaction ID", "Timestamp", "Customer ID", "Customer name", "Salesperson ID", "Salesperson name",
                                           "Product ID", "Product number", "Product description", "Product price" };
-            this.transactionList = new List<Transaction>();
+            this.transactionList = new List<ITransaction>();
         }
 
         // event handler for model events
         private void loadDataEventHandler(object sender, GetAllTransactionsEventArgs args)
         {
-            this.transactionList = args.getList();
+            this.transactionList = args.getList().ToList();
         }
 
         // fetch the data from the database and import it to this class
@@ -525,26 +526,27 @@ namespace POS.View
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
             for (int i = 0; i < this.transactionList.Count; i++)
             {
-                Transaction transaction = this.transactionList[i];
+                Transaction transaction = (Transaction)this.transactionList[i];
                 // transaction data
-                this.worksheet.Cells[row, 1].Value = transaction.getTransactionID();
-                this.worksheet.Cells[row, 2].Value = transaction.getTimestamp();
+                worksheet.Cells[row, 1].Value = transaction.TransactionID;
+                worksheet.Cells[row, 2].Value = transaction.Timestamp;
                 // customer data
-                if (transaction.getCustomer() != null)
+                if (transaction.customer != null)
                 {
-                    this.worksheet.Cells[row, 3].Value = transaction.getCustomer().getID().ToString();
-                    this.worksheet.Cells[row, 4].Value = transaction.getCustomer().getName();
+                    worksheet.Cells[row, 3].Value = transaction.customer.CustomerID.ToString();
+                    worksheet.Cells[row, 4].Value = transaction.customer.FullName;
                 }
                 // TODO: add remaining fields
                 // staff data
-                this.worksheet.Cells[row, 5].Value = transaction.getStaff().getID().ToString();
-                this.worksheet.Cells[row, 6].Value = transaction.getStaff().getName();
+                worksheet.Cells[row, 5].Value = transaction.staff.StaffID.ToString();
+                worksheet.Cells[row, 6].Value = transaction.staff.FullName;
                 // TODO: add remaining fields
                 // product data
-                this.worksheet.Cells[row, 7].Value = transaction.getProduct().getProductID();
-                this.worksheet.Cells[row, 8].Value = transaction.getProduct().getProductIDNumber();
-                this.worksheet.Cells[row, 9].Value = transaction.getProduct().getDescription();
-                this.worksheet.Cells[row, 10].Value = transaction.getProduct().getPrice().ToString();
+                worksheet.Cells[row, 7].Value = transaction.product.ProductID;
+                worksheet.Cells[row, 8].Value = transaction.product.ProductIDNumber;
+                worksheet.Cells[row, 9].Value = transaction.product.Description;
+                worksheet.Cells[row, 10].Value = transaction.product.price.ToString();
+
                 applyRightThickBorders(this.worksheet.Cells[row, 10]);
                 // even and odd rows have alternating colours
                 if (row % 2 == 0)

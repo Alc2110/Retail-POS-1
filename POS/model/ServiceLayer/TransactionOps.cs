@@ -10,24 +10,31 @@ namespace Model.ServiceLayer
 {
     public class TransactionOps
     {
+        // data access layer dependency injection
+        public ITransactionDAO dataAccessObj { get; set; }
+        // default constructor
+        // this still depends on a concrete implementation.
+        // however, it is not as tightly-coupled a design as before
+        public TransactionOps()
+        {
+            dataAccessObj = new TransactionDAO();
+        }
+        // test constructor
+
+        // this is shit
         public void addTransaction(ValueTuple<int,int,Dictionary<string,int>> items)
         {
-            // DAO
-            TransactionDAO dao = new TransactionDAO();
-            dao.addTransaction(items);
+            dataAccessObj.addTransaction(items);
 
-            // fire the event
+            // fire the event to update the view
             getAllTransactions();
         }
 
-        public List<Transaction> getAllTransactions()
+        public IEnumerable<ITransaction> getAllTransactions()
         {
-            // DAO
-            // retrieve from database
-            TransactionDAO dao = new TransactionDAO();
-            List<Transaction> transactionsList = dao.getAllTransactions();
+            IEnumerable<ITransaction> transactionsList = dataAccessObj.getAllTransactions();
 
-            // fire the event
+            // fire the event to update the view
             GetAllTransactions(this, new GetAllTransactionsEventArgs(transactionsList));
 
             return transactionsList;
@@ -46,17 +53,17 @@ namespace Model.ServiceLayer
     /// </summary>
     public class GetAllTransactionsEventArgs : EventArgs
     {
-        private List<Transaction> list;
+        private IEnumerable<ITransaction> list;
 
         // ctor
-        public GetAllTransactionsEventArgs(List<Transaction> list)
+        public GetAllTransactionsEventArgs(IEnumerable<ITransaction> list)
         {
             this.list = list;
         }
 
-        public List<Transaction> getList()
+        public IEnumerable<ITransaction> getList()
         {
-            return this.list;
+            return list;
         }
     }
 }

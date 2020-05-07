@@ -10,60 +10,79 @@ using System.Diagnostics;
 
 namespace Model.DataAccessLayer
 {
+    // this class might be faked for testing other classes, but won't be tested itself
     public class ProductDAO : IProductDAO
     {
+        // connection string
+        public string connString { get; set; }
+
+        // default constructor
+        // loads the connection string
+        public ProductDAO()
+        {
+            this.connString = Configuration.CONNECTION_STRING;
+        }
+
+        // constructor with parameter
+        public ProductDAO(string connString)
+        {
+            this.connString = connString;
+        }
+
         /// <summary>
         /// Retrieve a list of all products in the database.
         /// </summary>
-        /// <returns>Task<List> of Product objects</returns>
-        public List<Product> getAllProducts()
+        /// <returns>Collection of product objects</returns>
+        public IEnumerable<IProduct> getAllProducts()
         {
-            List<Product> products = new List<Product>();
-
             string queryGetAllProducts = "SELECT * FROM Products;";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 SqlCommand cmd = new SqlCommand(queryGetAllProducts, conn);
 
                 // try a connection
                 conn.Open();
                 
-
                 // execute the query
                 SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                if (reader.HasRows)
                 {
-                    Product product = new Product();
-                    product.setProductID(reader.GetInt32(0));
-                    product.setProductIDNumber(reader.GetString(1));
-                    product.setDescription(reader.GetString(2));
-                    product.setQuantity(reader.GetInt32(3));
-                    // a SQL float is a .NET double
-                    double dprice = reader.GetDouble(4);
-                    float fprice = Convert.ToSingle(dprice);
-                    product.setPrice(fprice);
+                    while (reader.Read())
+                    {
+                        IProduct product = new Product();
+                        product.ProductID = reader.GetInt32(0);
+                        product.ProductIDNumber = reader.GetString(1);
+                        product.Description = reader.GetString(2);
+                        product.Quantity = reader.GetInt32(3);
+                        // a SQL float is a .NET double
+                        double dprice = reader.GetDouble(4);
+                        float fprice = Convert.ToSingle(dprice);
+                        product.price = fprice;
 
-                    products.Add(product);
+                        yield return product;
+                    }
+                }
+                else
+                {
+                    yield break;
                 }
             }
-  
-            return products;
         }
 
         /// <summary>
         /// Retrieve a product from the database, based on its barcode number.
         /// </summary>
         /// <param name="idNumber">barcode number string</param>
-        /// <returns>Task<Product></returns>
-        public Product getProduct(string idNumber)
+        /// <returns>Product interface</returns>
+        public IProduct getProduct(string idNumber)
         {
-            Product product = new Product();
+            IProduct product = new Product();
 
             string queryGetProduct = "SELECT * FROM Products " +
                                      "WHERE ProductIDNumber = @id;";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 SqlCommand cmd = new SqlCommand(queryGetProduct, conn);
 
@@ -87,14 +106,14 @@ namespace Model.DataAccessLayer
                     // results exist
                     while (reader.Read())
                     {
-                        product.setProductID(reader.GetInt32(0));
-                        product.setProductIDNumber(reader.GetString(1));
-                        product.setDescription(reader.GetString(2));
-                        product.setQuantity(reader.GetInt32(3));
+                        product.ProductID = reader.GetInt32(0);
+                        product.ProductIDNumber = reader.GetString(1);
+                        product.Description = reader.GetString(2);
+                        product.Quantity = reader.GetInt32(3);
                         // an SQL float is a .NET double
                         double dprice = reader.GetDouble(4);
                         float fprice = Convert.ToSingle(dprice);
-                        product.setPrice(fprice);
+                        product.price = fprice;
                     }
                 }
                 else
@@ -118,7 +137,7 @@ namespace Model.DataAccessLayer
                                         "" +
                                         " = @idNumber;";
       
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 SqlCommand cmd = new SqlCommand(queryDeleteProduct, conn);
 
@@ -143,34 +162,34 @@ namespace Model.DataAccessLayer
         /// Add a product to the database.
         /// </summary>
         /// <param name="product">Product object</param>
-        public void addProduct(Product product)
+        public void addProduct(IProduct product)
         {
             string queryAddProduct = "INSERT INTO Products (ProductIDNumber,Description_,Quantity,Price) " +
                                      "VALUES (@idNumber, @description, @quantity, @price);";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 SqlCommand cmd = new SqlCommand(queryAddProduct, conn);
 
                 // parameterise
                 SqlParameter idNumberParam = new SqlParameter();
                 idNumberParam.ParameterName = "@idNumber";
-                idNumberParam.Value = product.getProductIDNumber();
+                idNumberParam.Value = product.ProductID;
                 cmd.Parameters.Add(idNumberParam);
 
                 SqlParameter descParam = new SqlParameter();
                 descParam.ParameterName = "@description";
-                descParam.Value = product.getDescription();
+                descParam.Value = product.Description;
                 cmd.Parameters.Add(descParam);
 
                 SqlParameter quantityParam = new SqlParameter();
                 quantityParam.ParameterName = "@quantity";
-                quantityParam.Value = product.getQuantity();
+                quantityParam.Value = product.Quantity;
                 cmd.Parameters.Add(quantityParam);
 
                 SqlParameter priceParam = new SqlParameter();
                 priceParam.ParameterName = "@price";
-                priceParam.Value = product.getPrice();
+                priceParam.Value = product.price;
                 cmd.Parameters.Add(priceParam);
 
                 // attempt a connection
@@ -187,35 +206,35 @@ namespace Model.DataAccessLayer
         /// Update a product record in the database.
         /// </summary>
         /// <param name="product">Product object</param>
-        public void updateProduct(Product product)
+        public void updateProduct(IProduct product)
         {
             string queryUpdateProduct = "UPDATE Products " +
                                         "SET ProductIDNumber = @idNumber, Description_ = @desc, Quantity = @quantity, Price = @price " +
-                                        "WHERE ProductID = " + product.getProductID() + ";";
+                                        "WHERE ProductID = " + product.ProductID + ";";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 SqlCommand cmd = new SqlCommand(queryUpdateProduct, conn);
 
                 // paramterise
                 SqlParameter idNumParam = new SqlParameter();
                 idNumParam.ParameterName = "@idNumber";
-                idNumParam.Value = product.getProductIDNumber();
+                idNumParam.Value = product.ProductIDNumber;
                 cmd.Parameters.Add(idNumParam);
 
                 SqlParameter descParam = new SqlParameter();
                 descParam.ParameterName = "@desc";
-                descParam.Value = product.getDescription();
+                descParam.Value = product.Description;
                 cmd.Parameters.Add(descParam);
 
                 SqlParameter quantParam = new SqlParameter();
                 quantParam.ParameterName = "@quantity";
-                quantParam.Value = product.getQuantity();
+                quantParam.Value = product.Quantity;
                 cmd.Parameters.Add(quantParam);
 
                 SqlParameter priceParam = new SqlParameter();
                 priceParam.ParameterName = "@price";
-                priceParam.Value = product.getPrice();
+                priceParam.Value = product.price;
                 cmd.Parameters.Add(priceParam);
 
                 // attempt a connection
@@ -226,9 +245,13 @@ namespace Model.DataAccessLayer
             }
         }
 
-        public void importUpdateProduct(Product product)
+        /// <summary>
+        /// Performs the import-update operation.
+        /// </summary>
+        /// <param name="product">Product interface</param>
+        public void importUpdateProduct(IProduct product)
         {
-            if (getProduct(product.getProductIDNumber())==null)
+            if (getProduct(product.ProductIDNumber)==null)
             {
                 addProduct(product);
             }

@@ -77,7 +77,7 @@ namespace POS
                         conn.Close();
                         mainForm.ShowDialog();
 
-                        logger.Info("Exiting application");
+                        logger.Info("Exiting application with Exit Code: " + Environment.ExitCode);
                         Application.ExitThread();
                         Environment.Exit(Environment.ExitCode);
 
@@ -173,7 +173,7 @@ namespace POS
 
         private void button_cancel_Click(object sender, EventArgs e)
         {
-            logger.Info("Exiting application");
+            logger.Info("Exiting application with Exit Code: " + Environment.ExitCode);
             Application.ExitThread();
             Environment.Exit(Environment.ExitCode);
         }

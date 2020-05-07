@@ -11,13 +11,32 @@ using POS;
 
 namespace Model.DataAccessLayer
 {
+    // this class might be faked for testing, but won't be tested itself
+    // TODO: this is shit - refactor it properly
     public class TransactionDAO : ITransactionDAO
     {
+        // connection string
+        public string connString { get; set; }
+
+        // default constructor
+        // loads the connection string
+        public TransactionDAO()
+        {
+            this.connString = Configuration.CONNECTION_STRING;
+        }
+
+        // constructor with parameter
+        public TransactionDAO(string connString)
+        {
+            this.connString = connString;
+        }
+
         /// <summary>
         /// Return all transactions in the database.
         /// </summary>
         /// <returns>List of Transaction objects</returns>
-        public List<Transaction> getAllTransactions()
+        //public List<Transaction> getAllTransactions()
+        public IEnumerable<ITransaction> getAllTransactions()
         {
             Task<List<Transaction>> task = Task.Run<List<Transaction>>(async () => await retrieveAllTransactions());
 
@@ -41,7 +60,7 @@ namespace Model.DataAccessLayer
                                               " INNER JOIN Products ON Transactions.ProductID = Products.ProductID)" +
                                               " INNER JOIN Staff ON Transactions.StaffID = Staff.StaffID);";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 // prepare the command
                 SqlCommand cmd = new SqlCommand(getAllTransactionsQuery, conn);
@@ -65,31 +84,33 @@ namespace Model.DataAccessLayer
                 while (reader.Read())
                 {
                     Transaction transaction = new Transaction();
-                    transaction.setTransactionID(reader.GetInt32(0));
-                    transaction.setTimestamp(reader.GetDateTime(1).ToString());
+                    transaction.TransactionID = reader.GetInt32(0);
+                    transaction.Timestamp = reader.GetDateTime(1).ToString();
 
                     Product transactionProduct = new Product();
-                    transactionProduct.setProductID(reader.GetInt32(13));
-                    transactionProduct.setProductIDNumber(reader.GetString(14));
-                    transactionProduct.setDescription(reader.GetString(15));
+                    transactionProduct.ProductID = reader.GetInt32(13);
+                    transactionProduct.ProductIDNumber = reader.GetString(14);
+                    transactionProduct.Description = reader.GetString(15);
+
                     // an SQL float is a .NET double
                     double productPrice = reader.GetDouble(16);
-                    transactionProduct.setPrice(Convert.ToSingle(productPrice));
+                    //transactionProduct.setPrice(Convert.ToSingle(productPrice));
+                    transactionProduct.price = Convert.ToSingle(productPrice);
 
                     Staff transactionStaff = new Staff();
-                    transactionStaff.setID(reader.GetInt32(9));
-                    transactionStaff.setName(reader.GetString(10));
-                    transactionStaff.setPasswordHash(reader.GetString(11));
+                    transactionStaff.StaffID = reader.GetInt32(9);
+                    transactionStaff.FullName = reader.GetString(10);
+                    transactionStaff.PasswordHash = reader.GetString(11);
                     switch (reader.GetString(12))
                     {
                         case "Admin":
-                            transactionStaff.setPrivelege(Staff.Privelege.Admin);
+                            transactionStaff.privelege = Staff.Privelege.Admin;
 
                             break;
 
                         case "Normal":
-                            transactionStaff.setPrivelege(Staff.Privelege.Normal);
-
+                            transactionStaff.privelege = Staff.Privelege.Normal;
+                            
                             break;
 
                         default:
@@ -101,39 +122,39 @@ namespace Model.DataAccessLayer
                     // check if Customer exists for this transaction
                     if (!reader.IsDBNull(2))
                     {
-                        transactionCustomer.setID(reader.GetInt32(2));
-                        transactionCustomer.setName(reader.GetString(3));
-                        transactionCustomer.setPhoneNumber(reader.GetString(4));
-                        transactionCustomer.setEmail(reader.GetString(5));
-                        transactionCustomer.setAddress(reader.GetString(6));
+                        transactionCustomer.CustomerID = reader.GetInt32(2);
+                        transactionCustomer.FullName = reader.GetString(3);
+                        transactionCustomer.PhoneNumber = reader.GetString(4);
+                        transactionCustomer.Email = reader.GetString(5);
+                        transactionCustomer.Address = reader.GetString(6);
                         switch (reader.GetString(7))
                         {
                             case "NSW":
-                                transactionCustomer.setState(Customer.States.NSW);
+                                transactionCustomer.state = Customer.States.NSW;
                                 break;
                             case "ACT":
-                                transactionCustomer.setState(Customer.States.ACT);
+                                transactionCustomer.state = Customer.States.ACT;
                                 break;
                             case "NT":
-                                transactionCustomer.setState(Customer.States.NT);
+                                transactionCustomer.state = Customer.States.NT;
                                 break;
                             case "Qld":
-                                transactionCustomer.setState(Customer.States.Qld);
+                                transactionCustomer.state = Customer.States.Qld;
                                 break;
                             case "SA":
-                                transactionCustomer.setState(Customer.States.SA);
+                                transactionCustomer.state = Customer.States.SA;
                                 break;
                             case "Vic":
-                                transactionCustomer.setState(Customer.States.Vic);
+                                transactionCustomer.state = Customer.States.Vic;
                                 break;
                             case "Tas":
-                                transactionCustomer.setState(Customer.States.Tas);
+                                transactionCustomer.state = Customer.States.Tas;
                                 break;
                             case "WA":
-                                transactionCustomer.setState(Customer.States.WA);
+                                transactionCustomer.state = Customer.States.WA;
                                 break;
                             case "Other":
-                                transactionCustomer.setState(Customer.States.Other);
+                                transactionCustomer.state = Customer.States.Other;
                                 break;
                             default:
                                 // this shouldn't happen, but handle it anyway
@@ -146,9 +167,9 @@ namespace Model.DataAccessLayer
                         transactionCustomer = null;
                     }
 
-                    transaction.setStaff(transactionStaff);
-                    transaction.setProduct(transactionProduct);
-                    transaction.setCustomer(transactionCustomer);
+                    transaction.staff = transactionStaff;
+                    transaction.product = transactionProduct;
+                    transaction.customer = transactionCustomer;
 
                     transList.Add(transaction);
                 }
@@ -173,7 +194,7 @@ namespace Model.DataAccessLayer
             int staffID = items.Item1;
             int customerID = items.Item2;
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 try
                 {
@@ -214,9 +235,11 @@ namespace Model.DataAccessLayer
                     string productIDnumber = keyVal.Key;
                     int productQuantity = keyVal.Value;
                     ProductDAO productDAO = new ProductDAO();
-                    Product currProduct = productDAO.getProduct(productIDnumber);
-                    long productID = currProduct.getProductID();
-                    int productInStock = currProduct.getQuantity();
+                    Product currProduct = (Product)productDAO.getProduct(productIDnumber);
+                    //long productID = currProduct.getProductID();
+                    //int productInStock = currProduct.getQuantity();
+                    long productID = currProduct.ProductID;
+                    int productInStock = currProduct.Quantity;
 
                     // assign values to parameters
                     customerIDparam.Value = customerID;

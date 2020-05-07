@@ -74,6 +74,46 @@ namespace POS.View
                     string email = textBox_email.Text;
                     string city = textBox_city.Text;
                     string state = comboBox_state.SelectedItem.ToString();
+                    Model.ObjectModel.Customer newCustomer = new Model.ObjectModel.Customer();
+                    newCustomer.Postcode = postCode;
+                    newCustomer.Address = streetAddress;
+                    newCustomer.FullName = fullName;
+                    newCustomer.Email = email;
+                    newCustomer.City = city;
+                    newCustomer.PhoneNumber = phoneNumber;
+                    switch (state)
+                    {
+                        case "NSW":
+                            newCustomer.state = Model.ObjectModel.Customer.States.NSW;
+                            break;
+                        case "Qld":
+                            newCustomer.state = Model.ObjectModel.Customer.States.Qld;
+                            break;
+                        case "Vic":
+                            newCustomer.state = Model.ObjectModel.Customer.States.Vic;
+                            break;
+                        case "ACT":
+                            newCustomer.state = Model.ObjectModel.Customer.States.ACT;
+                            break;
+                        case "Tas":
+                            newCustomer.state = Model.ObjectModel.Customer.States.Tas;
+                            break;
+                        case "SA":
+                            newCustomer.state = Model.ObjectModel.Customer.States.SA;
+                            break;
+                        case "WA":
+                            newCustomer.state = Model.ObjectModel.Customer.States.WA;
+                            break;
+                        case "NT":
+                            newCustomer.state = Model.ObjectModel.Customer.States.NT;
+                            break;
+                        case "Other":
+                            break;
+                        default:
+                            // this shouldn't happen
+                            throw new Exception("Invalid customer data");
+                    }
+
 
                     // log it
                     logger.Info("Adding customer record: ");
@@ -87,7 +127,8 @@ namespace POS.View
                     // run this operation on a different thread
                     await Task.Run(() =>
                     {
-                        controller.addCustomer(fullName, streetAddress, phoneNumber, email, city, state, postCode);
+                        //controller.addCustomer(fullName, streetAddress, phoneNumber, email, city, state, postCode);
+                        controller.addCustomer(newCustomer);
                     });
                 }
                 catch (Exception ex)

@@ -9,21 +9,38 @@ using POS;
 
 namespace Model.DataAccessLayer
 {
+    // this class might be faked for testing, but won't be tested itself
     public class StaffDAO : IStaffDAO
     {
+        // connection string
+        public string connString { get; set; }
+
+        // default constructor
+        // loads the connection string
+        public StaffDAO()
+        {
+            this.connString = Configuration.CONNECTION_STRING;
+        }
+
+        // constructor with parameter
+        public StaffDAO(string connString)
+        {
+            this.connString = connString;
+        }
+
         /// <summary>
         /// Retreive staff record from the database.
         /// </summary>
         /// <param name="id">Staff id</param>
         /// <returns>Task Staff object</returns>
-        public Staff getStaff(int id)
+        public IStaff getStaff(int id)
         {
-            Staff staff = new Staff();
-            staff.setID(id);
+            IStaff staff = new Staff();
+            staff.StaffID = id;
 
             string queryGetStaff = "SELECT * FROM Staff WHERE StaffID = @id";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 // define the command object
                 SqlCommand cmd = new SqlCommand(queryGetStaff, conn);
@@ -46,18 +63,18 @@ namespace Model.DataAccessLayer
                 {
                     while (reader.Read())
                     {
-                        staff.setName(reader.GetString(1));
-                        staff.setPasswordHash(reader.GetString(2));
+                        staff.FullName = reader.GetString(1);
+                        staff.PasswordHash = reader.GetString(2);
                         string sPrivelege = reader.GetString(3);
                         switch (sPrivelege)
                         {
                             case "Admin":
-                                staff.setPrivelege(Staff.Privelege.Admin);
+                                staff.privelege = Staff.Privelege.Admin;
 
                                 break;
 
                             case "Normal":
-                                staff.setPrivelege(Staff.Privelege.Normal);
+                                staff.privelege = Staff.Privelege.Normal;
 
                                 break;
 
@@ -81,13 +98,11 @@ namespace Model.DataAccessLayer
         /// Retrieves a list of all staff records in the database.
         /// </summary>
         /// <returns>Task List of Staff objects.</returns>
-        public List<Staff> getAllStaff()
+        public IEnumerable<IStaff> getAllStaff()
         {
-            List<Staff> staffList = new List<Staff>();
-
             string queryGetAllStaff = "SELECT * FROM Staff;";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 // define the command object
                 SqlCommand cmd = new SqlCommand(queryGetAllStaff, conn);
@@ -100,24 +115,23 @@ namespace Model.DataAccessLayer
                 // execute the query
                 reader = cmd.ExecuteReader();
                 
-
                 if (reader.HasRows)
                 {
                     while (reader.Read())
                     {
-                        Staff staff = new Staff();
-                        staff.setID(reader.GetInt32(0));
-                        staff.setName(reader.GetString(1));
-                        staff.setPasswordHash(reader.GetString(2));
+                        IStaff staff = new Staff();
+                        staff.StaffID = reader.GetInt32(0);
+                        staff.FullName = reader.GetString(1);
+                        staff.PasswordHash = reader.GetString(2);
                         switch (reader.GetString(3))
                         {
                             case "Admin":
-                                staff.setPrivelege(Staff.Privelege.Admin);
+                                staff.privelege = Staff.Privelege.Admin;
 
                                 break;
 
                             case "Normal":
-                                staff.setPrivelege(Staff.Privelege.Normal);
+                                staff.privelege = Staff.Privelege.Normal;
 
                                 break;
 
@@ -127,16 +141,14 @@ namespace Model.DataAccessLayer
                                 throw new Exception("Invalid data in database");
                         }
 
-                        staffList.Add(staff);
+                        yield return staff;
                     }
                 }
                 else
                 {
-                    staffList = null;
+   
                 }
             }
-
-            return staffList;
         }
 
         // this works
@@ -147,12 +159,19 @@ namespace Model.DataAccessLayer
         public void deleteStaff(int id)
         {
             // StaffID in the datbase is the PK
-            // TODO: parameterise this
-            string queryDeleteStaff = "DELETE FROM Staff WHERE StaffID = " + id + ";";
+            // prepare the query
+            string queryDeleteStaff = "DELETE FROM Staff WHERE StaffID = @id";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
+                // prepare the command
                 SqlCommand cmd = new SqlCommand(queryDeleteStaff, conn);
+
+                // parameterise the query
+                SqlParameter idParam = new SqlParameter();
+                idParam.ParameterName = "@id";
+                idParam.Value = id;
+                cmd.Parameters.Add(idParam);
 
                 // try a connection
                 conn.Open();
@@ -168,13 +187,13 @@ namespace Model.DataAccessLayer
         /// Add a staff record to the database.
         /// </summary>
         /// <param name="staff">Staff object.</param>
-        public void addStaff(Staff staff)
+        public void addStaff(IStaff staff)
         {
             // StaffID in the database is PK and AI
             string queryAddStaff = "INSERT INTO Staff (FullName, PasswordHash, Privelege) " +
                                    "VALUES (@name, @password, @privelege);";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 // prepare the command
                 SqlCommand cmd = new SqlCommand(queryAddStaff, conn);
@@ -182,17 +201,17 @@ namespace Model.DataAccessLayer
                 // parameterise
                 SqlParameter nameParam = new SqlParameter();
                 nameParam.ParameterName = "@name";
-                nameParam.Value = staff.getName();
+                nameParam.Value = staff.FullName;
                 cmd.Parameters.Add(nameParam);
 
                 SqlParameter passParam = new SqlParameter();
                 passParam.ParameterName = "@password";
-                passParam.Value = staff.getPasswordHash();
+                passParam.Value = staff.PasswordHash;
                 cmd.Parameters.Add(passParam);
 
                 SqlParameter privParam = new SqlParameter();
                 privParam.ParameterName = "@privelege";
-                Staff.Privelege privelege = staff.getPrivelege();
+                Staff.Privelege privelege = staff.privelege;
                 switch (privelege)
                 {
                     case Staff.Privelege.Admin:
@@ -225,36 +244,36 @@ namespace Model.DataAccessLayer
         /// Update a staff record in the database.
         /// </summary>
         /// <param name="staff">Staff object.</param>
-        public void updateStaff(Staff staff)
+        public void updateStaff(IStaff staff)
         {
             // StaffID in the database is PK and AI
             string queryUpdateCustomer = "UPDATE Staff " +
                                          "SET FullName = @name, Passwordhash = @passHash, Privelege = @privelege " +
                                          "WHERE StaffID = @id;";
 
-            using (SqlConnection conn = new SqlConnection(Configuration.CONNECTION_STRING))
+            using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 SqlCommand cmd = new SqlCommand(queryUpdateCustomer, conn);
 
                 // parameterise
                 SqlParameter idParam = new SqlParameter();
                 idParam.ParameterName = "@id";
-                idParam.Value = staff.getID();
+                idParam.Value = staff.StaffID;
                 cmd.Parameters.Add(idParam);
 
                 SqlParameter nameParam = new SqlParameter();
                 nameParam.ParameterName = "@name";
-                nameParam.Value = staff.getName();
+                nameParam.Value = staff.FullName;
                 cmd.Parameters.Add(nameParam);
 
                 SqlParameter passParam = new SqlParameter();
                 passParam.ParameterName = "@passHash";
-                passParam.Value = staff.getPasswordHash();
+                passParam.Value = staff.PasswordHash;
                 cmd.Parameters.Add(passParam);
 
                 SqlParameter privParam = new SqlParameter();
                 privParam.ParameterName = "@privelege";
-                switch (staff.getPrivelege())
+                switch (staff.privelege)
                 {
                     case Staff.Privelege.Admin:
                         privParam.Value = "Admin";
@@ -281,13 +300,15 @@ namespace Model.DataAccessLayer
             }
         }
 
-        public void importUpdateStaff(Staff staff)
+        /// <summary>
+        /// Perform import/update operation. 
+        /// If there is no staff record with this ID, create it.
+        /// Else, update it with the remaining fields.
+        /// </summary>
+        /// <param name="staff">Staff interface</param>
+        public void importUpdateStaff(IStaff staff)
         {
-            // strategy:
-            // use READ operation to retrieve record for this staff object
-            // if it is null, CREATE it
-            // else, UPDATE it
-            if (getStaff(staff.getID()) == null)
+            if (getStaff(staff.StaffID) == null)
             {
                 addStaff(staff);
             }

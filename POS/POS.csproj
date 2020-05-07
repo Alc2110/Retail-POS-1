@@ -97,7 +97,6 @@
     <Compile Include="model\DataAccessLayer\StaffDAO.cs" />
     <Compile Include="model\DataAccessLayer\TransactionDAO.cs" />
     <Compile Include="model\ObjectModel\Customer.cs" />
-    <Compile Include="model\ObjectModel\IActor.cs" />
     <Compile Include="model\ObjectModel\Product.cs" />
     <Compile Include="model\ObjectModel\Staff.cs" />
     <Compile Include="model\ObjectModel\Transaction.cs" />

@@ -59,6 +59,11 @@ namespace POS.View
                     Int32.TryParse(textBox_quantity.Text, out quantity);
                     string id = textBox_ID.Text;
                     string description = textBox_description.Text;
+                    Model.ObjectModel.Product newProduct = new Model.ObjectModel.Product();
+                    newProduct.price = price;
+                    newProduct.Quantity = quantity;
+                    newProduct.ProductID = Convert.ToInt64(id);
+                    newProduct.Description = description;
 
                     // log it
                     logger.Info("Adding new product record: ");
@@ -70,7 +75,7 @@ namespace POS.View
                     // run this task in a separate thread
                     await Task.Run(() =>
                     {
-                        controller.addProduct(id, description, quantity, price);
+                        controller.addProduct(newProduct);
                     });
                 }
                 catch (Exception ex)
