@@ -920,15 +920,17 @@ namespace POS
         }
 
         // "Lookup item" button click event handler
-        private void button_priceLookup_Click(object sender, EventArgs e)
+        private async void button_priceLookup_Click(object sender, EventArgs e)
         {
             string productIDnumber = textBox_itemProductID.Text;
             Product retrievedProduct = new Product();
             try
             {
-                // ask the model for the product information
-                //retrievedProduct = ProductOps.getProduct(productIDnumber);
-                retrievedProduct = (Product)(POS.Configuration.productOps.getProduct(productIDnumber));
+                await Task.Run(() =>
+                {
+                    // ask the model for the product information
+                    retrievedProduct = (Product)(POS.Configuration.productOps.getProduct(productIDnumber));
+                });
             }
             catch (Exception ex)
             {
