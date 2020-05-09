@@ -157,7 +157,6 @@ namespace Model.DataAccessLayer
         /// <param name="transaction">Transaction interface.</param>
         public void addTransaction(ITransaction transaction)
         {
-            // TODO: implement it as a transaction
             // TODO: figure out a way of putting the timestamp from the transaction object into the query
             // prepare the query
             string query = "INSERT INTO Transactions (Timestamp_, CustomerID, StaffID, ProductID)" +
@@ -169,14 +168,20 @@ namespace Model.DataAccessLayer
 
             using (SqlConnection conn = new SqlConnection(this.connString))
             {
-                // prepare the command
+                // try a connection
+                conn.Open();
+
+                // prepare the ADO.NET transaction
+                SqlTransaction sqlTrans;
+
+                // prepare the command 
                 SqlCommand cmd = new SqlCommand(query, conn);
 
                 // parameterise
                 SqlParameter customerIDParam = new SqlParameter();
                 if (transaction.customer != null)
                 {
-                    customerIDParam.Value = transaction.customer.CustomerID; // TODO: fix null reference exception when no customer
+                    customerIDParam.Value = transaction.customer.CustomerID; 
                 }
                 else
                 {
@@ -195,11 +200,26 @@ namespace Model.DataAccessLayer
                 productIDParam.ParameterName = "@productID";
                 cmd.Parameters.Add(productIDParam);
 
-                // try a connection
-                conn.Open();
+                // begin the transaction
+                sqlTrans = conn.BeginTransaction();
 
-                // execute the query
-                cmd.ExecuteNonQuery();
+                cmd.Transaction = sqlTrans;
+
+                try
+                {
+                    // execute the query
+                    cmd.ExecuteNonQuery();
+
+                    // commit the transaction
+                    sqlTrans.Commit();
+                }
+                catch (SqlException)
+                {
+                    // transaction failed
+                    sqlTrans.Rollback();
+
+                    throw;
+                }
             }
         }
     }
