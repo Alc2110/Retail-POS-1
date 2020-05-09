@@ -1,18 +1,28 @@
 ﻿using Model.ServiceLayer;
 using System.Collections.Generic;
 using System;
+using Model.ObjectModel;
 
 namespace Controller
 {
     public class TransactionController
     {
-        /// <summary>
-        /// Create a product transaction. Updates all necessary tables in the database.
-        /// </summary>
-        /// <param name="items">A tuple of (staff id, customer, id Dictionary(product id, number of this product))</param>
-        public void addTransaction(ValueTuple<int, int,Dictionary<string,int>> items)
+        public ITransactionOps service { get; set; }
+
+        // default constructor
+        public TransactionController()
         {
-            POS.Configuration.transactionOps.addTransaction(items);
+            this.service = POS.Configuration.transactionOps;
+        }
+
+        public TransactionController(ITransactionOps service)
+        {
+            this.service = service;
+        }
+
+        public void addTransaction(ITransaction newTransaction)
+        {
+            service.addTransaction(newTransaction);
         }
     }
 }

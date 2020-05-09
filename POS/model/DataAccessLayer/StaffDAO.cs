@@ -37,12 +37,12 @@ namespace Model.DataAccessLayer
         {
             IStaff staff = new Staff();
             staff.StaffID = id;
-
+            // prepare the query
             string queryGetStaff = "SELECT * FROM Staff WHERE StaffID = @id";
 
             using (SqlConnection conn = new SqlConnection(this.connString))
             {
-                // define the command object
+                // prepare the command
                 SqlCommand cmd = new SqlCommand(queryGetStaff, conn);
 
                 // parameterise

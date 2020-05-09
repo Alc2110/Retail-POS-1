@@ -696,120 +696,84 @@ namespace POS
                                                         MessageBoxButtons.YesNoCancel);
             if (dialogResult==DialogResult.Yes)
             {
-                // collect items for transactions
-                Dictionary<string, int> saleItems = new Dictionary<string, int>();
-                foreach (ListViewItem item in listView_sales.Items)
+                try
                 {
-                    // get ID and quantity of each
-                    saleItems.Add(item.SubItems[0].Text, Int32.Parse(item.SubItems[2].Text));
-                }
+                    // collect items for transactions
+                    foreach (ListViewItem itemInCart in listView_sales.Items)
+                    {
+                        // get product ID number and quantity for each
+                        string id = itemInCart.SubItems[0].Text;
+                        int quantity = Int32.Parse(itemInCart.SubItems[2].Text);
 
-                // transactions
-                ValueTuple<int, int, Dictionary<string, int>> currTransaction;
-                switch (currentState)
-                {
-                    // this sale is for a member
-                    case State.SALE_MEMBER:
+                        // get the staff ID of the salesperson
                         int staffID = Configuration.STAFF_ID;
-                        int customerID = Int32.Parse(textBox_customerAccNo.Text);
-                        currTransaction = (staffID, customerID, saleItems);
-                        try
+
+                        // create the transaction
+                        Transaction transaction = new Transaction();
+
+                        await Task.Run(() =>
+                        {
+                            // retrieve product information
+                            // run this task in a separate thread
+                            transaction.product = POS.Configuration.productOps.getProduct(id);
+                        });
+
+                        // set the timestamp
+                        transaction.Timestamp = System.DateTime.Now.ToString("F");
+
+                        await Task.Run(() =>
+                        {
+                            // retrieve salesperson information
+                            // run this task in a separate thread
+                            transaction.staff = POS.Configuration.staffOps.getStaff(staffID);
+                        });
+
+                        switch (currentState)
+                        {
+                            case State.SALE_MEMBER:
+                                // the customer is a member
+                                // get their details and add them to the transaction information 
+                                int customerID = Int32.Parse(textBox_customerAccNo.Text);
+                                await Task.Run(() =>
+                                {
+                                    // run this task in a separate thread
+                                    transaction.customer = POS.Configuration.customerOps.getCustomer(customerID);
+                                });
+
+                                break;
+
+                            case State.SALE_NON_MEMBER:
+                                transaction.customer = null;
+                                break;
+                            default:
+                                // not valid
+                                break;
+                        }
+
+                        for (int i = 1; i <= quantity; i++)
                         {
                             await Task.Run(() =>
                             {
-                                // create the transaction in the database
-                                transController.addTransaction(currTransaction);
-
-                                // retrieve the customer object for the invoice
-                                //invoice.customer = CustomerOps.getCustomer(customerID);
-                                CustomerOps customerOps = new CustomerOps();
-                                customerOps.getCustomer(customerID);
-
-                                // retrieve the staff object for the invoice
-                                invoice.salesperson = (Staff)POS.Configuration.staffOps.getStaff(staffID);
-
-                                // create the transaction in the invoice
-                                // retrieve the list of products
-                                foreach (KeyValuePair<string, int> product in saleItems)
-                                {
-                                    Transaction trans = new Transaction();
-                                    trans.Timestamp = System.DateTime.Now.ToString("F"); // timestamp
-
-                                    trans.customer = customerOps.getCustomer(customerID);
-
-                                    trans.staff = (Staff)POS.Configuration.staffOps.getStaff(staffID);
-
-                                    trans.product = (Product)(POS.Configuration.productOps.getProduct(product.Key));
-
-                                    invoice.transactions.Add(trans);
-                                }
+                                // run this task in a separate thread
+                                transController.addTransaction(transaction);
                             });
+
+                            // add information to invoice
+                            invoice.addEntry(transaction);
                         }
-                        catch (Exception ex)
-                        {
-                            // it failed
-                            // tell the user and the logger
-                            string transactionErrorMessage = "Error in transaction: " + ex.Message;
-                            MessageBox.Show(transactionErrorMessage, "Retail POS",
-                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            logger.Error(ex, transactionErrorMessage);
-                            logger.Error("Stack trace: " + ex.StackTrace);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // something bad happened
+                    // tell the user and the logger
+                    string checkoutFailureMessage = "Checkout failed: " + ex.Message;
+                    MessageBox.Show(checkoutFailureMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    logger.Error(ex, checkoutFailureMessage);
+                    logger.Error("Stack Trace: " + ex.StackTrace);
 
-                            // nothing more we can do
-                            return;
-                        }
-
-                        break;
-                    
-                    // this sale is for a non-member
-                    case State.SALE_NON_MEMBER:
-                        staffID = Configuration.STAFF_ID;
-                        currTransaction = (staffID, 0, saleItems);
-                        invoice.customer = null;
-                        try
-                        {
-                            // create the transaction in the database
-                            transController.addTransaction(currTransaction);
-
-                            // create the transaction in the invoice
-                            Transaction newTransaction = new Transaction();
-
-                            // retrieve the staff object for the invoice
-                            invoice.salesperson = (Staff)POS.Configuration.staffOps.getStaff(staffID);
-
-                            // create the transaction in the invoice
-                            // retrieve the list of products
-                            foreach (KeyValuePair<string, int> product in saleItems)
-                            {
-                                Transaction trans = new Transaction();
-                                trans.Timestamp = System.DateTime.Now.ToString("F"); // timestamp
-                                trans.customer=null; // no customer data
-                                 
-                                trans.staff = (Staff)POS.Configuration.staffOps.getStaff(staffID);
-                                //trans.setProduct(ProductOps.getProduct(product.Key)); // product
-                                trans.product = (Product)(POS.Configuration.productOps.getProduct(product.Key));
-
-                                invoice.transactions.Add(trans);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            // it failed
-                            // tell the user and the logger
-                            string transactionErrorMessage = "Error in transaction: " + ex.Message;
-                            MessageBox.Show(transactionErrorMessage, "Retail POS",
-                                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            logger.Error(ex, transactionErrorMessage);
-                            logger.Error("Stack trace: " + ex.StackTrace);
-
-                            return;
-                        }
-
-                        break;
-
-                    default:
-
-                        break;
+                    // nothing more we can do
+                    return;
                 }
 
                 // at this point, the checkout succeeded

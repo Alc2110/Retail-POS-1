@@ -135,7 +135,7 @@ namespace POS.View
         protected string invoiceHeader = "Invoice";
         protected string dateHeader = "Date: ";
         protected string[] headers = new string[] { "Timestamp", "Customer ID", "Customer name", "Salesperson ID", "Salesperson name",
-                                          "Product ID", "Product number", "Product description", "Product price" };
+                                                    "Product ID", "Product number", "Product description", "Product price" };
 
         // cell colours
         protected System.Drawing.Color dataColour1 = System.Drawing.Color.LightSkyBlue;
@@ -151,38 +151,38 @@ namespace POS.View
             string assemblyPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             string invoiceFilePath = assemblyPath + @"\invoices\Invoice " + System.DateTime.Now.ToString("F").Replace(':', '-') + ".xlsx";
             fi = new FileInfo(invoiceFilePath);
-            this.invoiceSpreadsheet = new ExcelPackage(fi);
-            this.invoiceWorksheet = this.invoiceSpreadsheet.Workbook.Worksheets.Add("Invoice");
+            invoiceSpreadsheet = new ExcelPackage(fi);
+            invoiceWorksheet = this.invoiceSpreadsheet.Workbook.Worksheets.Add("Invoice");
             
             // write metadata
-            this.invoiceWorksheet.Cells["A1:B1"].Merge = true;
-            this.invoiceWorksheet.Cells["A1"].Value = this.title;
-            colourMeta(this.invoiceWorksheet.Cells["A1:B1"]);
-            applyThickAllBorders(this.invoiceWorksheet.Cells["A1:B1"]);
+            invoiceWorksheet.Cells["A1:B1"].Merge = true;
+            invoiceWorksheet.Cells["A1"].Value = title;
+            colourMeta(invoiceWorksheet.Cells["A1:B1"]);
+            applyThickAllBorders(invoiceWorksheet.Cells["A1:B1"]);
 
-            this.invoiceWorksheet.Cells["A2:B2"].Merge = true;
-            this.invoiceWorksheet.Cells["A2"].Value = this.invoiceHeader;
-            colourMeta(this.invoiceWorksheet.Cells["A2:B2"]);
-            applyThickAllBorders(this.invoiceWorksheet.Cells["A2:B2"]);
+            invoiceWorksheet.Cells["A2:B2"].Merge = true;
+            invoiceWorksheet.Cells["A2"].Value = invoiceHeader;
+            colourMeta(invoiceWorksheet.Cells["A2:B2"]);
+            applyThickAllBorders(invoiceWorksheet.Cells["A2:B2"]);
 
-            this.invoiceWorksheet.Cells["A3"].Value = this.dateHeader;
-            this.invoiceWorksheet.Cells["B3"].Value = System.DateTime.Now.ToString("F");
-            colourMeta(this.invoiceWorksheet.Cells["A3:B3"]);
-            applyThickAllBorders(this.invoiceWorksheet.Cells["A3:B3"]);
+            invoiceWorksheet.Cells["A3"].Value = dateHeader;
+            invoiceWorksheet.Cells["B3"].Value = System.DateTime.Now.ToString("F");
+            colourMeta(invoiceWorksheet.Cells["A3:B3"]);
+            applyThickAllBorders(invoiceWorksheet.Cells["A3:B3"]);
 
             // write headers
             for (int i = 0; i < headers.Length; i++)
             {
-                this.invoiceWorksheet.Cells[Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, i + 1].Value = headers[i];
+                invoiceWorksheet.Cells[Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, i + 1].Value = headers[i];
             }
             applyThickAllBorders(this.invoiceWorksheet.Cells[Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, 1, Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, headers.Length]);
             colourHeader(this.invoiceWorksheet.Cells[Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, 1, Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, headers.Length]);
 
             // write data
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
-            foreach (Transaction trans in this.transactions)
+            foreach (Transaction trans in transactions)
             {
-                this.invoiceWorksheet.Cells[row, 1].Value = trans.Timestamp;
+                invoiceWorksheet.Cells[row, 1].Value = trans.Timestamp;
                 if (trans.customer!=null)
                 {
                     invoiceWorksheet.Cells[row, 2].Value = trans.customer.CustomerID.ToString();
@@ -225,8 +225,8 @@ namespace POS.View
                 // try to save the spreadsheet file
                 // create the "invoices" directory if it does not exist
                 System.IO.Directory.CreateDirectory("invoices");
-                this.invoiceSpreadsheet.SaveAs(fi);
-                this.invoiceSpreadsheet.Dispose();
+                invoiceSpreadsheet.SaveAs(fi);
+                invoiceSpreadsheet.Dispose();
             }
             catch (Exception e)
             {

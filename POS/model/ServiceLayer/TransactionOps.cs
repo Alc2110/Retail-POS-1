@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,23 +8,24 @@ using Model.DataAccessLayer;
 
 namespace Model.ServiceLayer
 {
-    public class TransactionOps
+    public class TransactionOps : ITransactionOps
     {
         // data access layer dependency injection
         public ITransactionDAO dataAccessObj { get; set; }
         // default constructor
         // this still depends on a concrete implementation.
         // however, it is not as tightly-coupled a design as before
-        public TransactionOps()
-        {
+        public TransactionOps() {
             dataAccessObj = new TransactionDAO();
         }
         // test constructor
+        public TransactionOps(ITransactionDAO dataAccessObj) {
+            this.dataAccessObj = dataAccessObj;
+        }
 
-        // this is shit
-        public void addTransaction(ValueTuple<int,int,Dictionary<string,int>> items)
+        public void addTransaction(ITransaction transaction)
         {
-            dataAccessObj.addTransaction(items);
+            dataAccessObj.addTransaction(transaction);
 
             // fire the event to update the view
             getAllTransactions();
@@ -44,8 +45,18 @@ namespace Model.ServiceLayer
         public event EventHandler<GetAllTransactionsEventArgs> GetAllTransactions;
         protected virtual void OnGetAllTransactions (GetAllTransactionsEventArgs args)
         {
-            GetAllTransactions?.Invoke(this, args);
+            EventHandler<GetAllTransactionsEventArgs> tmp = GetAllTransactions;
+            if (tmp != null)
+            {
+                GetAllTransactions?.Invoke(this, args);
+            }
         }
+    }
+
+    public interface ITransactionOps
+    {
+        void addTransaction(ITransaction transaction);
+        IEnumerable<ITransaction> getAllTransactions();
     }
 
     /// <summary>
@@ -55,7 +66,7 @@ namespace Model.ServiceLayer
     {
         private IEnumerable<ITransaction> list;
 
-        // ctor
+        // constructor
         public GetAllTransactionsEventArgs(IEnumerable<ITransaction> list)
         {
             this.list = list;

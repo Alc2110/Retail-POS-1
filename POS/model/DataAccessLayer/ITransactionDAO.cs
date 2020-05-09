@@ -12,7 +12,6 @@ namespace Model.DataAccessLayer
         string connString { get; set; }
 
         IEnumerable<ITransaction> getAllTransactions();
-        void deleteTransaction(Transaction transaction);
-        void addTransaction(ValueTuple<int, int, Dictionary<string, int>> itemsn);
+        void addTransaction(ITransaction transaction);
     }
 }
