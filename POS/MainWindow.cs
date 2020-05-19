@@ -992,6 +992,7 @@ namespace POS
             {
                 // save the spreadsheet
                 exportView.saveSpreadsheet();
+                
             }
             catch (Exception ex)
             {

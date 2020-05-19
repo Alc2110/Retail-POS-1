@@ -9,7 +9,7 @@ using System.Data.SqlClient;
 using POS;
 using System.Diagnostics;
 
-namespace Model.DataAccessLayer
+namespace Model.DataAccessLayer.SqlServerInterface
 {
     // this class might be faked for testing other classes, but won't be tested itself
     public class CustomerDAO : ICustomerDAO
@@ -58,7 +58,7 @@ namespace Model.DataAccessLayer
 
                 // execute the query
                 SqlDataReader reader = cmd.ExecuteReader();
- 
+
                 // check if results exist
                 if (reader.HasRows)
                 {
@@ -210,7 +210,7 @@ namespace Model.DataAccessLayer
                 // execute the query
                 cmd.ExecuteNonQuery();
             }
-            
+
             return;
         }
 

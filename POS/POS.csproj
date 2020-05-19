@@ -88,14 +88,14 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="model\DataAccessLayer\CustomerDAO.cs" />
     <Compile Include="model\DataAccessLayer\ICustomerDAO.cs" />
     <Compile Include="model\DataAccessLayer\IProductDAO.cs" />
     <Compile Include="model\DataAccessLayer\IStaffDAO.cs" />
     <Compile Include="model\DataAccessLayer\ITransactionDAO.cs" />
-    <Compile Include="model\DataAccessLayer\ProductDAO.cs" />
-    <Compile Include="model\DataAccessLayer\StaffDAO.cs" />
-    <Compile Include="model\DataAccessLayer\TransactionDAO.cs" />
+    <Compile Include="model\DataAccessLayer\SqlServerInterface\CustomerDAO.cs" />
+    <Compile Include="model\DataAccessLayer\SqlServerInterface\ProductDAO.cs" />
+    <Compile Include="model\DataAccessLayer\SqlServerInterface\StaffDAO.cs" />
+    <Compile Include="model\DataAccessLayer\SqlServerInterface\TransactionDAO.cs" />
     <Compile Include="model\ObjectModel\Customer.cs" />
     <Compile Include="model\ObjectModel\Product.cs" />
     <Compile Include="model\ObjectModel\Staff.cs" />

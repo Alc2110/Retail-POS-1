@@ -57,7 +57,7 @@ namespace Model.ObjectModel
         string PhoneNumber { get; set; }
         string Email { get; set; }
         string City { get; set; }
-        Model.ObjectModel.Customer.States state { get; set; }
+        Customer.States state { get; set; }
         int Postcode { get; set; }
         IEnumerable<ITransaction> Transactions { get; set; }
     }

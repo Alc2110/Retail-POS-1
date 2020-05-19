@@ -7,7 +7,7 @@ using Model.ObjectModel;
 using System.Data.SqlClient;
 using POS;
 
-namespace Model.DataAccessLayer
+namespace Model.DataAccessLayer.SqlServerInterface
 {
     // this class might be faked for testing, but won't be tested itself
     public class StaffDAO : IStaffDAO
@@ -58,7 +58,7 @@ namespace Model.DataAccessLayer
 
                 // execute the query
                 reader = cmd.ExecuteReader();
-   
+
                 if (reader.HasRows)
                 {
                     while (reader.Read())
@@ -114,7 +114,7 @@ namespace Model.DataAccessLayer
 
                 // execute the query
                 reader = cmd.ExecuteReader();
-                
+
                 if (reader.HasRows)
                 {
                     while (reader.Read())
@@ -146,7 +146,7 @@ namespace Model.DataAccessLayer
                 }
                 else
                 {
-   
+
                 }
             }
         }
@@ -179,7 +179,7 @@ namespace Model.DataAccessLayer
                 // execute the query
                 cmd.ExecuteNonQuery();
             }
-            
+
             return;
         }
 

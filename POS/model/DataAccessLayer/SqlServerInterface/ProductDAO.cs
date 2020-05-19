@@ -8,7 +8,7 @@ using POS;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
-namespace Model.DataAccessLayer
+namespace Model.DataAccessLayer.SqlServerInterface
 {
     // this class might be faked for testing other classes, but won't be tested itself
     public class ProductDAO : IProductDAO
@@ -43,7 +43,7 @@ namespace Model.DataAccessLayer
 
                 // try a connection
                 conn.Open();
-                
+
                 // execute the query
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
@@ -136,7 +136,7 @@ namespace Model.DataAccessLayer
                                         "WHERE ProductIDNumber" +
                                         "" +
                                         " = @idNumber;";
-      
+
             using (SqlConnection conn = new SqlConnection(this.connString))
             {
                 SqlCommand cmd = new SqlCommand(queryDeleteProduct, conn);
@@ -153,7 +153,7 @@ namespace Model.DataAccessLayer
                 // execute the query
                 cmd.ExecuteNonQuery();
             }
-         
+
             return;
         }
 
@@ -196,7 +196,7 @@ namespace Model.DataAccessLayer
                 conn.Open();
 
                 // execute the query
-                cmd.ExecuteNonQuery(); 
+                cmd.ExecuteNonQuery();
             }
 
             return;
@@ -251,7 +251,7 @@ namespace Model.DataAccessLayer
         /// <param name="product">Product interface</param>
         public void importUpdateProduct(IProduct product)
         {
-            if (getProduct(product.ProductIDNumber)==null)
+            if (getProduct(product.ProductIDNumber) == null)
             {
                 addProduct(product);
             }

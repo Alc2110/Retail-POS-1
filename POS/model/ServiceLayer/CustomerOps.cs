@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Model.DataAccessLayer;
+using Model.DataAccessLayer.SqlServerInterface;
 using Model.ObjectModel;
 
 namespace Model.ServiceLayer
@@ -49,6 +50,9 @@ namespace Model.ServiceLayer
         public void importUpdateCustomer(ICustomer customer)
         {
             dataAccessObj.importUpdateCustomer(customer);
+
+            // fire the event to update the view
+            getAllCustomers();
         }
 
         public void deleteCustomer(int id)
@@ -78,7 +82,11 @@ namespace Model.ServiceLayer
         public event EventHandler<GetAllCustomersEventArgs> GetAllCustomers;
         protected virtual void OnGetAllCustomers (GetAllCustomersEventArgs e)
         {
-            GetAllCustomers?.Invoke(this, e);
+            EventHandler<GetAllCustomersEventArgs> tmp = GetAllCustomers;
+            if (tmp != null)
+            {
+                GetAllCustomers?.Invoke(this, e);
+            }
         }
     }
 

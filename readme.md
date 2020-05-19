@@ -21,6 +21,9 @@ Once the database has been set up (according to the next section), the client mu
 ### Server
 Uses a SQL Server 2017 database. Create a new database, then run the script `sqlScripts\createTables.sql` to create the table structure. The database can be filled with sample data using the script `sqlScripts\fillTables.sql`. The `sqlScripts\misc` directory contains some miscellaneous scripts.
 
+## Architecture
+![Architecture diagram](architecture_diagram_png.png)
+
 ## Usage
 Use cases are provided in the `docs` directory. User manual to be part of a future release.
 

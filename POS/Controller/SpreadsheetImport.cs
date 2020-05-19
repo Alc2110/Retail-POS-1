@@ -223,13 +223,17 @@ namespace POS.Controller
         {
             // iterate through all the data rows and perform the import/update operation on each 
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
-            while (this.worksheet.Cells[row,2].Value!=null)
+            while (worksheet.Cells[row,2].Value!=null)
             {
                 // grab the data
-                int id = Int32.Parse(this.worksheet.Cells[row, 1].Value.ToString()); 
-                string fullName = this.worksheet.Cells[row, 2].Value.ToString();
-                string passwordHash = this.worksheet.Cells[row, 3].Value.ToString();
-                string privelege = this.worksheet.Cells[row, 4].Value.ToString();
+                int id = 0;
+                if (worksheet.Cells[row, 1].Value != null)
+                {
+                    id = Int32.Parse(worksheet.Cells[row, 1].Value.ToString());
+                }
+                string fullName = worksheet.Cells[row, 2].Value.ToString();
+                string passwordHash = worksheet.Cells[row, 3].Value.ToString();
+                string privelege = worksheet.Cells[row, 4].Value.ToString();
                 Staff staff = new Staff();
                 staff.StaffID = id;
                 staff.FullName = fullName;
@@ -285,9 +289,9 @@ namespace POS.Controller
             {
                 // prepare the data
                 int id = 0;
-                if (this.worksheet.Cells[row, 1].Value!=null)
+                if (worksheet.Cells[row, 1].Value!=null)
                 {
-                    id = int.Parse(this.worksheet.Cells[row, 1].Value.ToString());
+                    id = int.Parse(worksheet.Cells[row, 1].Value.ToString());
                 }
                 string productNumber = worksheet.Cells[row, 2].Value.ToString();
                 string description = worksheet.Cells[row, 3].Value.ToString();

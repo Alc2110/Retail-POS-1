@@ -9,7 +9,7 @@ using System.Data.Sql;
 using System.Data.SqlClient;
 using POS;
 
-namespace Model.DataAccessLayer
+namespace Model.DataAccessLayer.SqlServerInterface
 {
     // this class might be faked for testing, but won't be tested itself
     public class TransactionDAO : ITransactionDAO
@@ -181,7 +181,7 @@ namespace Model.DataAccessLayer
                 SqlParameter customerIDParam = new SqlParameter();
                 if (transaction.customer != null)
                 {
-                    customerIDParam.Value = transaction.customer.CustomerID; 
+                    customerIDParam.Value = transaction.customer.CustomerID;
                 }
                 else
                 {

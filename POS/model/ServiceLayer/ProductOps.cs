@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Model.ObjectModel;
 using Model.DataAccessLayer;
+using Model.DataAccessLayer.SqlServerInterface;
 
 namespace Model.ServiceLayer
 {
@@ -52,6 +53,9 @@ namespace Model.ServiceLayer
         public void importUpdateProduct(IProduct product)
         {
             dataAccessObj.importUpdateProduct(product);
+
+            // fire the event to update the view
+            getAllProducts();
         }
 
         public IProduct getProduct(string idNumber)
@@ -73,7 +77,11 @@ namespace Model.ServiceLayer
         public event EventHandler<GetAllProductsEventArgs> GetAllProducts;
         protected virtual void OnGetAllProducts (GetAllProductsEventArgs args)
         {
-            GetAllProducts?.Invoke(this, args);
+            EventHandler<GetAllProductsEventArgs> tmp = GetAllProducts;
+            if (tmp != null)
+            {
+                GetAllProducts?.Invoke(this, args);
+            }
         }
     }
 

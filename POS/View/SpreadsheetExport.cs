@@ -8,6 +8,7 @@ using Model.ObjectModel;
 using Model.ServiceLayer;
 using System.IO;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace POS.View
 {
@@ -76,6 +77,7 @@ namespace POS.View
 
         public void prepareSpreadsheet()
         {
+            writeData();
             // create spreadsheet and worksheet
             this.spreadsheet = new ExcelPackage();
             this.worksheet = this.spreadsheet.Workbook.Worksheets.Add(exportType);
@@ -118,7 +120,7 @@ namespace POS.View
                         Configuration.SpreadsheetConstants.SPREADSHEET_HEADER_ROW, headers.Length]);
 
             // write data
-            writeData();
+            //writeData();
         }
 
         public abstract void retrieveData();
@@ -235,7 +237,7 @@ namespace POS.View
                 // run this operation in a separate thread
                 await Task.Run(() =>
                 {
-                    POS.Configuration.customerOps.getAllCustomers();
+                    customerList =  POS.Configuration.customerOps.getAllCustomers().ToList();
                 });
             }
             catch (Exception ex)
@@ -250,9 +252,9 @@ namespace POS.View
         protected override void writeData()
         {
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
-            for (int i = 0; i < this.customerList.Count; i++)
+            for (int i = 0; i < customerList.Count; i++)
             {
-                Customer currCustomer = (Customer)this.customerList[i];
+                Customer currCustomer = (Customer)customerList[i];
                 worksheet.Cells[row, 1].Value = currCustomer.CustomerID.ToString();
                 worksheet.Cells[row, 2].Value = currCustomer.FullName;
                 worksheet.Cells[row, 3].Value = currCustomer.Address;
@@ -261,29 +263,29 @@ namespace POS.View
                 worksheet.Cells[row, 6].Value = currCustomer.City;
                 worksheet.Cells[row, 7].Value = currCustomer.state.ToString();
                 worksheet.Cells[row, 8].Value = currCustomer.Postcode.ToString();
-                applyRightThickBorders(this.worksheet.Cells[row, 8]);
+                applyRightThickBorders(worksheet.Cells[row, 8]);
                 // even and odd rows have alternating colours
                 if (row % 2 == 0)
                 {
                     for (int col = 1; col <= 8; col++)
                     {
-                        colourEvenRow(this.worksheet.Cells[row, col]);
+                        colourEvenRow(worksheet.Cells[row, col]);
                     }
                 }
                 else
                 {
                     for (int col = 1; col <= 8; col++)
                     {
-                        colourOddRow(this.worksheet.Cells[row, col]);
+                        colourOddRow(worksheet.Cells[row, col]);
                     }
                 }
 
                 // if this is the last element in the list, apply the outside thick border
-                if (i == this.customerList.Count - 1)
+                if (i == customerList.Count - 1)
                 {
                     for (int col = 1; col <= 8; col++)
                     {
-                        applyBottomThickBorders(this.worksheet.Cells[row, col]);
+                        applyBottomThickBorders(worksheet.Cells[row, col]);
                     }
                 }
 
@@ -327,7 +329,7 @@ namespace POS.View
                 // run this operation in a separate thread
                 await Task.Run(() =>
                 {
-                    POS.Configuration.staffOps.getAllStaff();
+                    staffList = POS.Configuration.staffOps.getAllStaff().ToList();
                 });
             }
             catch (Exception ex)
@@ -350,35 +352,34 @@ namespace POS.View
                 worksheet.Cells[row, 2].Value = staff.FullName;
                 worksheet.Cells[row, 3].Value = staff.PasswordHash;
                 worksheet.Cells[row, 4].Value = staff.privelege.ToString();
-                applyRightThickBorders(this.worksheet.Cells[row, 4]);
+                applyRightThickBorders(worksheet.Cells[row, 4]);
                 // even and odd rows have alternating colours
                 if (row % 2 == 0)
                 {
                     for (int col = 1; col <= 4; col++)
                     {
-                        colourEvenRow(this.worksheet.Cells[row, col]);
+                        colourEvenRow(worksheet.Cells[row, col]);
                     }
                 }
                 else
                 {
                     for (int col = 1; col <= 4; col++)
                     {
-                        colourOddRow(this.worksheet.Cells[row, col]);
+                        colourOddRow(worksheet.Cells[row, col]);
                     }
                 }
 
                 // if this is the last element in the list, apply the outside thick border
-                if (i == this.staffList.Count - 1)
+                if (i == staffList.Count - 1)
                 {
                     for (int col = 1; col <= 4; col++)
                     {
-                        applyBottomThickBorders(this.worksheet.Cells[row, col]);
+                        applyBottomThickBorders(worksheet.Cells[row, col]);
                     }
                 }
 
                 row++;
             }
-
         }
     }
 
@@ -417,7 +418,8 @@ namespace POS.View
                 // run this operation in a separate thread
                 await Task.Run(() =>
                 {
-                    POS.Configuration.productOps.getAllProducts();
+                    productList = POS.Configuration.productOps.getAllProducts().ToList();
+                    Debug.WriteLine("Retrieved " + productList.Count + " product records.");
                 });
             }
             catch (Exception ex)
@@ -432,38 +434,38 @@ namespace POS.View
         protected override void writeData()
         {
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
-            for (int i = 0; i < this.productList.Count; i++)
+            for (int i = 0; i < productList.Count; i++)
             {
-                Product product = (Product)this.productList[i];
+                Product product = (Product)productList[i];
                 worksheet.Cells[row, 1].Value = product.ProductID.ToString();
                 worksheet.Cells[row, 2].Value = product.ProductIDNumber;
                 worksheet.Cells[row, 3].Value = product.Description;
                 worksheet.Cells[row, 4].Value = product.Quantity;
                 worksheet.Cells[row, 5].Value = product.price.ToString();
 
-                applyRightThickBorders(this.worksheet.Cells[row, 5]);
+                applyRightThickBorders(worksheet.Cells[row, 5]);
                 // even and odd rows have alternating colours
                 if (row % 2 == 0)
                 {
                     for (int col = 1; col <= 5; col++)
                     {
-                        colourEvenRow(this.worksheet.Cells[row, col]);
+                        colourEvenRow(worksheet.Cells[row, col]);
                     }
                 }
                 else
                 {
                     for (int col = 1; col <= 5; col++)
                     {
-                        colourOddRow(this.worksheet.Cells[row, col]);
+                        colourOddRow(worksheet.Cells[row, col]);
                     }
                 }
 
                 // if this is the last element in the list, apply the outside thick border
-                if (i == this.productList.Count - 1)
+                if (i == productList.Count - 1)
                 {
                     for (int col = 1; col <= 5; col++)
                     {
-                        applyBottomThickBorders(this.worksheet.Cells[row, col]);
+                        applyBottomThickBorders(worksheet.Cells[row, col]);
                     }
                 }
 
@@ -486,15 +488,15 @@ namespace POS.View
         public TransactionSpreadsheetExport(string exportType) : base(exportType)
         {
             // TODO: add remaining fields
-            this.headers = new string[] { "Transaction ID", "Timestamp", "Customer ID", "Customer name", "Salesperson ID", "Salesperson name",
+            headers = new string[] { "Transaction ID", "Timestamp", "Customer ID", "Customer name", "Salesperson ID", "Salesperson name",
                                           "Product ID", "Product number", "Product description", "Product price" };
-            this.transactionList = new List<ITransaction>();
+            transactionList = new List<ITransaction>();
         }
 
         // event handler for model events
         private void loadDataEventHandler(object sender, GetAllTransactionsEventArgs args)
         {
-            this.transactionList = args.getList().ToList();
+            transactionList = args.getList().ToList();
         }
 
         // fetch the data from the database and import it to this class
@@ -509,7 +511,7 @@ namespace POS.View
                 // run this operation in a separate thread
                 await Task.Run(() =>
                 {
-                    POS.Configuration.transactionOps.getAllTransactions();
+                    transactionList = POS.Configuration.transactionOps.getAllTransactions().ToList();
                 });
             }
             catch (Exception ex)
