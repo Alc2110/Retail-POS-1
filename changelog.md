@@ -1,7 +1,7 @@
 # Retail POS - Changelog
 All notable changes to this project will be documented in this file. Note that release dates are given in dd/mm/yyyy format.
 
-## [0.1.1] - 21/05/2020
+## [0.1.1] - 20/05/2020
 ### Added
 - improved dialogs associated with login process
 - version number in titlebar

@@ -5,7 +5,7 @@ The server component is a Microsoft SQL Server database. A database is created o
 
 The client component is a WinForms application. The source code as a Microsoft Visual Studio solution is the main content of this repository.
 
-**Current version: v0.1**
+**Current version: v0.1.1**
 
 ## Installation and Setup
 ### Client
