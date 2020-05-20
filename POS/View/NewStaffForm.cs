@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Controller;
-using Security;
+using POS.Security;
 
 namespace POS.View
 {

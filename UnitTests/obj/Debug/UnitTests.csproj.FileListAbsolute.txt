@@ -45,3 +45,10 @@ C:\Users\alexc\Documents\GitHub\Retail-POS\UnitTests\bin\Debug\System.ValueTuple
 C:\Users\alexc\Documents\GitHub\Retail-POS\UnitTests\bin\Debug\de\PdfSharp.resources.dll
 C:\Users\alexc\Documents\GitHub\Retail-POS\UnitTests\bin\Debug\de\PdfSharp.Charting.resources.dll
 C:\Users\alexc\Documents\GitHub\Retail-POS\UnitTests\obj\Debug\UnitTests.csproj.CopyComplete
+C:\Users\alexc\Documents\GitHub\Retail-POS\UnitTests\bin\Debug\Castle.Core.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\UnitTests\bin\Debug\FakeItEasy.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\UnitTests\bin\Debug\nunit.framework.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\UnitTests\bin\Debug\Castle.Core.xml
+C:\Users\alexc\Documents\GitHub\Retail-POS\UnitTests\bin\Debug\FakeItEasy.xml
+C:\Users\alexc\Documents\GitHub\Retail-POS\UnitTests\bin\Debug\nunit.framework.pdb
+C:\Users\alexc\Documents\GitHub\Retail-POS\UnitTests\bin\Debug\nunit.framework.xml

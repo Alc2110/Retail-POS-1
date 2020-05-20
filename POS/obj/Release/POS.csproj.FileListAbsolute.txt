@@ -83,3 +83,10 @@ C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\de\PdfSharp.resources
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\de\PdfSharp.Charting.resources.dll
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\obj\Release\POS.View.DiscountForm.resources
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\obj\Release\POS.View.AboutBox.resources
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\Castle.Core.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\FakeItEasy.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\nunit.framework.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\Castle.Core.xml
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\FakeItEasy.xml
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\nunit.framework.pdb
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\nunit.framework.xml

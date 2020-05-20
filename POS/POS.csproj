@@ -111,6 +111,7 @@
     <Compile Include="model\ObjectModel\Customer.cs" />
     <Compile Include="model\ObjectModel\Product.cs" />
     <Compile Include="model\ObjectModel\Staff.cs" />
+    <Compile Include="model\ObjectModel\States.cs" />
     <Compile Include="model\ObjectModel\Transaction.cs" />
     <Compile Include="model\ServiceLayer\CustomerOps.cs" />
     <Compile Include="model\ServiceLayer\ProductOps.cs" />

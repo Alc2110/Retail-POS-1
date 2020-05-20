@@ -12,6 +12,7 @@ using System.Diagnostics;
 
 namespace POS.View
 {
+    // TODO: fix data export bug (empty spreadsheets). There is a workaround, but it is not a solution to the problem.
     // TODO: fix open/closed principle violation in this class
     /// <summary>
     /// Factory class for creating Views for exporting data to spreadsheets.
@@ -249,8 +250,26 @@ namespace POS.View
             }
         }
 
-        protected override void writeData()
+        protected async override void writeData()
         {
+            // workaround - try to fetch the data again
+            try
+            {
+                // ask the model for a list of all customers
+                // run this operation in a separate thread
+                await Task.Run(() =>
+                {
+                    customerList = POS.Configuration.customerOps.getAllCustomers().ToList();
+                });
+            }
+            catch (Exception ex)
+            {
+                string retrieveDataErrorMessage = "Error retrieving data from database: " + ex.Message;
+                MessageBox.Show(retrieveDataErrorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, retrieveDataErrorMessage);
+                logger.Error("Stack Trace: " + ex.StackTrace);
+            }
+
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
             for (int i = 0; i < customerList.Count; i++)
             {
@@ -341,8 +360,26 @@ namespace POS.View
             }
         }
 
-        protected override void writeData()
+        protected async override void writeData()
         {
+            // workaround - try to fetch the data again
+            try
+            {
+                // ask the model for a list of all staff
+                // run this operation in a separate thread
+                await Task.Run(() =>
+                {
+                    staffList = POS.Configuration.staffOps.getAllStaff().ToList();
+                });
+            }
+            catch (Exception ex)
+            {
+                string retrieveDataErrorMessage = "Error retrieving data from database: " + ex.Message;
+                MessageBox.Show(retrieveDataErrorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, retrieveDataErrorMessage);
+                logger.Error("Stack Trace: " + ex.StackTrace);
+            }
+
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
             for (int i = 0; i < this.staffList.Count; i++)
             {
@@ -431,8 +468,27 @@ namespace POS.View
             }
         }
 
-        protected override void writeData()
+        protected async override void writeData()
         {
+            // workaround - try to fetch the data again
+            try
+            {
+                // ask the model for a list of products
+                // run this operation in a separate thread
+                await Task.Run(() =>
+                {
+                    productList = POS.Configuration.productOps.getAllProducts().ToList();
+                    Debug.WriteLine("Retrieved " + productList.Count + " product records.");
+                });
+            }
+            catch (Exception ex)
+            {
+                string retrieveDataErrorMessage = "Error retrieving data from database: " + ex.Message;
+                MessageBox.Show(retrieveDataErrorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, retrieveDataErrorMessage);
+                logger.Error("Stack Trace: " + ex.StackTrace);
+            }
+
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
             for (int i = 0; i < productList.Count; i++)
             {
@@ -523,8 +579,26 @@ namespace POS.View
             }
         }
 
-        protected override void writeData()
+        protected async override void writeData()
         {
+            // workaround - try to fetch the data again
+            try
+            {
+                // ask the model for a list of transactions
+                // run this operation in a separate thread
+                await Task.Run(() =>
+                {
+                    transactionList = POS.Configuration.transactionOps.getAllTransactions().ToList();
+                });
+            }
+            catch (Exception ex)
+            {
+                string retrieveDataErrorMessage = "Error retrieving data from database: " + ex.Message;
+                MessageBox.Show(retrieveDataErrorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, retrieveDataErrorMessage);
+                logger.Error("Stack Trace: " + ex.StackTrace);
+            }
+
             int row = Configuration.SpreadsheetConstants.SPREADHSEET_ROW_OFFSET;
             for (int i = 0; i < this.transactionList.Count; i++)
             {

@@ -61,3 +61,10 @@ C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\EPPlus.dll
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\Reports.dll
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\EPPlus.xml
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\obj\Debug\POS.View.AboutBox.resources
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\Castle.Core.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\FakeItEasy.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\nunit.framework.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\Castle.Core.xml
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\FakeItEasy.xml
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\nunit.framework.pdb
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Debug\nunit.framework.xml
