@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file. Note that r
 - inability to try logging in again after database connection error
 - import function duplicates already-existing data
 - export of blank spreadsheets (workaround)
+- crashing when logging out
 
 ## [0.1] - 16/04/2020
 ### Added
