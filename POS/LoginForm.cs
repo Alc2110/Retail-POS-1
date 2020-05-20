@@ -26,6 +26,9 @@ namespace POS
             logger.Info("Initialising login form");
 
             InitializeComponent();
+
+            // subscribe to the form closing event
+            this.FormClosing += LoginForm_FormClosing;
         }
 
         private void button_OK_Click(object sender, EventArgs e)
@@ -47,7 +50,7 @@ namespace POS
                     logger.Info("Connection string: " + Configuration.CONNECTION_STRING);
                     await conn.OpenAsync();
                 }
-                catch (SqlException ex)
+                catch (Exception ex)
                 {
                     // it failed
                     // tell the user and the logger
@@ -55,6 +58,8 @@ namespace POS
                     string errorMessage = "Error connecting to database: " + ex.Message;
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     logger.Error(ex, errorMessage);
+
+                    button_OK.Enabled = true;
 
                     return;
                 }
@@ -78,8 +83,8 @@ namespace POS
                         mainForm.ShowDialog();
 
                         logger.Info("Exiting application with Exit Code: " + Environment.ExitCode);
-                        Application.ExitThread();
-                        Environment.Exit(Environment.ExitCode);
+                        //Application.ExitThread();
+                        //Environment.Exit(Environment.ExitCode);
 
                         break;
 
@@ -174,6 +179,13 @@ namespace POS
         private void button_cancel_Click(object sender, EventArgs e)
         {
             logger.Info("Exiting application with Exit Code: " + Environment.ExitCode);
+            Application.ExitThread();
+            Environment.Exit(Environment.ExitCode);
+        }
+
+        // login form is closed
+        private void LoginForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
             Application.ExitThread();
             Environment.Exit(Environment.ExitCode);
         }

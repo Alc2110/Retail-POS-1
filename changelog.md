@@ -1,7 +1,7 @@
 # Retail POS - Changelog
 All notable changes to this project will be documented in this file. Note that release dates are given in dd/mm/yyyy format.
 
-## [0.1.1] - 09/05/2020
+## [0.1.1] - 21/05/2020
 ### Added
 - improved dialogs associated with login process
 - version number in titlebar
@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file. Note that r
 - problem with selecting records in "view" windows
 - inability to try logging in again after database connection error
 - import function duplicates already-existing data
+- export of blank spreadsheets (workaround)
 
 ## [0.1] - 16/04/2020
 ### Added
