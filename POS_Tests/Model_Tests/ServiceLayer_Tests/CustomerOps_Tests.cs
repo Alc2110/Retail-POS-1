@@ -16,9 +16,7 @@ namespace POS_Tests.Model_Tests.ServiceLayer_Tests
 
         [SetUp]
         public void setup()
-        {
-            // set up the class under test
-            this.customerService = new Model.ServiceLayer.CustomerOps();  
+        {  
         }
 
         [TestMethod]
@@ -40,10 +38,12 @@ namespace POS_Tests.Model_Tests.ServiceLayer_Tests
             var customerDAO = A.Fake<Model.DataAccessLayer.ICustomerDAO>();
             A.CallTo(() => customerDAO.getCustomer(1)).Returns(new Customer(id, fullName, address, phoneNumber, email, city, state, postcode, transactions));
             A.CallTo(() => customerDAO.getCustomer(0)).Returns(null);
+            // set up the class under test
+            this.customerService = new Model.ServiceLayer.CustomerOps(customerDAO);
 
             // act
-            ICustomer customerThatExists = customerDAO.getCustomer(1);
-            ICustomer customerThatDoesNotExist = customerDAO.getCustomer(0);
+            ICustomer customerThatExists = this.customerService.getCustomer(1);
+            ICustomer customerThatDoesNotExist = this.customerService.getCustomer(0);
 
             // assert
             NUnit.Framework.Assert.IsNull(customerThatDoesNotExist);
@@ -57,5 +57,22 @@ namespace POS_Tests.Model_Tests.ServiceLayer_Tests
             NUnit.Framework.Assert.AreEqual(postcode, customerThatExists.Postcode);
             NUnit.Framework.Assert.AreEqual(transactions, customerThatExists.Transactions);
         }
+        /*
+        [TestMethod]
+        public void getAllCustomers_Test()
+        {
+            // arrange
+            // set up the data access fake
+            var customerDAO = A.Fake<Model.DataAccessLayer.ICustomerDAO>();
+            A.CallTo(() => customerDAO.getAllCustomers()).Returns(new System.Collections.Generic.List<ICustomer> { });
+
+
+            // subscribe to the event
+
+            // act
+
+            // assert
+        }
+        */
     }
 }

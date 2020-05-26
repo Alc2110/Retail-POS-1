@@ -17,8 +17,7 @@ namespace POS_Tests.Model_Tests.ServiceLayer_Tests
         [SetUp]
         public void setup()
         {
-            // initialise the class under test
-            productService = new Model.ServiceLayer.ProductOps();
+            
         }
 
         [TestMethod]
@@ -36,10 +35,12 @@ namespace POS_Tests.Model_Tests.ServiceLayer_Tests
             var productDAO = A.Fake<Model.DataAccessLayer.IProductDAO>();
             A.CallTo(() => productDAO.getProduct(idNumber)).Returns(new Product(id, idNumber, description, quantity, price));
             A.CallTo(() => productDAO.getProduct("0")).Returns(null);
+            // initialise the class under test
+            productService = new Model.ServiceLayer.ProductOps(productDAO);
 
             // act
-            IProduct productThatExists = productDAO.getProduct(idNumber);
-            IProduct productThatDoesNotExist = productDAO.getProduct("0");
+            IProduct productThatExists = this.productService.getProduct(idNumber);
+            IProduct productThatDoesNotExist = this.productService.getProduct("0");
 
             // assert
             NUnit.Framework.Assert.IsNull(productThatDoesNotExist);

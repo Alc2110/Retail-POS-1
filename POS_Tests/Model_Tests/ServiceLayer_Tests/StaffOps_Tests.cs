@@ -17,8 +17,7 @@ namespace POS_Tests.Model_Tests.ServiceLayer_Tests
         [SetUp]
         public void setup()
         {
-            // instantiate the class under test
-            staffService = new StaffOps();
+            
         }
 
         [TestMethod]
@@ -35,10 +34,12 @@ namespace POS_Tests.Model_Tests.ServiceLayer_Tests
             Staff.Privelege privelege = Staff.Privelege.Normal;
             A.CallTo(() => staffDAO.getStaff(0)).Returns(null);
             A.CallTo(() => staffDAO.getStaff(staffID)).Returns(new Staff(staffID, fullName, password, privelege));
+            // instantiate the class under test
+            staffService = new StaffOps(staffDAO);
 
             // act
-            IStaff staffThatDoesNotExist = staffDAO.getStaff(0);
-            IStaff staffThatExists = staffDAO.getStaff(staffID);
+            IStaff staffThatDoesNotExist = this.staffService.getStaff(0);
+            IStaff staffThatExists = this.staffService.getStaff(staffID);
 
             // assert
             NUnit.Framework.Assert.IsNull(staffThatDoesNotExist);

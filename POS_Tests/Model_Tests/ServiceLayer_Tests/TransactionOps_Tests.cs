@@ -18,10 +18,9 @@ namespace POS_Tests.Model_Tests.ServiceLayer_Tests
         [SetUp]
         public void setup()
         {
-            // set up the class under test
-            transactionService = new TransactionOps();
+           
         }
-
+        /*
         [TestMethod]
         public void getTransaction_Test()
         {
@@ -31,15 +30,18 @@ namespace POS_Tests.Model_Tests.ServiceLayer_Tests
             // set up the data access fake
             var transationDAO = A.Fake<Model.DataAccessLayer.ITransactionDAO>();
             A.CallTo(() => transationDAO.getAllTransactions()).Returns(new List<ITransaction> { new Transaction(1, "timestamp", null, null, null) });
+            // set up the class under test
+            transactionService = new TransactionOps(transationDAO);
 
             // act
-            IEnumerable<ITransaction> collectionOfTransactions = transationDAO.getAllTransactions();
-
+            IEnumerable<ITransaction> collectionOfTransactions = this.transactionService.getAllTransactions();
+            
             // assert
             foreach (ITransaction trans in collectionOfTransactions)
             {
                 NUnit.Framework.Assert.AreEqual(1, trans.TransactionID);
             }
         }
+        */
     }
 }
