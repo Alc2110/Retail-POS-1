@@ -60,6 +60,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller_Tests\CustomerController_Tests.cs" />
+    <Compile Include="Controller_Tests\StaffController_Tests.cs" />
+    <Compile Include="Controller_Tests\ProductController_Tests.cs" />
+    <Compile Include="Controller_Tests\TransactionController_Tests.cs" />
     <Compile Include="Model_Tests\ServiceLayer_Tests\CustomerOps_Tests.cs" />
     <Compile Include="Model_Tests\ServiceLayer_Tests\ProductOps_Tests.cs" />
     <Compile Include="Model_Tests\ServiceLayer_Tests\StaffOps_Tests.cs" />
