@@ -10,6 +10,7 @@
         SA,
         WA,
         NT,
-        Other
+        Other,
+        Default
     }
 }

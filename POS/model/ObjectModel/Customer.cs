@@ -12,7 +12,8 @@ namespace Model.ObjectModel
         }
 
         // constructor with parameters
-        public Customer(int CustomerID, string FullName, string Address, string phoneNumber, string Email, string City, States state, int Postcode, IEnumerable<ITransaction> Transactions)
+        public Customer(int CustomerID, string FullName, string Address, string phoneNumber, string Email, string City, 
+                        Model.ObjectModel.States state, int Postcode, IEnumerable<ITransaction> Transactions)
         {
             this.CustomerID = CustomerID;
             this.FullName = FullName;
@@ -25,26 +26,13 @@ namespace Model.ObjectModel
             this.Transactions = Transactions;
         }
 
-        public enum States
-        {
-            NSW,
-            Qld,
-            Tas,
-            ACT,
-            Vic,
-            SA,
-            WA,
-            NT,
-            Other
-        }
-
         public int CustomerID { get; set; }
         public string FullName { get; set; }
         public string Address { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string City { get; set; }
-        public States state { get; set; }
+        public Model.ObjectModel.States state { get; set; }
         public int Postcode { get; set; }
         public IEnumerable<ITransaction> Transactions { get; set; }
     }
@@ -57,7 +45,7 @@ namespace Model.ObjectModel
         string PhoneNumber { get; set; }
         string Email { get; set; }
         string City { get; set; }
-        Customer.States state { get; set; }
+        Model.ObjectModel.States state { get; set; }
         int Postcode { get; set; }
         IEnumerable<ITransaction> Transactions { get; set; }
     }

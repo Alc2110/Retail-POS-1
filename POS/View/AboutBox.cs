@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text;
 
 namespace POS.View
 {
@@ -13,17 +14,20 @@ namespace POS.View
     {
         public AboutBox()
         {
-            // TODO: change assembly parameters
             InitializeComponent();
             //this.Text = String.Format("About {0}", AssemblyTitle);
             this.Text = String.Format("About Retail POS");
             this.labelProductName.Text = AssemblyProduct;
             //this.labelVersion.Text = String.Format("Version {0}", AssemblyVersion);
-            this.labelVersion.Text = Configuration.VERSION;
+            this.labelVersion.Text = "v" + Configuration.VERSION;
             this.labelCopyright.Text = AssemblyCopyright;
             //this.labelCompanyName.Text = AssemblyCompany;
             this.labelCompanyName.Text = Configuration.STORE_NAME;
-            this.textBoxDescription.Text = AssemblyDescription;
+            //this.textBoxDescription.Text = AssemblyDescription;
+            StringBuilder descriptionTextBuilder = new StringBuilder();
+            descriptionTextBuilder.AppendLine("Icons by Icons8:");
+            descriptionTextBuilder.AppendLine("https://icons8.com");
+            this.textBoxDescription.Text = descriptionTextBuilder.ToString();
         }
 
         #region Assembly Attribute Accessors

@@ -31,12 +31,23 @@ namespace POS.View
             logger.Info("Initialising view products form");
 
             // prepare the listView
-            listView_products.Columns.Add("Product ID Number");
-            listView_products.Columns.Add("Description");
-            listView_products.Columns.Add("Quantity");
-            listView_products.Columns.Add("Price");
+            listView_products.Columns.Add("Product ID Number",150);
+            listView_products.Columns.Add("Description",300);
+            listView_products.Columns.Add("Quantity",100);
+            listView_products.Columns.Add("Price",100);
             listView_products.View = System.Windows.Forms.View.Details;
             listView_products.GridLines = true;
+            // make the headers bold
+            for (int i = 0; i < listView_products.Columns.Count; i++)
+            {
+                listView_products.Columns[i].ListView.Font = new Font(listView_products.Columns[i].ListView.Font, FontStyle.Bold);
+            }
+
+            // initially show the busy indicator
+            showBusyIndicator();
+            // colour and position the busy indicator properly
+            circularProgressBar1.Location = calculateBusyIndicatorPos();
+            circularProgressBar1.ProgressColor = Configuration.ProgressBarColours.TASK_IN_PROGRESS_COLOUR;
 
             // can't delete anything until something is selected
             button_deleteSelectedProduct.Enabled = false;
@@ -65,6 +76,8 @@ namespace POS.View
             {
                 try
                 {
+                    showBusyIndicator();
+
                     // prepare the data
                     string idNumber = listView_products.SelectedItems[0].SubItems[0].Text;
 
@@ -86,6 +99,8 @@ namespace POS.View
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     logger.Error(errorMessage);
                     logger.Error("Stack trace: " + ex.StackTrace);
+
+                    removeBusyIndicator();
 
                     return;
                 }
@@ -118,6 +133,12 @@ namespace POS.View
                 button_deleteSelectedProduct.Enabled = false;
             }
         }
+
+        private void ViewProductsForm_Resize(object sender, EventArgs e)
+        {
+            // reposition the circular progress bar
+            circularProgressBar1.Location = calculateBusyIndicatorPos();
+        }
         #endregion
 
         private void productEventHandler(object sender, GetAllProductsEventArgs args)
@@ -128,12 +149,17 @@ namespace POS.View
             }
             else
             {
+                showBusyIndicator();
+
                 populateView(sender, args);
             }
         }
 
         private void populateView(object sender, GetAllProductsEventArgs args)
         {
+            showBusyIndicator();
+
+            // get the list of products
             List<IProduct> products = args.getList().ToList();
 
             // tell the listView it is being updated
@@ -153,13 +179,16 @@ namespace POS.View
                 itemArr[1] = product.Description;
                 itemArr[2] = product.Quantity.ToString();
                 itemArr[3] = product.price.ToString();
-
+         
                 ListViewItem item = new ListViewItem(itemArr);
+                item.Font = new Font(item.Font, FontStyle.Regular);
                 listView_products.Items.Add(item);
             }
 
             // tell the listView it is ready
             listView_products.EndUpdate();
+
+            removeBusyIndicator();
         }
 
         private async void ViewProductsForm_Load(object sender, EventArgs e)
@@ -170,6 +199,8 @@ namespace POS.View
             // populate the list upon loading
             try
             {
+                showBusyIndicator();
+
                 // run this task in a separate thread
                 await Task.Run(() =>
                 {
@@ -184,7 +215,29 @@ namespace POS.View
                 MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 logger.Error(ex, errorMessage);
                 logger.Error("Stack Trace: " + ex.StackTrace);
+
+                removeBusyIndicator();
             }
         }
+
+        private void removeBusyIndicator()
+        {
+            circularProgressBar1.Visible = false;
+            listView_products.Visible = true;
+        }
+
+        private void showBusyIndicator()
+        {
+            circularProgressBar1.Visible = true;
+            listView_products.Visible = false;
+        }
+
+        private System.Drawing.Point calculateBusyIndicatorPos()
+        {
+            int xPos = ((groupBox1.Width) / 2) - ((circularProgressBar1.Width) / 2);
+            int yPos = ((groupBox1.Height) / 2) - ((circularProgressBar1.Height) / 2);
+
+            return new System.Drawing.Point(xPos, yPos);
+        } 
     }
 }

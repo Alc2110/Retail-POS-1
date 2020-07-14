@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Controller;
+using Model.ObjectModel;
 
 namespace POS.View
 {
@@ -26,15 +27,12 @@ namespace POS.View
             logger.Info("Initialising new customer form");
 
             // prepare the comboBox
-            comboBox_state.Items.Add("NSW");
-            comboBox_state.Items.Add("SA");
-            comboBox_state.Items.Add("Qld");
-            comboBox_state.Items.Add("Vic");
-            comboBox_state.Items.Add("ACT");
-            comboBox_state.Items.Add("Tas");
-            comboBox_state.Items.Add("WA");
-            comboBox_state.Items.Add("NT");
-            comboBox_state.Items.Add("Other");
+            foreach (var val in States.GetValues(typeof(States)))
+            {
+                string state = val.ToString();
+                if (!state.Equals("Default"))
+                    comboBox_state.Items.Add(state);
+            }
 
             // cannot add anything yet
             button_add.Enabled = false;
@@ -42,13 +40,17 @@ namespace POS.View
             // controller dependency injection
             controller = new CustomerController();
 
-            // event handlers
+            // subscribe to textbox interaction events
             textBox_city.TextChanged += checkEntries;
             textBox_email.TextChanged += checkEntries;
             textBox_fullName.TextChanged += checkEntries;
             textBox_phoneNumber.TextChanged += checkEntries;
             textBox_postcode.TextChanged += checkEntries;
             textBox_streetAddress.TextChanged += checkEntries;
+
+            // status bar
+            labelProgressBar1.Value = 100;
+            labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.IDLE_COLOUR, "Ready");
         }
 
         #region UI event handlers
@@ -65,6 +67,12 @@ namespace POS.View
             {
                 try
                 {
+                    // use busy cursor
+                    this.UseWaitCursor = true;
+
+                    // update the status bar
+                    labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.TASK_IN_PROGRESS_COLOUR, "Adding new customer record");
+
                     // prepare the data
                     int postCode;
                     Int32.TryParse(textBox_postcode.Text, out postCode);
@@ -73,47 +81,24 @@ namespace POS.View
                     string phoneNumber = textBox_phoneNumber.Text;
                     string email = textBox_email.Text;
                     string city = textBox_city.Text;
-                    string state = comboBox_state.SelectedItem.ToString();
-                    Model.ObjectModel.Customer newCustomer = new Model.ObjectModel.Customer();
+                    string sstate = comboBox_state.SelectedItem.ToString();
+                    Customer newCustomer = new Customer();
                     newCustomer.Postcode = postCode;
                     newCustomer.Address = streetAddress;
                     newCustomer.FullName = fullName;
                     newCustomer.Email = email;
                     newCustomer.City = city;
                     newCustomer.PhoneNumber = phoneNumber;
-                    switch (state)
+                    Model.ObjectModel.States state;
+                    if (Enum.TryParse(sstate, out state))
                     {
-                        case "NSW":
-                            newCustomer.state = Model.ObjectModel.Customer.States.NSW;
-                            break;
-                        case "Qld":
-                            newCustomer.state = Model.ObjectModel.Customer.States.Qld;
-                            break;
-                        case "Vic":
-                            newCustomer.state = Model.ObjectModel.Customer.States.Vic;
-                            break;
-                        case "ACT":
-                            newCustomer.state = Model.ObjectModel.Customer.States.ACT;
-                            break;
-                        case "Tas":
-                            newCustomer.state = Model.ObjectModel.Customer.States.Tas;
-                            break;
-                        case "SA":
-                            newCustomer.state = Model.ObjectModel.Customer.States.SA;
-                            break;
-                        case "WA":
-                            newCustomer.state = Model.ObjectModel.Customer.States.WA;
-                            break;
-                        case "NT":
-                            newCustomer.state = Model.ObjectModel.Customer.States.NT;
-                            break;
-                        case "Other":
-                            break;
-                        default:
-                            // this shouldn't happen
-                            throw new Exception("Invalid customer data");
+                        newCustomer.state = state;
                     }
-
+                    else
+                    {
+                        // should never happen
+                        throw new Exception("Invalid customer data");
+                    }
 
                     // log it
                     logger.Info("Adding customer record: ");
@@ -122,12 +107,11 @@ namespace POS.View
                     logger.Info("Phone number: " + phoneNumber);
                     logger.Info("Email: " + email);
                     logger.Info("City: " + city);
-                    logger.Info("State: " + state);
+                    logger.Info("State: " + sstate);
 
                     // run this operation on a different thread
                     await Task.Run(() =>
                     {
-                        //controller.addCustomer(fullName, streetAddress, phoneNumber, email, city, state, postCode);
                         controller.addCustomer(newCustomer);
                     });
                 }
@@ -138,6 +122,9 @@ namespace POS.View
                     string errorMessage = "Error adding new customer: " + ex.Message;
                     logger.Error(ex, errorMessage);
                     logger.Error("Stack Trace: " + ex.StackTrace);
+                    labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.TASK_FAILED_COLOUR, "Error adding new customer");
+                    labelProgressBar1.Value = 100;
+                    this.UseWaitCursor = false;
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     // nothing more we can do
@@ -148,6 +135,9 @@ namespace POS.View
                 // inform the user and the logger
                 string successMessage = "Successfully added new customer";
                 logger.Info(successMessage);
+                labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.TASK_SUCCEEDED_COLOUR, successMessage);
+                labelProgressBar1.Value = 100;
+                this.UseWaitCursor = false;
                 MessageBox.Show(successMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // clean up the UI
@@ -172,6 +162,9 @@ namespace POS.View
             {
                 button_add.Enabled = false;
             }
+
+            labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.IDLE_COLOUR, "Ready");
+            labelProgressBar1.Value = 100;
         }
     }
 }

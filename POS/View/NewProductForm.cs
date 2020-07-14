@@ -36,6 +36,10 @@ namespace POS.View
             textBox_description.TextChanged += checkEntries;
             textBox_price.TextChanged += checkEntries;
             textBox_quantity.TextChanged += checkEntries;
+
+            // status bar
+            labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.IDLE_COLOUR, "Ready");
+            labelProgressBar1.Value = 100;
         }
 
         #region UI event handlers
@@ -52,6 +56,13 @@ namespace POS.View
             {
                 try
                 {
+                    // use busy cursor
+                    this.UseWaitCursor = true;
+
+                    // update the status bar
+                    labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.TASK_IN_PROGRESS_COLOUR, "Adding new product");
+                    labelProgressBar1.Value = 100;
+
                     // prepare the data
                     float price;
                     float.TryParse(textBox_price.Text, out price);
@@ -84,6 +95,9 @@ namespace POS.View
                     // tell the user and the logger
                     string errorMessage = "Error adding new product: " + ex.Message;
                     logger.Error(ex, errorMessage);
+                    labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.TASK_FAILED_COLOUR, "Error adding new product");
+                    labelProgressBar1.Value = 100;
+                    this.UseWaitCursor = false;
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     // nothing more we can do
@@ -93,6 +107,9 @@ namespace POS.View
                 // success
                 // inform the user and the logger
                 string successMessage = "Successfully added new product";
+                labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.IDLE_COLOUR, "Ready");
+                labelProgressBar1.Value = 100;
+                this.UseWaitCursor = false;
                 MessageBox.Show(successMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 logger.Info(successMessage);
 
@@ -115,6 +132,9 @@ namespace POS.View
             {
                 button_add.Enabled = false;
             }
+
+            labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.IDLE_COLOUR, "Ready");
+            labelProgressBar1.Value = 100;
         }
     }
 }

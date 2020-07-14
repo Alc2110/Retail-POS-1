@@ -13,12 +13,15 @@ using Model.ObjectModel;
 using Controller;
 using System.Diagnostics;
 using System.Reflection;
+using System.Globalization;
 
 namespace POS
 {
     public partial class MainWindow : Form
     {
-        // TODO: implement State pattern
+        // TODO: solve culture problem causing dollar sign to show up in the wrong place
+
+        // TODO: implement State pattern (maybe)
         public State currentState;
 
         // controller dependency injection
@@ -35,14 +38,13 @@ namespace POS
             logger.Info("Initialising main window");
 
             // customer state combo box
-            comboBox_customerState.Items.Add("NSW");
-            comboBox_customerState.Items.Add("Vic");
-            comboBox_customerState.Items.Add("Qld");
-            comboBox_customerState.Items.Add("ACT");
-            comboBox_customerState.Items.Add("NT");
-            comboBox_customerState.Items.Add("SA");
-            comboBox_customerState.Items.Add("WA");
-            comboBox_customerState.Items.Add("Other");
+            // prepare the customer state comboBox
+            foreach (var val in States.GetValues(typeof(States)))
+            {
+                string state = val.ToString();
+                if (!state.Equals("Default"))
+                    comboBox_customerState.Items.Add(state);
+            }
 
             // TODO: implement this
             scriptingToolStripMenuItem.Enabled = false;
@@ -67,6 +69,9 @@ namespace POS
 
         private void setUI()
         {
+            // test
+            //MessageBox.Show("current culture name: " + CultureInfo.CurrentCulture.Name + ". current ui culture name: " + CultureInfo.CurrentUICulture.Name, "Retail POS");");
+
             logger.Info("Resetting the main window");
 
             currentState = State.READY;
@@ -81,7 +86,7 @@ namespace POS
                     addNewStaffToolStripMenuItem.Enabled = true;
 
                     button_Discount.Enabled = true;
-                    button_newItem.Enabled = true;
+                    //button_newItem.Enabled = true;
 
                     break;
 
@@ -90,7 +95,7 @@ namespace POS
                     addNewStaffToolStripMenuItem.Enabled = false;
 
                     button_Discount.Enabled = false;
-                    button_newItem.Enabled = false;
+                    //button_newItem.Enabled = false;
 
                     break;
 
@@ -128,11 +133,11 @@ namespace POS
 
             if (Configuration.USER_LEVEL == Configuration.Role.ADMIN)
             {
-                transactionToolStripMenuItem.Enabled = true;
+                //transactionToolStripMenuItem.Enabled = true;
             }
             else
             {
-                transactionToolStripMenuItem.Enabled = false;
+                //transactionToolStripMenuItem.Enabled = false;
             }
 
             button_newSaleMember.Enabled = true;
@@ -141,9 +146,11 @@ namespace POS
             textBox_itemProductID.Enabled = true;
             textBox_itemQuantity.Enabled = false;
 
-            richTextBox_itemPrice.Text = "0.00";
+            double priceDisplayed = 0.00;
+            string sPriceDisplayed = priceDisplayed.ToString("C2", CultureInfo.GetCultureInfo("en-AU"));
+            richTextBox_itemPrice.Text = sPriceDisplayed;
+            //richTextBox_itemPrice.Text = "0.00";
 
-            reportsToolStripMenuItem.Enabled = false;
             scriptingToolStripMenuItem.Enabled = false;
 
             foreach (ListViewItem listItem in listView_sales.Items)
@@ -227,7 +234,7 @@ namespace POS
                 {
                     // item already exists
                     itemInList = true;
-                    logger.Info("Item of this type is already in list");
+                    logger.Info("Item of this type is already in list (cart)");
 
                     // calculate cost of new items being added
                     float productPrice = retrievedProduct.price;
@@ -273,6 +280,8 @@ namespace POS
                 itemArr[4] = (iQuantity * retrievedProduct.price).ToString();
                 itemArr[3] = retrievedProduct.price.ToString();
                 ListViewItem item = new ListViewItem(itemArr);
+                //item.Font = new Font(item.Font, FontStyle.Regular);
+                item.Font = new Font("Microsoft Sans Serif", 12, FontStyle.Regular);
                 listView_sales.Items.Add(item);
 
                 // select this item in the list
@@ -316,7 +325,14 @@ namespace POS
         }
 
         private void MainWindow_Load(object sender, EventArgs e)
-        { 
+        {
+            // prepare the listView
+            // make the headers bold
+            listView_sales.Font = new Font("Microsoft Sans Serif", 12);
+            for (int i = 0; i < listView_sales.Columns.Count; i++)
+            {
+                listView_sales.Columns[i].ListView.Font = new Font(listView_sales.Columns[i].ListView.Font, FontStyle.Bold);
+            }
         }
 
         private void button_newSaleNonMember_Click(object sender, EventArgs e)
@@ -364,10 +380,15 @@ namespace POS
             if ((currentState == State.SALE_MEMBER) || (currentState == State.SALE_NON_MEMBER))
             {
                 var result = MessageBox.Show("A sale is taking place. Do you really want to close the application?",
-                                                "Close", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
+                                                "Retail POS", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
 
                 if (result != System.Windows.Forms.DialogResult.Yes)
                     e.Cancel = true;
+            }
+
+            if (!(Configuration.currentProgramState == Model.ProgramState.LOGGED_OUT))
+            {
+                Application.Exit();
             }
         }
 
@@ -463,6 +484,7 @@ namespace POS
             }
 
             // found the customer
+            // load the data into the window
             logger.Info("Found customer record");
             button_findCustomer.Enabled = false;
             textBox_customerName.Text = retrievedCustomer.FullName;
@@ -471,39 +493,17 @@ namespace POS
             textBox_customerAddress.Text = retrievedCustomer.Address;
             textBox_customerCity.Text = retrievedCustomer.City;
             textBox_customerPostCode.Text = retrievedCustomer.Postcode.ToString();
-            
-            switch (retrievedCustomer.state)
+            Model.ObjectModel.States retrievedCustomerState = retrievedCustomer.state;
+            string sRetrievedCustomerState = retrievedCustomerState.ToString();
+            int comboBoxIndex = comboBox_customerState.FindStringExact(sRetrievedCustomerState);
+            if (comboBoxIndex!=-1)
             {
-                case Customer.States.ACT:
-                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("ACT");
-                    break;
-                case Customer.States.NSW:
-                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("NSW");
-                    break;
-                case Customer.States.Vic:
-                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("Vic");
-                    break;
-                case Customer.States.Qld:
-                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("Qld");
-                    break;
-                case Customer.States.NT:
-                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("NT");
-                    break;
-                case Customer.States.Tas:
-                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("Tas");
-                    break;
-                case Customer.States.SA:
-                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("SA");
-                    break;
-                case Customer.States.WA:
-                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("WA");
-                    break;
-                case Customer.States.Other:
-                    comboBox_customerState.SelectedIndex = comboBox_customerState.FindStringExact("Other");
-                    break;
-                default:
-                    // this shouldn't happen, but handle it anyway
-                    throw new Exception("Invalid data");
+                comboBox_customerState.SelectedIndex = comboBoxIndex;
+            }
+            else
+            {
+                // shouldn't happen
+                setUI();
             }
 
             textBox_itemProductID.Enabled = true;
@@ -532,6 +532,8 @@ namespace POS
                 DialogResult logoutConfirmation = MessageBox.Show("A sale is taking place. Do you really want to log out?", "Retail POS", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
                 if (logoutConfirmation == DialogResult.Yes)
                 {
+                    Configuration.currentProgramState = Model.ProgramState.LOGGED_OUT;
+
                     logger.Info("Logging out");
                     LoginForm loginForm = new LoginForm();
                     loginForm.Show();
@@ -544,6 +546,8 @@ namespace POS
             }
             else
             {
+                Configuration.currentProgramState = Model.ProgramState.LOGGED_OUT;
+
                 LoginForm loginForm = new LoginForm();
                 loginForm.Show();
                 this.Close();
@@ -638,7 +642,12 @@ namespace POS
                     textBox_itemProductID.Text = string.Empty;
                     // display quantity in quantity textbox, which is readonly
                     textBox_itemQuantity.ReadOnly = true;
-                    //textBox_itemQuantity.Text = listView_sales.SelectedItems[0].SubItems[2].Text;
+                    textBox_itemQuantity.Text = listView_sales.SelectedItems[0].SubItems[2].Text;
+
+                    //string priceDisplayed = string.Format("{0:C}", (listView_sales.SelectedItems[0].SubItems[4].Text));
+                    //richTextBox_itemPrice.Text = priceDisplayed;
+                    double selectedItemTotal = Convert.ToDouble(listView_sales.SelectedItems[0].SubItems[4].Text);
+                    richTextBox_itemPrice.Text = selectedItemTotal.ToString("C", new CultureInfo("en-AU"));
 
                     break;
 
@@ -809,7 +818,7 @@ namespace POS
                 logger.Info("Clear sale requested");
 
                 // clean up and reset
-                richTextBox_itemPrice.Text = "0.00";
+                //richTextBox_itemPrice.Text = "0.00";
                 setUI();
             }
             else if (dialogResult==DialogResult.Cancel)
@@ -835,12 +844,18 @@ namespace POS
                     fTotalCost += fCurrentItemCost;
                 }
 
-                richTextBox_itemPrice.Text = "Total: " + fTotalCost;
+                //richTextBox_itemPrice.Text = "Total: " + fTotalCost;
+                string priceDisplayed = "Total: " + fTotalCost.ToString("C2", new CultureInfo("en-AU"));
+                richTextBox_itemPrice.Text = priceDisplayed;
+
                 button_removeItem.Enabled = true;
             }
             else
             {
-                richTextBox_itemPrice.Text = "0.00";
+                //richTextBox_itemPrice.Text = "0.00";
+                double priceDisplayed = 0.00;
+                richTextBox_itemPrice.Text = priceDisplayed.ToString("C2", new CultureInfo("en-AU"));
+
                 button_removeItem.Enabled = false;
             }
         }
@@ -1062,16 +1077,28 @@ namespace POS
         /// <param name="importController">Controller.SpreadsheetImport</param>
         private void executeImportSpreadsheetController(Controller.SpreadsheetImport importController)
         {
-            // TODO: split this to catch different exception types (database error, file error)
+            // TODO: continue to split this to catch different exception types (database error, file error)
             try
             {
                 // execute it
                 importController.openSpreadsheet();
                 importController.importUpdate();
             }
+            catch (System.IO.InvalidDataException invDatEx)
+            {
+                // found invalid data in spreadsheet
+                string importDataErrorMessage = "Error importing " + importController.importType + " data: " + invDatEx.Message;
+                System.Windows.Forms.MessageBox.Show(importDataErrorMessage, "Retail POS",
+                                                     System.Windows.Forms.MessageBoxButtons.OK,
+                                                     System.Windows.Forms.MessageBoxIcon.Error);
+                logger.Error(invDatEx, importDataErrorMessage);
+                logger.Error("Stack trace: " + invDatEx.StackTrace);
+
+                return;
+            }
             catch (Exception ex)
             {
-                // it failed
+                // some other error
                 // tell the user and the logger
                 string importDataErrorMessage = "Error importing " + importController.importType + " data: " + ex.Message;
                 System.Windows.Forms.MessageBox.Show(importDataErrorMessage, "Retail POS",
@@ -1124,6 +1151,12 @@ namespace POS
         {
             AboutBox aboutBox = new AboutBox();
             aboutBox.Show();
+        }
+
+        private void viewTransactionHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            View.ViewTransactionsForm transactionsListForm = new ViewTransactionsForm();
+            transactionsListForm.Show();
         }
     }
 }

@@ -27,3 +27,8 @@ C:\Users\alexc\Documents\GitHub\Retail-POS\POS_Tests\obj\Release\POS_Tests.cspro
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS_Tests\obj\Release\POS_Tests.csproj.CopyComplete
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS_Tests\obj\Release\POS_Tests.dll
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS_Tests\obj\Release\POS_Tests.pdb
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS_Tests\bin\Release\labelProgressBarControl.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS_Tests\bin\Release\CircularProgressBar.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS_Tests\bin\Release\WinFormAnimation.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS_Tests\bin\Release\labelProgressBarControl.pdb
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS_Tests\bin\Release\CircularProgressBar.xml

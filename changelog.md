@@ -1,6 +1,17 @@
 # Retail POS - Changelog
 All notable changes to this project will be documented in this file. Note that release dates are given in dd/mm/yyyy format.
 
+## [Unreleased] - dd/mm/yyyy
+### Changed
+- rearranged main window
+- SQL scripts
+### Fixed
+- bug with behaviour of list view in transactions form
+
+## [0.1.2] - 03/06/2020
+### Fixed
+- process still running after application is closed
+
 ## [0.1.1] - 20/05/2020
 ### Added
 - improved dialogs associated with login process

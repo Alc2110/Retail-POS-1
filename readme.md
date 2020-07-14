@@ -1,5 +1,5 @@
 # Retail POS
-A toy application for a Retail Point of Sale (POS) system. Targets the .NET Framework version 4.6.1 using WinForms. It uses a client-server architecture and can be used on a local network.
+A toy application for a Retail Point of Sale (POS) system. It is not for professional use!!! Targets the .NET Framework version 4.6.1 using WinForms. It uses a client-server architecture and can be used on a local network.
 
 The server component is a Microsoft SQL Server database. A database is created on a server computer. SQL scripts to generate the table structure are included.
 
@@ -27,8 +27,12 @@ Uses a SQL Server 2017 database. Create a new database, then run the script `sql
 ## Usage
 Use cases are provided in the `docs` directory. User manual to be part of a future release.
 
+## Attributions
+Icons by Icons8:
+http://www.icons8.com
+
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+Please ask.
 
 ## License
 None

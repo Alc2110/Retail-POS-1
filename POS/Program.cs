@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
+using Model;
 
 namespace POS
 {
@@ -17,6 +18,9 @@ namespace POS
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            // set the program state
+            Configuration.currentProgramState = ProgramState.LOGGED_OUT;
 
             // configure the logger
             Configuration.Logger.ConfigureLogger();

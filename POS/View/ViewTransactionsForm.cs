@@ -27,17 +27,27 @@ namespace POS.View
             logger.Info("Initialising view transactions form");
 
             // prepare the listView
-            listView_transactions.Columns.Add("Transaction ID");
-            listView_transactions.Columns.Add("Timestamp");
-            listView_transactions.Columns.Add("Customer ID");
-            listView_transactions.Columns.Add("Customer full name");
-            listView_transactions.Columns.Add("Staff ID");
-            listView_transactions.Columns.Add("Staff full name");
-            listView_transactions.Columns.Add("Product ID");
-            listView_transactions.Columns.Add("Product description");
-            listView_transactions.Columns.Add("Product price");
+            listView_transactions.Columns.Add("Transaction ID", 100);
+            listView_transactions.Columns.Add("Timestamp", 200);
+            listView_transactions.Columns.Add("Customer ID", 100);
+            listView_transactions.Columns.Add("Customer full name", 200);
+            listView_transactions.Columns.Add("Staff ID", 100);
+            listView_transactions.Columns.Add("Staff full name", 200);
+            listView_transactions.Columns.Add("Product ID", 100);
+            listView_transactions.Columns.Add("Product description", 200);
+            listView_transactions.Columns.Add("Product price", 100);
             listView_transactions.View = System.Windows.Forms.View.Details;
             listView_transactions.GridLines = true;
+            // make the headers bold
+            for (int i = 0; i < listView_transactions.Columns.Count; i++)
+            {
+                listView_transactions.Columns[i].ListView.Font = new Font(listView_transactions.Columns[i].ListView.Font, FontStyle.Bold);
+            }
+
+            // colour and position the busy indicator properly
+            circularProgressBar1.Location = calculateBusyIndicatorPos();
+            circularProgressBar1.ProgressColor = Configuration.ProgressBarColours.TASK_IN_PROGRESS_COLOUR;
+            showBusyIndicator();
         }
 
         #region UI event handlers
@@ -46,6 +56,16 @@ namespace POS.View
             logger.Info("Closing view transactions form");
 
             this.Close();
+        }
+
+        private void button_viewInvoices_Click(object sender, EventArgs e)
+        {
+            // TODO: invoices
+        }
+
+        private void ViewTransactionsForm_Resize(object sender, EventArgs e)
+        {
+            circularProgressBar1.Location = calculateBusyIndicatorPos();
         }
         #endregion
 
@@ -57,12 +77,16 @@ namespace POS.View
             }
             else
             {
+                showBusyIndicator();
+
                 populateView(sender, args);
             }
         }
 
         private void populateView(object sender, GetAllTransactionsEventArgs args)
         {
+            showBusyIndicator();
+
             // tell the listView it is being updated
             listView_transactions.BeginUpdate();
 
@@ -93,11 +117,14 @@ namespace POS.View
                 itemArr[8] = transaction.product.price.ToString();
                 
                 ListViewItem transactionItem = new ListViewItem(itemArr);
+                transactionItem.Font = new Font(transactionItem.Font, FontStyle.Regular);
                 listView_transactions.Items.Add(transactionItem);
             }
 
             // tell the listView it is ready
             listView_transactions.EndUpdate();
+
+            removeBusyIndicator();
         }
 
         private async void ViewTransactionsForm_Load(object sender, EventArgs e)
@@ -108,20 +135,58 @@ namespace POS.View
             // populate the list upon loading
             try
             {
+                showBusyIndicator();
+
                 // run this operation in a separate thread
                 await Task.Run(() =>
                 {
                     POS.Configuration.transactionOps.getAllTransactions();
                 });
             }
+            catch (System.IO.InvalidDataException invDatEx)
+            {
+                // found invalid data in the database
+                // tell the user and the logger
+                string errorMessage = "Error: found invalid data in database: " + invDatEx.Message;
+                logger.Error(invDatEx, errorMessage);
+                logger.Error("Stack trace: " + invDatEx.Message);
+
+                MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                removeBusyIndicator();
+            }
             catch (Exception ex)
             {
-                // it failed
+                // some other error
                 // tell the user and the logger
                 string errorMessage = "Error: could not retrieve data from database: " + ex.Message;
                 logger.Error(ex, errorMessage);
                 logger.Error("Stack trace: " + ex.StackTrace);
+
+                MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                removeBusyIndicator();
             }
+        }
+
+        private System.Drawing.Point calculateBusyIndicatorPos()
+        {
+            int xPos = ((groupBox1.Width) / 2) - ((circularProgressBar1.Width) / 2);
+            int yPos = ((groupBox1.Height) / 2) - ((circularProgressBar1.Height) / 2);
+
+            return new System.Drawing.Point(xPos, yPos);
+        }
+
+        private void removeBusyIndicator()
+        {
+            circularProgressBar1.Visible = false;
+            listView_transactions.Visible = true;
+        }
+
+        private void showBusyIndicator()
+        {
+            circularProgressBar1.Visible = true;
+            listView_transactions.Visible = false;
         }
     }
 }

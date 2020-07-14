@@ -31,12 +31,22 @@ namespace POS.View
             logger.Info("Initialising view staff form");
 
             // prepare the listView
-            listView_staff.Columns.Add("ID");
-            listView_staff.Columns.Add("Full name");
-            listView_staff.Columns.Add("Password");
-            listView_staff.Columns.Add("Privelege");
+            listView_staff.Columns.Add("ID", 50);
+            listView_staff.Columns.Add("Full name", 200);
+            listView_staff.Columns.Add("Password", 300);
+            listView_staff.Columns.Add("Privelege", 75);
             listView_staff.View = System.Windows.Forms.View.Details;
             listView_staff.GridLines = true;
+            // make the headers bold
+            for (int i = 0; i < listView_staff.Columns.Count; i++)
+            {
+                listView_staff.Columns[i].ListView.Font = new Font(listView_staff.Columns[i].ListView.Font, FontStyle.Bold);
+            }
+
+            // colour and position the busy indicator properly
+            circularProgressBar1.Location = calculateBusyIndicatorPos();
+            circularProgressBar1.ProgressColor = Configuration.ProgressBarColours.TASK_IN_PROGRESS_COLOUR;
+            showBusyIndicator();
 
             // can't delete anything until something is selected
             button_deleteSelectedStaff.Enabled = false;
@@ -65,6 +75,8 @@ namespace POS.View
             {
                 try
                 {
+                    showBusyIndicator();
+
                     // prepare the data
                     int idNum;
                     Int32.TryParse(listView_staff.SelectedItems[0].SubItems[0].Text, out idNum);
@@ -88,9 +100,13 @@ namespace POS.View
                     logger.Error(ex, errorMessage);
                     logger.Error("Stack Trace: " + ex.StackTrace);
 
+                    removeBusyIndicator();
+
                     // nothing more we can do
                     return;
                 }
+
+                removeBusyIndicator();
 
                 // at this point, it succeeded
                 // tell the user and the logger
@@ -120,6 +136,11 @@ namespace POS.View
                 button_deleteSelectedStaff.Enabled = false;
             }
         }
+
+        private void ViewStaffForm_Resize(object sender, EventArgs e)
+        {
+            circularProgressBar1.Location = calculateBusyIndicatorPos();
+        }
         #endregion
 
         private void staffEventHandler(object sender, GetAllStaffEventArgs args)
@@ -136,14 +157,13 @@ namespace POS.View
 
         private void populateView(object sender, GetAllStaffEventArgs args)
         {
+            showBusyIndicator();
+
             // tell the listView it is being updated
             listView_staff.BeginUpdate();
 
             // clear the listView
-            foreach (ListViewItem staffListViewItem in listView_staff.Items)
-            {
-                listView_staff.Items.Remove(staffListViewItem);
-            }
+            listView_staff.Items.Clear();
 
             // populate it
             foreach (var staff in args.getList())
@@ -155,11 +175,14 @@ namespace POS.View
                 itemArr[3] = staff.privelege.ToString();
 
                 ListViewItem staffListViewItem = new ListViewItem(itemArr);
+                staffListViewItem.Font = new Font(staffListViewItem.Font, FontStyle.Regular);
                 listView_staff.Items.Add(staffListViewItem);
             }
 
             // tell the listView it is ready
             listView_staff.EndUpdate();
+
+            removeBusyIndicator();
         }
 
         private async void ViewStaffForm_Load(object sender, EventArgs e)
@@ -170,6 +193,8 @@ namespace POS.View
             // populate the list view upon loading
             try
             {
+                showBusyIndicator();
+
                 // run this task in a separate thread
                 await Task.Run(() =>
                 {
@@ -184,7 +209,31 @@ namespace POS.View
                 logger.Error(ex, errorMessage);
                 logger.Error("Stack Trace: " + ex.StackTrace);
                 MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                removeBusyIndicator();
+
+                return;
             }
+        }
+
+        private System.Drawing.Point calculateBusyIndicatorPos()
+        {
+            int xPos = ((groupBox1.Width) / 2) - ((circularProgressBar1.Width) / 2);
+            int yPos = ((groupBox1.Height) / 2) - ((circularProgressBar1.Height) / 2);
+
+            return new System.Drawing.Point(xPos, yPos);
+        }
+
+        private void removeBusyIndicator()
+        {
+            circularProgressBar1.Visible = false;
+            listView_staff.Visible = true;
+        }
+
+        private void showBusyIndicator()
+        {
+            circularProgressBar1.Visible = true;
+            listView_staff.Visible = false;
         }
     }
 }

@@ -35,6 +35,7 @@
             this.addNewStaffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addNewCustomerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addNewProductToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.databaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scriptingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,9 +47,7 @@
             this.customersToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.productsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.transactionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.transactionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewTransactionHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -66,7 +65,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button_addCustomer = new System.Windows.Forms.Button();
             this.button_findCustomer = new System.Windows.Forms.Button();
             this.textBox_customerAccNo = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -86,7 +84,6 @@
             this.columnHeader_price = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader_total = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button_findItem = new System.Windows.Forms.Button();
-            this.button_newItem = new System.Windows.Forms.Button();
             this.button_customerList = new System.Windows.Forms.Button();
             this.button_Discount = new System.Windows.Forms.Button();
             this.button_clearSale = new System.Windows.Forms.Button();
@@ -109,8 +106,6 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.databaseToolStripMenuItem,
-            this.transactionToolStripMenuItem,
-            this.reportsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -124,7 +119,8 @@
             this.exitToolStripMenuItem,
             this.addNewStaffToolStripMenuItem,
             this.addNewCustomerToolStripMenuItem,
-            this.logoutToolStripMenuItem});
+            this.logoutToolStripMenuItem,
+            this.addNewProductToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "&File";
@@ -132,45 +128,52 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // addNewStaffToolStripMenuItem
             // 
             this.addNewStaffToolStripMenuItem.Name = "addNewStaffToolStripMenuItem";
-            this.addNewStaffToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addNewStaffToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.addNewStaffToolStripMenuItem.Text = "Add new staff";
             this.addNewStaffToolStripMenuItem.Click += new System.EventHandler(this.addNewStaffToolStripMenuItem_Click);
             // 
             // addNewCustomerToolStripMenuItem
             // 
             this.addNewCustomerToolStripMenuItem.Name = "addNewCustomerToolStripMenuItem";
-            this.addNewCustomerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addNewCustomerToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.addNewCustomerToolStripMenuItem.Text = "Add new customer";
             this.addNewCustomerToolStripMenuItem.Click += new System.EventHandler(this.addNewCustomerToolStripMenuItem_Click);
             // 
             // logoutToolStripMenuItem
             // 
             this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.logoutToolStripMenuItem.Text = "Logout";
             this.logoutToolStripMenuItem.Click += new System.EventHandler(this.logoutToolStripMenuItem_Click);
+            // 
+            // addNewProductToolStripMenuItem
+            // 
+            this.addNewProductToolStripMenuItem.Name = "addNewProductToolStripMenuItem";
+            this.addNewProductToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.addNewProductToolStripMenuItem.Text = "Add new product";
             // 
             // databaseToolStripMenuItem
             // 
             this.databaseToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.scriptingToolStripMenuItem,
             this.iToolStripMenuItem,
-            this.exportToolStripMenuItem});
+            this.exportToolStripMenuItem,
+            this.viewTransactionHistoryToolStripMenuItem});
             this.databaseToolStripMenuItem.Name = "databaseToolStripMenuItem";
-            this.databaseToolStripMenuItem.Size = new System.Drawing.Size(67, 20);
-            this.databaseToolStripMenuItem.Text = "&Database";
+            this.databaseToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.databaseToolStripMenuItem.Text = "&Data";
             // 
             // scriptingToolStripMenuItem
             // 
             this.scriptingToolStripMenuItem.Name = "scriptingToolStripMenuItem";
-            this.scriptingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.scriptingToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.scriptingToolStripMenuItem.Text = "Scripting";
             // 
             // iToolStripMenuItem
@@ -180,7 +183,7 @@
             this.customersToolStripMenuItem2,
             this.productsToolStripMenuItem2});
             this.iToolStripMenuItem.Name = "iToolStripMenuItem";
-            this.iToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.iToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.iToolStripMenuItem.Text = "Import";
             // 
             // staffToolStripMenuItem2
@@ -212,7 +215,7 @@
             this.productsToolStripMenuItem1,
             this.transactionsToolStripMenuItem});
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.exportToolStripMenuItem.Text = "Export";
             // 
             // staffToolStripMenuItem1
@@ -243,26 +246,12 @@
             this.transactionsToolStripMenuItem.Text = "Transactions";
             this.transactionsToolStripMenuItem.Click += new System.EventHandler(this.transactionsToolStripMenuItem_Click);
             // 
-            // transactionToolStripMenuItem
+            // viewTransactionHistoryToolStripMenuItem
             // 
-            this.transactionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.viewHistoryToolStripMenuItem});
-            this.transactionToolStripMenuItem.Name = "transactionToolStripMenuItem";
-            this.transactionToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
-            this.transactionToolStripMenuItem.Text = "&Transaction";
-            // 
-            // viewHistoryToolStripMenuItem
-            // 
-            this.viewHistoryToolStripMenuItem.Name = "viewHistoryToolStripMenuItem";
-            this.viewHistoryToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
-            this.viewHistoryToolStripMenuItem.Text = "View history";
-            this.viewHistoryToolStripMenuItem.Click += new System.EventHandler(this.viewHistoryToolStripMenuItem_Click);
-            // 
-            // reportsToolStripMenuItem
-            // 
-            this.reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
-            this.reportsToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.reportsToolStripMenuItem.Text = "&Reports";
+            this.viewTransactionHistoryToolStripMenuItem.Name = "viewTransactionHistoryToolStripMenuItem";
+            this.viewTransactionHistoryToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.viewTransactionHistoryToolStripMenuItem.Text = "View transaction history";
+            this.viewTransactionHistoryToolStripMenuItem.Click += new System.EventHandler(this.viewTransactionHistoryToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -297,13 +286,12 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.button_addCustomer);
             this.groupBox1.Controls.Add(this.button_findCustomer);
             this.groupBox1.Controls.Add(this.textBox_customerAccNo);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 27);
+            this.groupBox1.Location = new System.Drawing.Point(546, 94);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(612, 169);
+            this.groupBox1.Size = new System.Drawing.Size(540, 169);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Customer details";
@@ -311,7 +299,7 @@
             // textBox_customerEmail
             // 
             this.textBox_customerEmail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_customerEmail.Location = new System.Drawing.Point(388, 82);
+            this.textBox_customerEmail.Location = new System.Drawing.Point(316, 82);
             this.textBox_customerEmail.Name = "textBox_customerEmail";
             this.textBox_customerEmail.Size = new System.Drawing.Size(218, 20);
             this.textBox_customerEmail.TabIndex = 17;
@@ -319,7 +307,7 @@
             // textBox_customerPhone
             // 
             this.textBox_customerPhone.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_customerPhone.Location = new System.Drawing.Point(388, 56);
+            this.textBox_customerPhone.Location = new System.Drawing.Point(316, 56);
             this.textBox_customerPhone.Name = "textBox_customerPhone";
             this.textBox_customerPhone.Size = new System.Drawing.Size(218, 20);
             this.textBox_customerPhone.TabIndex = 16;
@@ -330,7 +318,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_customerPostCode.Location = new System.Drawing.Point(206, 134);
             this.textBox_customerPostCode.Name = "textBox_customerPostCode";
-            this.textBox_customerPostCode.Size = new System.Drawing.Size(112, 20);
+            this.textBox_customerPostCode.Size = new System.Drawing.Size(55, 20);
             this.textBox_customerPostCode.TabIndex = 15;
             // 
             // comboBox_customerState
@@ -347,7 +335,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_customerCity.Location = new System.Drawing.Point(65, 108);
             this.textBox_customerCity.Name = "textBox_customerCity";
-            this.textBox_customerCity.Size = new System.Drawing.Size(253, 20);
+            this.textBox_customerCity.Size = new System.Drawing.Size(196, 20);
             this.textBox_customerCity.TabIndex = 13;
             // 
             // textBox_customerAddress
@@ -356,7 +344,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_customerAddress.Location = new System.Drawing.Point(65, 82);
             this.textBox_customerAddress.Name = "textBox_customerAddress";
-            this.textBox_customerAddress.Size = new System.Drawing.Size(253, 20);
+            this.textBox_customerAddress.Size = new System.Drawing.Size(196, 20);
             this.textBox_customerAddress.TabIndex = 12;
             // 
             // textBox_customerName
@@ -365,7 +353,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBox_customerName.Location = new System.Drawing.Point(65, 56);
             this.textBox_customerName.Name = "textBox_customerName";
-            this.textBox_customerName.Size = new System.Drawing.Size(253, 20);
+            this.textBox_customerName.Size = new System.Drawing.Size(196, 20);
             this.textBox_customerName.TabIndex = 11;
             // 
             // label8
@@ -381,7 +369,7 @@
             // 
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(344, 85);
+            this.label7.Location = new System.Drawing.Point(272, 85);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(32, 13);
             this.label7.TabIndex = 9;
@@ -391,7 +379,7 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(344, 59);
+            this.label6.Location = new System.Drawing.Point(272, 59);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(38, 13);
             this.label6.TabIndex = 8;
@@ -433,23 +421,12 @@
             this.label2.TabIndex = 4;
             this.label2.Text = "Name";
             // 
-            // button_addCustomer
-            // 
-            this.button_addCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_addCustomer.Location = new System.Drawing.Point(531, 22);
-            this.button_addCustomer.Name = "button_addCustomer";
-            this.button_addCustomer.Size = new System.Drawing.Size(75, 23);
-            this.button_addCustomer.TabIndex = 3;
-            this.button_addCustomer.Text = "Add";
-            this.button_addCustomer.UseVisualStyleBackColor = true;
-            this.button_addCustomer.Click += new System.EventHandler(this.button_addCustomer_Click);
-            // 
             // button_findCustomer
             // 
             this.button_findCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_findCustomer.Location = new System.Drawing.Point(450, 22);
+            this.button_findCustomer.Location = new System.Drawing.Point(316, 22);
             this.button_findCustomer.Name = "button_findCustomer";
-            this.button_findCustomer.Size = new System.Drawing.Size(75, 23);
+            this.button_findCustomer.Size = new System.Drawing.Size(218, 23);
             this.button_findCustomer.TabIndex = 2;
             this.button_findCustomer.Text = "Find";
             this.button_findCustomer.UseVisualStyleBackColor = true;
@@ -459,9 +436,9 @@
             // 
             this.textBox_customerAccNo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_customerAccNo.Location = new System.Drawing.Point(118, 22);
+            this.textBox_customerAccNo.Location = new System.Drawing.Point(146, 22);
             this.textBox_customerAccNo.Name = "textBox_customerAccNo";
-            this.textBox_customerAccNo.Size = new System.Drawing.Size(200, 20);
+            this.textBox_customerAccNo.Size = new System.Drawing.Size(115, 20);
             this.textBox_customerAccNo.TabIndex = 1;
             // 
             // label1
@@ -469,13 +446,12 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 25);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(106, 13);
+            this.label1.Size = new System.Drawing.Size(134, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Customer account #:";
+            this.label1.Text = "Customer account number:";
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.button_priceLookup);
             this.groupBox2.Controls.Add(this.button_removeItem);
             this.groupBox2.Controls.Add(this.button_addItem);
@@ -484,16 +460,16 @@
             this.groupBox2.Controls.Add(this.label10);
             this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.richTextBox_itemPrice);
-            this.groupBox2.Location = new System.Drawing.Point(630, 27);
+            this.groupBox2.Location = new System.Drawing.Point(11, 94);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(457, 169);
+            this.groupBox2.Size = new System.Drawing.Size(529, 169);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Items";
             // 
             // button_priceLookup
             // 
-            this.button_priceLookup.Location = new System.Drawing.Point(376, 106);
+            this.button_priceLookup.Location = new System.Drawing.Point(448, 106);
             this.button_priceLookup.Name = "button_priceLookup";
             this.button_priceLookup.Size = new System.Drawing.Size(75, 49);
             this.button_priceLookup.TabIndex = 7;
@@ -503,21 +479,21 @@
             // 
             // button_removeItem
             // 
-            this.button_removeItem.Location = new System.Drawing.Point(295, 106);
+            this.button_removeItem.Location = new System.Drawing.Point(367, 106);
             this.button_removeItem.Name = "button_removeItem";
             this.button_removeItem.Size = new System.Drawing.Size(75, 49);
             this.button_removeItem.TabIndex = 6;
-            this.button_removeItem.Text = "Remove item";
+            this.button_removeItem.Text = "Remove item from cart";
             this.button_removeItem.UseVisualStyleBackColor = true;
             this.button_removeItem.Click += new System.EventHandler(this.button_removeItem_Click);
             // 
             // button_addItem
             // 
-            this.button_addItem.Location = new System.Drawing.Point(214, 106);
+            this.button_addItem.Location = new System.Drawing.Point(286, 106);
             this.button_addItem.Name = "button_addItem";
             this.button_addItem.Size = new System.Drawing.Size(75, 49);
             this.button_addItem.TabIndex = 5;
-            this.button_addItem.Text = "Add item";
+            this.button_addItem.Text = "Add item to cart";
             this.button_addItem.UseVisualStyleBackColor = true;
             this.button_addItem.Click += new System.EventHandler(this.button_addItem_Click);
             // 
@@ -525,7 +501,7 @@
             // 
             this.textBox_itemQuantity.Location = new System.Drawing.Point(73, 135);
             this.textBox_itemQuantity.Name = "textBox_itemQuantity";
-            this.textBox_itemQuantity.Size = new System.Drawing.Size(135, 20);
+            this.textBox_itemQuantity.Size = new System.Drawing.Size(207, 20);
             this.textBox_itemQuantity.TabIndex = 4;
             this.textBox_itemQuantity.TextChanged += new System.EventHandler(this.textBox_itemQuantity_TextChanged);
             this.textBox_itemQuantity.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.textBox_itemQuantity_PreviewKeyDown);
@@ -534,7 +510,7 @@
             // 
             this.textBox_itemProductID.Location = new System.Drawing.Point(73, 106);
             this.textBox_itemProductID.Name = "textBox_itemProductID";
-            this.textBox_itemProductID.Size = new System.Drawing.Size(135, 20);
+            this.textBox_itemProductID.Size = new System.Drawing.Size(207, 20);
             this.textBox_itemProductID.TabIndex = 3;
             this.textBox_itemProductID.TextChanged += new System.EventHandler(this.textBox_itemProductID_TextChanged);
             this.textBox_itemProductID.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.textBox_itemProductID_PreviewKeyDown);
@@ -564,8 +540,8 @@
             this.richTextBox_itemPrice.Location = new System.Drawing.Point(6, 13);
             this.richTextBox_itemPrice.Name = "richTextBox_itemPrice";
             this.richTextBox_itemPrice.ReadOnly = true;
-            this.richTextBox_itemPrice.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.richTextBox_itemPrice.Size = new System.Drawing.Size(445, 87);
+            this.richTextBox_itemPrice.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.richTextBox_itemPrice.Size = new System.Drawing.Size(517, 87);
             this.richTextBox_itemPrice.TabIndex = 0;
             this.richTextBox_itemPrice.Text = "0.00";
             // 
@@ -580,10 +556,11 @@
             this.columnHeader_qty,
             this.columnHeader_price,
             this.columnHeader_total});
+            this.listView_sales.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
             this.listView_sales.HideSelection = false;
-            this.listView_sales.Location = new System.Drawing.Point(12, 202);
+            this.listView_sales.Location = new System.Drawing.Point(12, 273);
             this.listView_sales.Name = "listView_sales";
-            this.listView_sales.Size = new System.Drawing.Size(1075, 265);
+            this.listView_sales.Size = new System.Drawing.Size(1075, 308);
             this.listView_sales.TabIndex = 3;
             this.listView_sales.UseCompatibleStateImageBehavior = false;
             this.listView_sales.View = System.Windows.Forms.View.Details;
@@ -591,17 +568,18 @@
             // 
             // columnHeader_itemNumber
             // 
-            this.columnHeader_itemNumber.Text = "Item #";
+            this.columnHeader_itemNumber.Text = "Item Number";
             this.columnHeader_itemNumber.Width = 182;
             // 
             // columnHeader_desc
             // 
             this.columnHeader_desc.Text = "Description";
-            this.columnHeader_desc.Width = 308;
+            this.columnHeader_desc.Width = 560;
             // 
             // columnHeader_qty
             // 
-            this.columnHeader_qty.Text = "Qty";
+            this.columnHeader_qty.Text = "Quantity";
+            this.columnHeader_qty.Width = 105;
             // 
             // columnHeader_price
             // 
@@ -615,41 +593,24 @@
             // 
             // button_findItem
             // 
-            this.button_findItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button_findItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_findItem.Image = ((System.Drawing.Image)(resources.GetObject("button_findItem.Image")));
+            this.button_findItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_findItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.button_findItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_findItem.Location = new System.Drawing.Point(12, 473);
+            this.button_findItem.Location = new System.Drawing.Point(769, 28);
             this.button_findItem.Name = "button_findItem";
-            this.button_findItem.Size = new System.Drawing.Size(127, 49);
+            this.button_findItem.Size = new System.Drawing.Size(75, 61);
             this.button_findItem.TabIndex = 8;
-            this.button_findItem.Text = "Find item";
-            this.button_findItem.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.button_findItem.Text = "Product List";
             this.button_findItem.UseVisualStyleBackColor = true;
             this.button_findItem.Click += new System.EventHandler(this.button_findItem_Click);
             // 
-            // button_newItem
-            // 
-            this.button_newItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button_newItem.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_newItem.Image = ((System.Drawing.Image)(resources.GetObject("button_newItem.Image")));
-            this.button_newItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_newItem.Location = new System.Drawing.Point(145, 473);
-            this.button_newItem.Name = "button_newItem";
-            this.button_newItem.Size = new System.Drawing.Size(127, 49);
-            this.button_newItem.TabIndex = 9;
-            this.button_newItem.Text = "New item";
-            this.button_newItem.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button_newItem.UseVisualStyleBackColor = true;
-            this.button_newItem.Click += new System.EventHandler(this.button_newItem_Click);
-            // 
             // button_customerList
             // 
-            this.button_customerList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_customerList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_customerList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.button_customerList.Location = new System.Drawing.Point(278, 473);
+            this.button_customerList.Location = new System.Drawing.Point(850, 28);
             this.button_customerList.Name = "button_customerList";
-            this.button_customerList.Size = new System.Drawing.Size(75, 49);
+            this.button_customerList.Size = new System.Drawing.Size(75, 61);
             this.button_customerList.TabIndex = 10;
             this.button_customerList.Text = "Customer List";
             this.button_customerList.UseVisualStyleBackColor = true;
@@ -657,23 +618,21 @@
             // 
             // button_Discount
             // 
-            this.button_Discount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_Discount.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.button_Discount.Location = new System.Drawing.Point(440, 473);
+            this.button_Discount.Location = new System.Drawing.Point(184, 29);
             this.button_Discount.Name = "button_Discount";
-            this.button_Discount.Size = new System.Drawing.Size(75, 49);
+            this.button_Discount.Size = new System.Drawing.Size(75, 61);
             this.button_Discount.TabIndex = 11;
-            this.button_Discount.Text = "Discount";
+            this.button_Discount.Text = "Apply Discount";
             this.button_Discount.UseVisualStyleBackColor = true;
             this.button_Discount.Click += new System.EventHandler(this.button_Discount_Click);
             // 
             // button_clearSale
             // 
-            this.button_clearSale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.button_clearSale.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_clearSale.Location = new System.Drawing.Point(521, 473);
+            this.button_clearSale.Location = new System.Drawing.Point(265, 29);
             this.button_clearSale.Name = "button_clearSale";
-            this.button_clearSale.Size = new System.Drawing.Size(75, 49);
+            this.button_clearSale.Size = new System.Drawing.Size(75, 61);
             this.button_clearSale.TabIndex = 12;
             this.button_clearSale.Text = "Clear Sale";
             this.button_clearSale.UseVisualStyleBackColor = true;
@@ -681,11 +640,11 @@
             // 
             // button_logOut
             // 
-            this.button_logOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_logOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_logOut.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button_logOut.Location = new System.Drawing.Point(602, 473);
+            this.button_logOut.Location = new System.Drawing.Point(1012, 28);
             this.button_logOut.Name = "button_logOut";
-            this.button_logOut.Size = new System.Drawing.Size(75, 49);
+            this.button_logOut.Size = new System.Drawing.Size(75, 61);
             this.button_logOut.TabIndex = 13;
             this.button_logOut.Text = "Log Out";
             this.button_logOut.UseVisualStyleBackColor = true;
@@ -693,13 +652,12 @@
             // 
             // button_checkout
             // 
-            this.button_checkout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_checkout.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
             this.button_checkout.Image = ((System.Drawing.Image)(resources.GetObject("button_checkout.Image")));
             this.button_checkout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button_checkout.Location = new System.Drawing.Point(914, 473);
+            this.button_checkout.Location = new System.Drawing.Point(346, 29);
             this.button_checkout.Name = "button_checkout";
-            this.button_checkout.Size = new System.Drawing.Size(173, 49);
+            this.button_checkout.Size = new System.Drawing.Size(194, 61);
             this.button_checkout.TabIndex = 14;
             this.button_checkout.Text = "Checkout";
             this.button_checkout.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -708,10 +666,9 @@
             // 
             // button_newSaleMember
             // 
-            this.button_newSaleMember.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_newSaleMember.Location = new System.Drawing.Point(833, 473);
+            this.button_newSaleMember.Location = new System.Drawing.Point(12, 29);
             this.button_newSaleMember.Name = "button_newSaleMember";
-            this.button_newSaleMember.Size = new System.Drawing.Size(75, 49);
+            this.button_newSaleMember.Size = new System.Drawing.Size(75, 61);
             this.button_newSaleMember.TabIndex = 15;
             this.button_newSaleMember.Text = "New Sale (member)";
             this.button_newSaleMember.UseVisualStyleBackColor = true;
@@ -719,10 +676,9 @@
             // 
             // button_newSaleNonMember
             // 
-            this.button_newSaleNonMember.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_newSaleNonMember.Location = new System.Drawing.Point(742, 473);
+            this.button_newSaleNonMember.Location = new System.Drawing.Point(93, 29);
             this.button_newSaleNonMember.Name = "button_newSaleNonMember";
-            this.button_newSaleNonMember.Size = new System.Drawing.Size(85, 49);
+            this.button_newSaleNonMember.Size = new System.Drawing.Size(85, 61);
             this.button_newSaleNonMember.TabIndex = 16;
             this.button_newSaleNonMember.Text = "New Sale (non-member)";
             this.button_newSaleNonMember.UseVisualStyleBackColor = true;
@@ -730,11 +686,11 @@
             // 
             // button_staffList
             // 
-            this.button_staffList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button_staffList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_staffList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.button_staffList.Location = new System.Drawing.Point(359, 473);
+            this.button_staffList.Location = new System.Drawing.Point(931, 28);
             this.button_staffList.Name = "button_staffList";
-            this.button_staffList.Size = new System.Drawing.Size(75, 49);
+            this.button_staffList.Size = new System.Drawing.Size(75, 61);
             this.button_staffList.TabIndex = 17;
             this.button_staffList.Text = "Staff List";
             this.button_staffList.UseVisualStyleBackColor = true;
@@ -745,7 +701,7 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel_accType,
             this.toolStripStatusLabel_state});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 527);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 584);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1099, 22);
             this.statusStrip1.TabIndex = 18;
@@ -767,7 +723,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1099, 549);
+            this.ClientSize = new System.Drawing.Size(1099, 606);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.button_staffList);
             this.Controls.Add(this.button_newSaleNonMember);
@@ -777,7 +733,6 @@
             this.Controls.Add(this.button_clearSale);
             this.Controls.Add(this.button_Discount);
             this.Controls.Add(this.button_customerList);
-            this.Controls.Add(this.button_newItem);
             this.Controls.Add(this.button_findItem);
             this.Controls.Add(this.listView_sales);
             this.Controls.Add(this.groupBox2);
@@ -806,11 +761,8 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem databaseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem transactionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button_addCustomer;
         private System.Windows.Forms.Button button_findCustomer;
         private System.Windows.Forms.TextBox textBox_customerAccNo;
         private System.Windows.Forms.Label label1;
@@ -839,7 +791,6 @@
         private System.Windows.Forms.Button button_addItem;
         private System.Windows.Forms.ListView listView_sales;
         private System.Windows.Forms.Button button_findItem;
-        private System.Windows.Forms.Button button_newItem;
         private System.Windows.Forms.Button button_customerList;
         private System.Windows.Forms.Button button_Discount;
         private System.Windows.Forms.Button button_clearSale;
@@ -851,7 +802,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader_price;
         private System.Windows.Forms.ColumnHeader columnHeader_total;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewHistoryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addNewStaffToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addNewCustomerToolStripMenuItem;
@@ -872,6 +822,8 @@
         private System.Windows.Forms.ToolStripMenuItem staffToolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem customersToolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem productsToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem viewTransactionHistoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addNewProductToolStripMenuItem;
     }
 }
 

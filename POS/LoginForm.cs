@@ -76,6 +76,9 @@ namespace POS
                         // config
                         Configuration.STAFF_ID = staffID;
 
+                        // update the program state
+                        Configuration.currentProgramState = Model.ProgramState.LOGGED_IN;
+
                         // show main form and close this one
                         MainWindow mainForm = new MainWindow();
                         this.Hide();
@@ -83,8 +86,6 @@ namespace POS
                         mainForm.ShowDialog();
 
                         logger.Info("Exiting application with Exit Code: " + Environment.ExitCode);
-                        //Application.ExitThread();
-                        //Environment.Exit(Environment.ExitCode);
 
                         break;
 

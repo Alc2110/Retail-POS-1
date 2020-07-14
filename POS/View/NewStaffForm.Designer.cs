@@ -38,13 +38,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.labelProgressBar1 = new labelProgressBarControl.LabelProgressBar();
             this.SuspendLayout();
             // 
             // textBox_fullName
             // 
             this.textBox_fullName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_fullName.Location = new System.Drawing.Point(116, 12);
+            this.textBox_fullName.Location = new System.Drawing.Point(116, 29);
             this.textBox_fullName.Name = "textBox_fullName";
             this.textBox_fullName.Size = new System.Drawing.Size(672, 20);
             this.textBox_fullName.TabIndex = 0;
@@ -53,7 +54,7 @@
             // 
             this.textBox_password.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_password.Location = new System.Drawing.Point(116, 38);
+            this.textBox_password.Location = new System.Drawing.Point(116, 55);
             this.textBox_password.Name = "textBox_password";
             this.textBox_password.Size = new System.Drawing.Size(672, 20);
             this.textBox_password.TabIndex = 1;
@@ -62,7 +63,7 @@
             // 
             this.textBox_repeatPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_repeatPassword.Location = new System.Drawing.Point(116, 64);
+            this.textBox_repeatPassword.Location = new System.Drawing.Point(116, 81);
             this.textBox_repeatPassword.Name = "textBox_repeatPassword";
             this.textBox_repeatPassword.Size = new System.Drawing.Size(672, 20);
             this.textBox_repeatPassword.TabIndex = 2;
@@ -70,7 +71,7 @@
             // comboBox_privelege
             // 
             this.comboBox_privelege.FormattingEnabled = true;
-            this.comboBox_privelege.Location = new System.Drawing.Point(116, 90);
+            this.comboBox_privelege.Location = new System.Drawing.Point(116, 107);
             this.comboBox_privelege.Name = "comboBox_privelege";
             this.comboBox_privelege.Size = new System.Drawing.Size(142, 21);
             this.comboBox_privelege.TabIndex = 3;
@@ -93,14 +94,14 @@
             this.button_close.Name = "button_close";
             this.button_close.Size = new System.Drawing.Size(142, 23);
             this.button_close.TabIndex = 5;
-            this.button_close.Text = "Cancel";
+            this.button_close.Text = "Close";
             this.button_close.UseVisualStyleBackColor = true;
             this.button_close.Click += new System.EventHandler(this.button_close_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(55, 15);
+            this.label1.Location = new System.Drawing.Point(55, 32);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 6;
@@ -109,7 +110,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(54, 41);
+            this.label2.Location = new System.Drawing.Point(54, 58);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 7;
@@ -118,7 +119,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 67);
+            this.label3.Location = new System.Drawing.Point(17, 84);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(93, 13);
             this.label3.TabIndex = 8;
@@ -127,17 +128,28 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(56, 93);
+            this.label4.Location = new System.Drawing.Point(56, 110);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(54, 13);
             this.label4.TabIndex = 9;
             this.label4.Text = "Privelege:";
+            // 
+            // labelProgressBar1
+            // 
+            this.labelProgressBar1.customText = null;
+            this.labelProgressBar1.displayStyle = labelProgressBarControl.LabelProgressBarText.PERCENTAGE;
+            this.labelProgressBar1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelProgressBar1.Location = new System.Drawing.Point(0, 0);
+            this.labelProgressBar1.Name = "labelProgressBar1";
+            this.labelProgressBar1.Size = new System.Drawing.Size(800, 26);
+            this.labelProgressBar1.TabIndex = 10;
             // 
             // NewStaffForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 254);
+            this.Controls.Add(this.labelProgressBar1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -167,5 +179,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private labelProgressBarControl.LabelProgressBar labelProgressBar1;
     }
 }

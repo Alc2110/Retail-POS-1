@@ -31,17 +31,26 @@ namespace POS.View
             logger.Info("Initialising view customers form");
 
             // prepare the listView
-            listView_customers.Columns.Add("ID");
-            listView_customers.Columns.Add("Full name");
-            listView_customers.Columns.Add("Street address");
-            listView_customers.Columns.Add("Phone number");
-            listView_customers.Columns.Add("Email");
-            listView_customers.Columns.Add("City");
-            listView_customers.Columns.Add("State");
-            listView_customers.Columns.Add("Postcode");
+            listView_customers.Columns.Add("ID",50);
+            listView_customers.Columns.Add("Full name",120);
+            listView_customers.Columns.Add("Street address",150);
+            listView_customers.Columns.Add("Phone number",100);
+            listView_customers.Columns.Add("Email",150);
+            listView_customers.Columns.Add("City",130);
+            listView_customers.Columns.Add("State",100);
+            listView_customers.Columns.Add("Postcode",75);
             listView_customers.View = System.Windows.Forms.View.Details;
             listView_customers.GridLines = true;
+            // make the headers bold
+            for (int i = 0; i < listView_customers.Columns.Count; i++)
+            {
+                listView_customers.Columns[i].ListView.Font = new Font(listView_customers.Columns[i].ListView.Font, FontStyle.Bold);
+            }
 
+            // colour and position the busy indicator properly
+            circularProgressBar1.Location = calculateBusyIndicatorPos();
+            circularProgressBar1.ProgressColor = Configuration.ProgressBarColours.TASK_IN_PROGRESS_COLOUR;
+          
             // can't delete anything until something is selected
             button_deleteSelectedCustomer.Enabled = false;
 
@@ -63,6 +72,8 @@ namespace POS.View
             {
                 try
                 {
+                    showBusyIndicator();
+
                     // prepare the data
                     int idNum;
                     Int32.TryParse(listView_customers.SelectedItems[0].SubItems[0].Text, out idNum);
@@ -85,7 +96,9 @@ namespace POS.View
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     logger.Error(ex, errorMessage);
                     logger.Error("Stack Trace: " + ex.StackTrace);
-                    
+
+                    removeBusyIndicator();
+
                     // nothing more we can do
                     return;
                 }
@@ -112,19 +125,37 @@ namespace POS.View
             // populate the list upon loading
             try
             {
+                showBusyIndicator();
+
                 // run this operation in a separate thread
                 await Task.Run(() =>
                 {
                     Configuration.customerOps.getAllCustomers();
                 });
             }
+            catch (System.IO.InvalidDataException invDatEx)
+            {
+                // found invalid data in database
+                // tell the user and the logger
+                string errorMessage = "Error: found invalid data in database: " + invDatEx.Message;
+                MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(errorMessage);
+
+                removeBusyIndicator();
+
+                return;
+            }
             catch (Exception ex)
             {
-                // it failed
+                // it failed with some other error
                 // tell the user and the logger
                 string errorMessage = "Error: failed to retrieve data from database: " + ex.Message;
                 MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 logger.Error(errorMessage);
+
+                removeBusyIndicator();
+
+                return;
             }
         }
 
@@ -148,8 +179,19 @@ namespace POS.View
                 button_deleteSelectedCustomer.Enabled = false;
             }
         }
+
+        private void ViewCustomersForm_Resize(object sender, EventArgs e)
+        {
+            // reposition the circular progress bar
+            circularProgressBar1.Location = calculateBusyIndicatorPos();
+        }
         #endregion
 
+        /// <summary>
+        /// Event handler for getting list of customer records.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void customerEventHandler(object sender, GetAllCustomersEventArgs args)
         {
             if (listView_customers.InvokeRequired)
@@ -158,12 +200,16 @@ namespace POS.View
             }
             else
             {
+                showBusyIndicator();
+
                 populateView(sender, args);
             }
         }
 
         private void populateView(object sender, GetAllCustomersEventArgs args)
         {
+            showBusyIndicator();
+
             List<ICustomer> customers = args.getList().ToList();
 
             // tell the listView it is being updated
@@ -185,11 +231,34 @@ namespace POS.View
                 itemArr[6] = customer.state.ToString();
                 itemArr[7] = customer.Postcode.ToString();
                 ListViewItem item = new ListViewItem(itemArr);
+                item.Font = new Font(item.Font, FontStyle.Regular);
                 listView_customers.Items.Add(item);
             }
 
             // tell the listView it is ready
             listView_customers.EndUpdate();
+
+            removeBusyIndicator();
+        }
+        
+        private System.Drawing.Point calculateBusyIndicatorPos()
+        {
+            int xPos = ((groupBox1.Width)/2)-((circularProgressBar1.Width)/2);
+            int yPos = ((groupBox1.Height) / 2) - ((circularProgressBar1.Height) / 2);
+
+            return new System.Drawing.Point(xPos, yPos);
+        } 
+
+        private void removeBusyIndicator()
+        {
+            circularProgressBar1.Visible = false;
+            listView_customers.Visible = true;
+        }
+
+        private void showBusyIndicator()
+        {
+            circularProgressBar1.Visible = true;
+            listView_customers.Visible = false;
         }
     }
 }

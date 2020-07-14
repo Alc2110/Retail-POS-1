@@ -89,8 +89,8 @@ namespace Model.DataAccessLayer.SqlServerInterface
                             break;
 
                         default:
-                            // this shouldn't happen
-                            throw new Exception("Invalid data in database");
+                            // this shouldn't happen, data validation techniques should prevent it
+                            throw new System.IO.InvalidDataException("Found entry with invalid staff privelege level in database.");
                     }
 
                     Customer transactionCustomer = new Customer();
@@ -102,38 +102,15 @@ namespace Model.DataAccessLayer.SqlServerInterface
                         transactionCustomer.PhoneNumber = reader.GetString(4);
                         transactionCustomer.Email = reader.GetString(5);
                         transactionCustomer.Address = reader.GetString(6);
-                        switch (reader.GetString(7))
+                        States state;
+                        if (Enum.TryParse(reader.GetString(7), out state))
                         {
-                            case "NSW":
-                                transactionCustomer.state = Customer.States.NSW;
-                                break;
-                            case "ACT":
-                                transactionCustomer.state = Customer.States.ACT;
-                                break;
-                            case "NT":
-                                transactionCustomer.state = Customer.States.NT;
-                                break;
-                            case "Qld":
-                                transactionCustomer.state = Customer.States.Qld;
-                                break;
-                            case "SA":
-                                transactionCustomer.state = Customer.States.SA;
-                                break;
-                            case "Vic":
-                                transactionCustomer.state = Customer.States.Vic;
-                                break;
-                            case "Tas":
-                                transactionCustomer.state = Customer.States.Tas;
-                                break;
-                            case "WA":
-                                transactionCustomer.state = Customer.States.WA;
-                                break;
-                            case "Other":
-                                transactionCustomer.state = Customer.States.Other;
-                                break;
-                            default:
-                                // this shouldn't happen, but handle it anyway
-                                throw new Exception("Invalid data in database");
+                            transactionCustomer.state = state;
+                        }
+                        else
+                        {
+                            // this shouldn't happen, data validation techniques should prevent it
+                            throw new System.IO.InvalidDataException("Found invalid entry for field 'State' in database.");
                         }
                     }
                     else

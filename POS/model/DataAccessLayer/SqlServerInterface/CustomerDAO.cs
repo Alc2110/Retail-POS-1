@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,40 +72,15 @@ namespace Model.DataAccessLayer.SqlServerInterface
                         customer.PhoneNumber = reader.GetString(3);
                         customer.Email = reader.GetString(4);
                         customer.City = reader.GetString(5);
-
-                        switch (reader.GetString(6))
+                        States state;
+                        if (Enum.TryParse(reader.GetString(6), out state))
                         {
-                            case "NSW":
-                                customer.state = Customer.States.NSW;
-                                break;
-                            case "Qld":
-                                customer.state = Customer.States.Qld;
-                                break;
-                            case "Tas":
-                                customer.state = Customer.States.Tas;
-                                break;
-                            case "ACT":
-                                customer.state = Customer.States.ACT;
-                                break;
-                            case "Vic":
-                                customer.state = Customer.States.Vic;
-                                break;
-                            case "SA":
-                                customer.state = Customer.States.SA;
-                                break;
-                            case "WA":
-                                customer.state = Customer.States.WA;
-                                break;
-                            case "NT":
-                                customer.state = Customer.States.NT;
-                                break;
-                            case "Other":
-                                customer.state = Customer.States.Other;
-                                break;
-                            default:
-                                // this shouldn't happen
-                                // TODO: handle this properly
-                                throw new Exception("Invalid data in database");
+                            customer.state = state;
+                        }
+                        else
+                        {
+                            // should never happen
+                            throw new InvalidDataException("Invalid customer data");
                         }
 
                         customer.Postcode = reader.GetInt32(7);
@@ -148,39 +124,15 @@ namespace Model.DataAccessLayer.SqlServerInterface
                         customer.PhoneNumber = reader.GetString(3);
                         customer.Email = reader.GetString(4);
                         customer.City = reader.GetString(5);
-
-                        switch (reader.GetString(6))
+                        States state;
+                        if (Enum.TryParse(reader.GetString(6), out state))
                         {
-                            case "NSW":
-                                customer.state = Customer.States.NSW;
-                                break;
-                            case "Qld":
-                                customer.state = Customer.States.Qld;
-                                break;
-                            case "Tas":
-                                customer.state = Customer.States.Tas;
-                                break;
-                            case "ACT":
-                                customer.state = Customer.States.ACT;
-                                break;
-                            case "Vic":
-                                customer.state = Customer.States.Vic;
-                                break;
-                            case "SA":
-                                customer.state = Customer.States.SA;
-                                break;
-                            case "WA":
-                                customer.state = Customer.States.WA;
-                                break;
-                            case "NT":
-                                customer.state = Customer.States.NT;
-                                break;
-                            case "Other":
-                                customer.state = Customer.States.Other;
-                                break;
-                            default:
-                                // this shouldn't happen
-                                throw new Exception("Invalid data in database");
+                            customer.state = state;
+                        }
+                        else
+                        {
+                            // should never happen
+                            throw new InvalidDataException("Invalid customer data");
                         }
                         customer.Postcode = reader.GetInt32(7);
 

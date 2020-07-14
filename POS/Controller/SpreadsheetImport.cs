@@ -144,9 +144,10 @@ namespace POS.Controller
                 string phoneNumber = this.worksheet.Cells[row, 4].Value.ToString();
                 string email = this.worksheet.Cells[row, 5].Value.ToString();
                 string city = this.worksheet.Cells[row, 6].Value.ToString();
-                string state = this.worksheet.Cells[row, 7].Value.ToString();
+                string sState = this.worksheet.Cells[row, 7].Value.ToString();
                 int postcode = int.Parse(this.worksheet.Cells[row, 8].Value.ToString());
 
+                // build the customer object
                 Customer toUpdate = new Customer();
                 toUpdate.CustomerID = id;
                 toUpdate.FullName = fullName;
@@ -154,46 +155,22 @@ namespace POS.Controller
                 toUpdate.PhoneNumber = phoneNumber;
                 toUpdate.Email = email;
                 toUpdate.City = city;
-                switch (state)
+                States state;
+                if (Enum.TryParse(sState, out state))
                 {
-                    case "NSW":
-                        toUpdate.state = Customer.States.NSW;
-                        break;
-                    case "Qld":
-                        toUpdate.state = Customer.States.Qld;
-                        break;
-                    case "Tas":
-                        toUpdate.state = Customer.States.Tas;
-                        break;
-                    case "ACT":
-                        toUpdate.state = Customer.States.ACT;
-                        break;
-                    case "Vic":
-                        toUpdate.state = Customer.States.Vic;
-                        break;
-                    case "SA":
-                        toUpdate.state = Customer.States.SA;
-                        break;
-                    case "WA":
-                        toUpdate.state = Customer.States.WA;
-                        break;
-                    case "NT":
-                        toUpdate.state = Customer.States.NT;
-                        break;
-                    case "Other":
-                        
-                        break;
-                    default:
-                        // this shouldn't happen
-                        // TODO: handle this properly
-                        throw new Exception("Invalid data in spreadsheet");
+                    toUpdate.state = state;
+                }
+                else
+                {
+                    // invalid "State" entry in spreadsheet
+                    throw new InvalidDataException("Found invalid entry for field 'State'. Row: " + row);
                 }
                 toUpdate.Postcode = postcode;
 
                 try
                 {
                     // perform this task in a separate thread
-                    await Task.Run(() =>
+                   await Task.Run(() =>
                    {
                        Configuration.customerOps.importUpdateCustomer(toUpdate);
                    });
@@ -248,8 +225,7 @@ namespace POS.Controller
                         break;
                     default:
                         // invalid data
-                        // TODO: deal with this appropriately
-                        break;
+                        throw new InvalidDataException("Found Invalid staff privelege level. Row: " + row);
                 }
 
                 try

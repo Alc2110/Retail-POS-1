@@ -90,3 +90,9 @@ C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\Castle.Core.xml
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\FakeItEasy.xml
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\nunit.framework.pdb
 C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\nunit.framework.xml
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\CircularProgressBar.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\WinFormAnimation.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\CircularProgressBar.xml
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\labelProgressBarControl.dll
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\LabelProgressBar.pdb
+C:\Users\alexc\Documents\GitHub\Retail-POS\POS\bin\Release\labelProgressBarControl.pdb

@@ -31,7 +31,7 @@ namespace POS_Tests.Controller_Tests
             string email = "email@email.com";
             string city = "Somewhere";
             int postcode = 2000;
-            Customer.States state = Customer.States.NSW;
+            States state = States.NSW;
             Customer newCustomer = new Customer(id, fullName, address, phoneNumber, email, city, state, postcode, null);
             // set up the model fake
             var customerService = A.Fake<Model.ServiceLayer.ICustomerOps>();
@@ -58,7 +58,7 @@ namespace POS_Tests.Controller_Tests
             string email = "email@email.com";
             string city = "Somewhere";
             int postcode = 2000;
-            Customer.States state = Customer.States.NSW;
+            States state = States.NSW;
             Customer newCustomer = new Customer(id, fullName, address, phoneNumber, email, city, state, postcode, null);
             // set up the model fake
             var customerService = A.Fake<Model.ServiceLayer.ICustomerOps>();
@@ -85,7 +85,7 @@ namespace POS_Tests.Controller_Tests
             string email = "email@email.com";
             string city = "Somewhere";
             int postcode = 2000;
-            Customer.States state = Customer.States.NSW;
+            States state = States.NSW;
             Customer newCustomer = new Customer(id, fullName, address, phoneNumber, email, city, state, postcode, null);
             // set up the model fake
             var customerService = A.Fake<Model.ServiceLayer.ICustomerOps>();

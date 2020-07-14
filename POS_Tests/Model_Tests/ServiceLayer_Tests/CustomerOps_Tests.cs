@@ -33,7 +33,7 @@ namespace POS_Tests.Model_Tests.ServiceLayer_Tests
             string phoneNumber = "12345";
             string email = "email@email.com";
             string city = "Somewhere";
-            Customer.States state = Customer.States.NSW;
+            States state = States.NSW;
             int postcode = 2000;
             System.Collections.Generic.List<ITransaction> transactions = null;
             var customerDAO = A.Fake<Model.DataAccessLayer.ICustomerDAO>();
@@ -70,7 +70,7 @@ namespace POS_Tests.Model_Tests.ServiceLayer_Tests
             string phoneNumber = "12345";
             string email = "email@email.com";
             string city = "Somewhere";
-            Customer.States state = Customer.States.NSW;
+            States state = States.NSW;
             int postcode = 2000;
             System.Collections.Generic.List<ITransaction> transactions = null;
             Customer newCustomer = new Customer(id, fullName, address, phoneNumber, email, city, state, postcode, transactions);
@@ -127,7 +127,7 @@ namespace POS_Tests.Model_Tests.ServiceLayer_Tests
             string phoneNumber = "12345";
             string email = "email@email.com";
             string city = "Somewhere";
-            Customer.States state = Customer.States.NSW;
+            States state = States.NSW;
             int postcode = 2000;
             System.Collections.Generic.List<ITransaction> transactions = null;
             Customer newCustomer = new Customer(id, fullName, address, phoneNumber, email, city, state, postcode, transactions);
@@ -190,7 +190,7 @@ namespace POS_Tests.Model_Tests.ServiceLayer_Tests
             string phoneNumber = "12345";
             string email = "email@email.com";
             string city = "Somewhere";
-            Customer.States state = Customer.States.NSW;
+            States state = States.NSW;
             int postcode = 2000;
             System.Collections.Generic.List<ITransaction> transactions = null;
             var customerDAO = A.Fake<Model.DataAccessLayer.ICustomerDAO>();

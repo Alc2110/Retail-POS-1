@@ -41,6 +41,10 @@ namespace POS.View
             textBox_fullName.TextChanged += checkEntries;
             textBox_password.TextChanged += checkEntries;
             textBox_repeatPassword.TextChanged += checkEntries;
+
+            // status bar colour
+            labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.IDLE_COLOUR, "Ready");
+            labelProgressBar1.Value = 100;
         }
 
         #region UI event handlers
@@ -57,6 +61,13 @@ namespace POS.View
             {
                 try
                 {
+                    // use wait cursor
+                    this.UseWaitCursor = true;
+
+                    // update the status bar
+                    labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.TASK_IN_PROGRESS_COLOUR, "Adding new staff record");
+                    labelProgressBar1.Value = 100;
+
                     if (!(textBox_password.Text.Equals(textBox_repeatPassword.Text)))
                     {
                         // cannot add, passwords don't match
@@ -114,6 +125,9 @@ namespace POS.View
                     string errorMessage = "Error adding new staff member: " + ex.Message;
                     logger.Error(ex, errorMessage);
                     logger.Error("Stack trace: " + ex.StackTrace);
+                    labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.TASK_FAILED_COLOUR, "Error adding new staff");
+                    labelProgressBar1.Value = 100;
+                    this.UseWaitCursor = false;
                     MessageBox.Show(errorMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     // nothing more we can do
@@ -124,6 +138,9 @@ namespace POS.View
                 // feedback for user
                 string successMessage = "Successfully added new staff member record";
                 logger.Info(successMessage);
+                labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.TASK_SUCCEEDED_COLOUR, successMessage);
+                labelProgressBar1.Value = 100;
+                this.UseWaitCursor = false;
                 MessageBox.Show(successMessage, "Retail POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // clean up UI
@@ -143,6 +160,9 @@ namespace POS.View
             {
                 button_addStaff.Enabled = false;
             }
+
+            labelProgressBar1.setColourAndText(Configuration.ProgressBarColours.IDLE_COLOUR, "Ready");
+            labelProgressBar1.Value = 100;
         }
         #endregion
     }

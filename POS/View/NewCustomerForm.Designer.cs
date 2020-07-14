@@ -44,20 +44,21 @@
             this.label7 = new System.Windows.Forms.Label();
             this.button_add = new System.Windows.Forms.Button();
             this.button_cancel = new System.Windows.Forms.Button();
+            this.labelProgressBar1 = new labelProgressBarControl.LabelProgressBar();
             this.SuspendLayout();
             // 
             // textBox_fullName
             // 
             this.textBox_fullName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_fullName.Location = new System.Drawing.Point(96, 12);
+            this.textBox_fullName.Location = new System.Drawing.Point(97, 34);
             this.textBox_fullName.Name = "textBox_fullName";
             this.textBox_fullName.Size = new System.Drawing.Size(692, 20);
             this.textBox_fullName.TabIndex = 0;
             // 
             // textBox_postcode
             // 
-            this.textBox_postcode.Location = new System.Drawing.Point(96, 168);
+            this.textBox_postcode.Location = new System.Drawing.Point(97, 190);
             this.textBox_postcode.Name = "textBox_postcode";
             this.textBox_postcode.Size = new System.Drawing.Size(142, 20);
             this.textBox_postcode.TabIndex = 1;
@@ -66,7 +67,7 @@
             // 
             this.textBox_city.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_city.Location = new System.Drawing.Point(96, 116);
+            this.textBox_city.Location = new System.Drawing.Point(97, 138);
             this.textBox_city.Name = "textBox_city";
             this.textBox_city.Size = new System.Drawing.Size(692, 20);
             this.textBox_city.TabIndex = 3;
@@ -75,7 +76,7 @@
             // 
             this.textBox_email.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_email.Location = new System.Drawing.Point(96, 90);
+            this.textBox_email.Location = new System.Drawing.Point(97, 112);
             this.textBox_email.Name = "textBox_email";
             this.textBox_email.Size = new System.Drawing.Size(692, 20);
             this.textBox_email.TabIndex = 4;
@@ -84,7 +85,7 @@
             // 
             this.textBox_phoneNumber.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_phoneNumber.Location = new System.Drawing.Point(96, 64);
+            this.textBox_phoneNumber.Location = new System.Drawing.Point(97, 86);
             this.textBox_phoneNumber.Name = "textBox_phoneNumber";
             this.textBox_phoneNumber.Size = new System.Drawing.Size(692, 20);
             this.textBox_phoneNumber.TabIndex = 5;
@@ -93,7 +94,7 @@
             // 
             this.textBox_streetAddress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox_streetAddress.Location = new System.Drawing.Point(96, 38);
+            this.textBox_streetAddress.Location = new System.Drawing.Point(97, 60);
             this.textBox_streetAddress.Name = "textBox_streetAddress";
             this.textBox_streetAddress.Size = new System.Drawing.Size(692, 20);
             this.textBox_streetAddress.TabIndex = 6;
@@ -101,7 +102,7 @@
             // comboBox_state
             // 
             this.comboBox_state.FormattingEnabled = true;
-            this.comboBox_state.Location = new System.Drawing.Point(96, 141);
+            this.comboBox_state.Location = new System.Drawing.Point(97, 163);
             this.comboBox_state.Name = "comboBox_state";
             this.comboBox_state.Size = new System.Drawing.Size(142, 21);
             this.comboBox_state.TabIndex = 7;
@@ -109,7 +110,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(35, 15);
+            this.label1.Location = new System.Drawing.Point(36, 37);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 8;
@@ -118,7 +119,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 41);
+            this.label2.Location = new System.Drawing.Point(13, 63);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(78, 13);
             this.label2.TabIndex = 9;
@@ -127,7 +128,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 67);
+            this.label3.Location = new System.Drawing.Point(13, 89);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(79, 13);
             this.label3.TabIndex = 10;
@@ -136,7 +137,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(55, 93);
+            this.label4.Location = new System.Drawing.Point(56, 115);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 13);
             this.label4.TabIndex = 11;
@@ -145,7 +146,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(63, 119);
+            this.label5.Location = new System.Drawing.Point(64, 141);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(27, 13);
             this.label5.TabIndex = 12;
@@ -154,7 +155,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(56, 144);
+            this.label6.Location = new System.Drawing.Point(57, 166);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(35, 13);
             this.label6.TabIndex = 13;
@@ -163,7 +164,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(36, 171);
+            this.label7.Location = new System.Drawing.Point(37, 193);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(55, 13);
             this.label7.TabIndex = 14;
@@ -187,15 +188,26 @@
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(142, 23);
             this.button_cancel.TabIndex = 16;
-            this.button_cancel.Text = "Cancel";
+            this.button_cancel.Text = "Close";
             this.button_cancel.UseVisualStyleBackColor = true;
             this.button_cancel.Click += new System.EventHandler(this.button_cancel_Click);
+            // 
+            // labelProgressBar1
+            // 
+            this.labelProgressBar1.customText = null;
+            this.labelProgressBar1.displayStyle = labelProgressBarControl.LabelProgressBarText.PERCENTAGE;
+            this.labelProgressBar1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelProgressBar1.Location = new System.Drawing.Point(0, 0);
+            this.labelProgressBar1.Name = "labelProgressBar1";
+            this.labelProgressBar1.Size = new System.Drawing.Size(800, 26);
+            this.labelProgressBar1.TabIndex = 17;
             // 
             // NewCustomerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 254);
+            this.Controls.Add(this.labelProgressBar1);
             this.Controls.Add(this.button_cancel);
             this.Controls.Add(this.button_add);
             this.Controls.Add(this.label7);
@@ -237,5 +249,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button button_add;
         private System.Windows.Forms.Button button_cancel;
+        private labelProgressBarControl.LabelProgressBar labelProgressBar1;
     }
 }

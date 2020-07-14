@@ -16,7 +16,7 @@ namespace POS_Tests.security_Tests
         {
             // arrange
             this.hasher = new POS.Security.Hasher();
-            this.hasher.fullName = "Alex Chlabicz";
+            this.hasher.fullName = "John Smith";
             this.hasher.password = "Password12345";
             string expectedHash = "148250143217662491659244514718712621202151538513214177101193240141168932021609611";
 
